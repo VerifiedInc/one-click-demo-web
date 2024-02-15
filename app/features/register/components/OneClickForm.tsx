@@ -11,6 +11,7 @@ import { OneClickHeader } from '~/features/register/components/OneClickHeader';
 import { OneClickLegalText } from './OneClickLegalText';
 import { OneClickSMSDialogContent } from './OneClickSMSDialogContent';
 import { OneClickPromptDialogContent } from './OneClickPromptDialogContent';
+import { OneClickPoweredBy } from './OneClickPoweredBy';
 
 export function OneClickForm() {
   const brand = useBrand();
@@ -121,6 +122,7 @@ export function OneClickForm() {
           )}
         </Box>
       </fetcher.Form>
+      <OneClickPoweredBy />
       <OneClickLegalText />
 
       <Dialog open={isSuccess && verificationOptions === 'only_link'}>
