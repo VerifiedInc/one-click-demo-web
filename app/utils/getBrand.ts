@@ -17,13 +17,13 @@ export function getBrand(brandDto: BrandDto | null): Brand {
   if (!brandDto) {
     return {
       uuid: '_',
-      name: 'Kredita',
+      name: 'Hooli',
       logo: '/logo192.webp',
       homepageUrl: '',
       theme: {
-        light: '#FACE6F',
-        main: '#FFAD00',
-        dark: '#CB8A00',
+        light: '#51d0fe',
+        main: '#01abe8',
+        dark: '#016082',
       },
     };
   }
