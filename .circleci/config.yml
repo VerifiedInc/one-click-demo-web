@@ -29,7 +29,7 @@ workflows:
             - AWS-Root-Account
             - Slack-Context
           account_id_1: '408067220840'
-          repo: kredita-demo-web
+          repo: 1click-demo-web
           image_tag_1: '${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}'
           image_tag_2: dev-latest
           filters:
@@ -47,7 +47,7 @@ workflows:
           compile_script_name: build:sourcemap
           cache_version: v6
           sentry_org: verified-inc
-          sentry_project: kredita-demo-web
+          sentry_project: 1click-demo-web
           filters:
             branches:
               only:
@@ -61,44 +61,8 @@ workflows:
             - AWS-Root-Account
             - Slack-Context
           account_id: '408067220840'
-          repo: kredita-demo-web
-          deployment: kredita-demo-web
-          cluster_name: dev-account-saas-cluster
-          namespace: demos
-          image_tag: dev-latest
-          filters:
-            branches:
-              only:
-                - main
-
-      - unumid/deploy-image:
-          name: unumid/deploy-image-dev-1click
-          requires:
-            - unumid/build-and-push-image
-          context:
-            - AWS-Root-Account
-            - Slack-Context
-          account_id: '408067220840'
-          repo: kredita-demo-web
-          deployment: kredita-1click-demo-web
-          cluster_name: dev-account-saas-cluster
-          namespace: demos
-          image_tag: dev-latest
-          filters:
-            branches:
-              only:
-                - main
-
-      - unumid/deploy-image:
-          name: unumid/deploy-image-dev-1click-whitelabel
-          requires:
-            - unumid/build-and-push-image
-          context:
-            - AWS-Root-Account
-            - Slack-Context
-          account_id: '408067220840'
-          repo: kredita-demo-web
-          deployment: kredita-1click-whitelabel-demo-web
+          repo: 1click-demo-web
+          deployment: 1click-demo-web
           cluster_name: dev-account-saas-cluster
           namespace: demos
           image_tag: dev-latest
@@ -126,7 +90,7 @@ workflows:
             - Slack-Context
           account_id_1: '032538391126'
           account_id_2: '574388719779' # pushing to production account thanks to wanting to expose the 1click prefill demo to the world
-          repo: kredita-demo-web
+          repo: 1click-demo-web
           image_tag_1: '${CIRCLE_TAG}'
           image_tag_2: sandbox-latest
           filters:
@@ -145,7 +109,7 @@ workflows:
           compile_script_name: build:sourcemap
           cache_version: v6
           sentry_org: verified-inc
-          sentry_project: kredita-demo-web
+          sentry_project: 1click-demo-web
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+/
@@ -160,48 +124,8 @@ workflows:
             - AWS-Root-Account
             - Slack-Context
           account_id: 032538391126
-          repo: kredita-demo-web
-          deployment: kredita-demo-web
-          cluster_name: sandbox-account-saas-cluster
-          namespace: demos
-          image_tag: '${CIRCLE_TAG}'
-          slack_pass_notify_template: success_tagged_deploy_1
-          filters:
-            tags:
-              only: /^v\d+\.\d+\.\d+/
-            branches:
-              ignore: /.*/
-
-      - unumid/deploy-image:
-          name: unumid/deploy-image-sandbox-1click
-          requires:
-            - unumid/build-and-push-image-sandbox
-          context:
-            - AWS-Root-Account
-            - Slack-Context
-          account_id: 032538391126
-          repo: kredita-demo-web
-          deployment: kredita-1click-demo-web
-          cluster_name: sandbox-account-saas-cluster
-          namespace: demos
-          image_tag: '${CIRCLE_TAG}'
-          slack_pass_notify_template: success_tagged_deploy_1
-          filters:
-            tags:
-              only: /^v\d+\.\d+\.\d+/
-            branches:
-              ignore: /.*/
-
-      - unumid/deploy-image:
-          name: unumid/deploy-image-sandbox-1click-whitelabel
-          requires:
-            - unumid/build-and-push-image-sandbox
-          context:
-            - AWS-Root-Account
-            - Slack-Context
-          account_id: 032538391126
-          repo: kredita-demo-web
-          deployment: kredita-1click-whitelabel-demo-web
+          repo: 1click-demo-web
+          deployment: 1click-demo-web
           cluster_name: sandbox-account-saas-cluster
           namespace: demos
           image_tag: '${CIRCLE_TAG}'
@@ -220,7 +144,7 @@ workflows:
             - AWS-Root-Account
             - Slack-Context
           account_id_1: '408067220840'
-          repo: kredita-demo-web
+          repo: 1click-demo-web
           image_tag_1: '${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}'
           image_tag_2: test-latest
           filters:
@@ -236,7 +160,7 @@ workflows:
           compile_script_name: build:sourcemap
           cache_version: v6
           sentry_org: verified-inc
-          sentry_project: kredita-demo-web
+          sentry_project: 1click-demo-web
           filters:
             branches:
               only:
@@ -250,44 +174,8 @@ workflows:
             - AWS-Root-Account
             - Slack-Context
           account_id: '408067220840'
-          repo: kredita-demo-web
-          deployment: kredita-demo-web
-          cluster_name: dev-account-saas-cluster
-          namespace: demos
-          image_tag: test-latest
-          filters:
-            branches:
-              only:
-                - test-circleci
-
-      - unumid/deploy-image:
-          name: unumid/deploy-image-test-1click
-          requires:
-            - unumid/build-and-push-image-test
-          context:
-            - AWS-Root-Account
-            - Slack-Context
-          account_id: '408067220840'
-          repo: kredita-demo-web
-          deployment: kredita-1click-demo-web
-          cluster_name: dev-account-saas-cluster
-          namespace: demos
-          image_tag: test-latest
-          filters:
-            branches:
-              only:
-                - test-circleci
-
-      - unumid/deploy-image:
-          name: unumid/deploy-image-test-1click-whitelabel
-          requires:
-            - unumid/build-and-push-image-test
-          context:
-            - AWS-Root-Account
-            - Slack-Context
-          account_id: '408067220840'
-          repo: kredita-demo-web
-          deployment: kredita-1click-whitelabel-demo-web
+          repo: 1click-demo-web
+          deployment: 1click-demo-web
           cluster_name: dev-account-saas-cluster
           namespace: demos
           image_tag: test-latest
