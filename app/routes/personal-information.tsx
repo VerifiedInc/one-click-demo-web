@@ -131,6 +131,9 @@ export default function PersonalInformation() {
             Get Started
           </Button>
         </Box>
+        <Button variant='outlined' fullWidth>
+          Book a Call
+        </Button>
       </Stack>
     </Box>
   );
