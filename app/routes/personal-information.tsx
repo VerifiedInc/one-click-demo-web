@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { LoaderFunction, json, redirect } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import {
   Box,
   Button,
@@ -31,6 +31,13 @@ export default function PersonalInformation() {
   const brand = useBrand();
   const { fields, isValid, requiredFields } = usePersonalInformationFields();
   const { oneClickDB } = useLoaderData<PersonalInformationLoader>();
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const dashboardPageLink = useMemo(() => {
+    const searchParamsString = searchParams.toString();
+    return `/${searchParamsString ? `?${searchParamsString}` : ''}`;
+  }, [searchParams]);
 
   const fieldSx: SxProps = { width: '100%' };
   const buttonContainerSx: SxProps = {
@@ -73,7 +80,10 @@ export default function PersonalInformation() {
   const isRequired = (fieldName: string) => requiredFields.includes(fieldName);
 
   const handleGetStarted = () => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {
+      navigate(dashboardPageLink);
+      return;
+    }
     window.location.href = redirectUrl;
   };
 
