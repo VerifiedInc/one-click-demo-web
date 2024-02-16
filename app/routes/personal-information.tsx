@@ -10,36 +10,18 @@ import {
   Typography,
 } from '@mui/material';
 
-import { getDBOneClick, getSharedCredentialsOneClick } from '~/coreAPI.server';
-import { getBrandSet } from '~/utils/getBrandSet';
-import { logger } from '~/logger.server';
-
 import { useBrand } from '~/hooks/useBrand';
 import { usePersonalInformationFields } from '~/features/personalInformation/hooks/usePersonalInformationFields';
 import { PersonalInformationLoader } from '~/features/personalInformation/types';
+import { getOneClickUseCase } from '~/features/oneClick/useCases/getOneClickUseCase';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const { searchParams } = url;
-  const brandSet = await getBrandSet(searchParams);
 
-  const oneClickUuid = searchParams.get('1ClickUuid');
+  const oneClick = await getOneClickUseCase({ request });
 
-  if (oneClickUuid) {
-    const oneClick = await getSharedCredentialsOneClick(
-      brandSet.apiKey,
-      oneClickUuid
-    );
-    const oneClickDB = await getDBOneClick(oneClickUuid);
-
-    if (oneClick && oneClickDB) {
-      return json({ oneClick, oneClickDB });
-    }
-
-    logger.error('OneClick not found', { oneClickUuid });
-
-    throw new Error('OneClick not found');
-  }
+  if (oneClick?.success) return json(oneClick.success);
 
   // No credentials found, so user should be redirected to the register page.
   return redirect('/register' + searchParams.toString());
@@ -118,6 +100,7 @@ export default function PersonalInformation() {
         direction='column'
         spacing={2}
         my={2}
+        mt={4}
         width='100%'
         position='relative'
       >
