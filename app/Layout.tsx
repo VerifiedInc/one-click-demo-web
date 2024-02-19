@@ -5,13 +5,10 @@ import type { PropsWithChildren } from 'react';
 
 import { useBrand } from './hooks/useBrand';
 import { useAppContext } from './context/AppContext';
-import { useTheme } from '@emotion/react';
 
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();
   const appContext = useAppContext();
-  const theme = useTheme();
-  console.log(theme);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>

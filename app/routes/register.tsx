@@ -6,6 +6,7 @@ import {
 } from '@remix-run/node';
 import { useActionData } from '@remix-run/react';
 import Box from '@mui/material/Box';
+import { Server } from 'socket.io';
 
 import { createUserSession } from '~/session.server';
 import { getErrorMessage, getErrorStatus } from '~/errors';
@@ -29,6 +30,7 @@ import { useBrand } from '~/hooks/useBrand';
 import { getBrandSet } from '~/utils/getBrandSet';
 import { OneClickFormNonHosted } from '~/features/register/components/OneClickFormNonHosted';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
+import { rooms } from '~/utils/socket';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -141,7 +143,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 // The exported `loader` function will be called when the route makes a GET request, i.e. when it is rendered
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, context }) => {
   const url = new URL(request.url);
   const { searchParams } = url;
   const brandSet = await getBrandSet(searchParams);
@@ -155,6 +157,17 @@ export const loader: LoaderFunction = async ({ request }) => {
       oneClickUuid
     );
     if (result) {
+      // Emit the 1-click successful event to the socket.io room.
+      logger.debug(
+        `Emitting 1-click-successful event to ${rooms.buildOneClickRoom(
+          brandSet.brand,
+          result
+        )}`
+      );
+      (context.socketIo as Server)
+        .to(rooms.buildOneClickRoom(brandSet.brand, result))
+        .emit('1-click-successful', url.toString());
+
       const fullName = result?.credentials?.fullName;
       // Full name credential can be either a string or a record containing optionally the first name, last name, middle name.
       const firstName =

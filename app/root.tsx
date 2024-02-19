@@ -23,14 +23,16 @@ import {
 
 import { config } from './config';
 import { initLogRocket } from './logrocket';
-import ClientStyleContext from './context/ClientStyleContext';
 import { theme } from './styles/theme';
 import { getErrorMessage } from './errors';
-import Layout from './Layout';
 import { BrowserConfig } from './config.client';
-import { AppContextProvider } from './context/AppContext';
 import { Brand } from './utils/getBrand';
 import { getBrandSet } from './utils/getBrandSet';
+
+import ClientStyleContext from './context/ClientStyleContext';
+import { AppContextProvider } from './context/AppContext';
+import { SocketProvider } from './context/SocketContext';
+import Layout from './Layout';
 
 // add browser env to window
 declare global {
@@ -144,11 +146,13 @@ const Document = withEmotionCache(
         </head>
         <body>
           <AppContextProvider config={env}>
-            <ThemeProvider theme={theme(brand.theme)}>
-              <CssBaseline>
-                <Layout>{children}</Layout>
-              </CssBaseline>
-            </ThemeProvider>
+            <SocketProvider>
+              <ThemeProvider theme={theme(brand.theme)}>
+                <CssBaseline>
+                  <Layout>{children}</Layout>
+                </CssBaseline>
+              </ThemeProvider>
+            </SocketProvider>
           </AppContextProvider>
           {/*
             set browser env on window
