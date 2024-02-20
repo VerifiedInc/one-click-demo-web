@@ -1,17 +1,19 @@
-import { Box, Typography } from '@mui/material';
+import { Box, SxProps, Typography } from '@mui/material';
 import { PropsWithChildren } from 'react';
 
 interface IconBoxAndLabelProps extends PropsWithChildren {
+  sx?: SxProps;
   label: string;
 }
 
 /**
  * Component to display 'Activity' boxes for the /index route
  */
-export default ({ label, children }: IconBoxAndLabelProps) => {
+export default ({ label, children, sx }: IconBoxAndLabelProps) => {
   return (
     <Box
       sx={{
+        ...sx,
         filter: 'drop-shadow(0px 2px 3px rgba(0,0,0,0.3))',
         px: { xs: 2.75, largeMobile: 4.25 },
       }}

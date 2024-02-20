@@ -1,17 +1,29 @@
+import { useEffect, useMemo, useRef } from 'react';
+import {
+  ActionFunction,
+  json,
+  LinksFunction,
+  LoaderFunction,
+} from '@remix-run/node';
+import { Form, Link, useSearchParams } from '@remix-run/react';
 import {
   AccountCircle,
   AutoGraph,
   CreditCard,
   Send,
 } from '@mui/icons-material';
-import { Box, Button, Typography } from '@mui/material';
-import { ActionFunction, json, LoaderFunction } from '@remix-run/node';
-import { Form } from '@remix-run/react';
-import IconBoxAndLabel from '~/components/IconBoxAndLabel';
-import SpendSummary from '~/components/SpendSummary';
+import { Box, Button, IconButton, Typography } from '@mui/material';
+
+import { driver, driverLinks } from '~/libs/driver';
 import { requireUserName } from '~/session.server';
 
+import IconBoxAndLabel from '~/components/IconBoxAndLabel';
+import SpendSummary from '~/components/SpendSummary';
+
+import { useBrand } from '~/hooks/useBrand';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
+
+export const links: LinksFunction = () => [...driverLinks()];
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -28,7 +40,59 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
+  const brand = useBrand();
+  const [searchParams] = useSearchParams();
+  const accountPageLink = useMemo(() => {
+    const searchParamsString = searchParams.toString();
+    return `/account${searchParamsString ? `?${searchParamsString}` : ''}`;
+  }, [searchParams]);
+
+  const profileRef = useRef<Element | null>(null);
+  const signOutRef = useRef<HTMLButtonElement | null>(null);
   const borderRadius = 30;
+
+  useEffect(() => {
+    const tourKey = `tour-${brand.uuid}`;
+    const session = sessionStorage.getItem(tourKey);
+    // If the user has already seen the tour, don't show it again
+    if (session) return;
+    sessionStorage.setItem(tourKey, 'true');
+
+    driver({
+      animate: true,
+      showProgress: true,
+      showButtons: ['next', 'previous', 'close'],
+      steps: [
+        {
+          popover: {
+            title: 'Welcome',
+            description: "Let's take a quick tour of the app.",
+            side: 'top',
+            align: 'start',
+          },
+        },
+        {
+          element: profileRef.current as Element,
+          popover: {
+            title: 'Account Information',
+            description: 'Here you can see your account information.',
+            side: 'top',
+            align: 'start',
+          },
+        },
+        {
+          element: signOutRef.current as Element,
+          popover: {
+            title: 'Sign Out',
+            description: 'To sign out, you can click here.',
+            side: 'top',
+            align: 'start',
+          },
+        },
+      ],
+    }).drive();
+  }, []);
+
   return (
     <Box
       position='relative'
@@ -66,12 +130,19 @@ export default function Index() {
             Available balance
           </Typography>
         </Box>
-        <AccountCircle
-          sx={{ mr: 2, fontSize: '4rem', color: 'neutral.light' }}
-        />
+        <Box pr={2}>
+          <Box ref={profileRef}>
+            <Link to={accountPageLink}>
+              <IconButton>
+                <AccountCircle
+                  sx={{ fontSize: '4rem', color: 'neutral.light' }}
+                />
+              </IconButton>
+            </Link>
+          </Box>
+        </Box>
       </Box>
       <SpendSummary />
-
       <Box width='90%' mt={4.5} mb={2.25}>
         <Typography variant='h4'>Activity</Typography>
       </Box>
@@ -87,7 +158,7 @@ export default function Index() {
         </IconBoxAndLabel>
       </Box>
       <Form method='post'>
-        <Button>Sign Out</Button>
+        <Button ref={signOutRef}>Sign Out</Button>
       </Form>
     </Box>
   );
