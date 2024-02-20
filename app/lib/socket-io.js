@@ -21,27 +21,33 @@ class SocketIoImpl {
    * @param {*} httpServer
    */
   initialize(httpServer) {
-    const pubClient = createClient({ url: process.env.REDIS_URL });
-    pubClient.on('connect', () => {
-      console.log('redis pubClient connected');
-    });
-    pubClient.on('error', (error) => {
-      console.error('pubClient error:', error);
-    });
-    const subClient = pubClient.duplicate();
-    subClient.on('connect', () => {
-      console.log('redis subClient connected');
-    });
-    subClient.on('error', (error) => {
-      console.error('subClient error:', error);
-    });
-
     this.io = new Server(httpServer);
-    this.io.adapter(createAdapter(pubClient, subClient));
 
-    Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+    // If there is a REDIS_URL environment variable, use Redis as the adapter
+    if (process.env.REDIS_URL) {
+      console.log('Using Redis as the adapter for socket.io');
+
+      const pubClient = createClient({ url: process.env.REDIS_URL });
+      pubClient.on('connect', () => {
+        console.log('redis pubClient connected');
+      });
+      pubClient.on('error', (error) => {
+        console.error('pubClient error:', error);
+      });
+      const subClient = pubClient.duplicate();
+      subClient.on('connect', () => {
+        console.log('redis subClient connected');
+      });
+      subClient.on('error', (error) => {
+        console.error('subClient error:', error);
+      });
+
       this.io.adapter(createAdapter(pubClient, subClient));
-    });
+
+      Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+        this.io.adapter(createAdapter(pubClient, subClient));
+      });
+    }
 
     this.io.on('connection', (socket) => {
       const { room } = socket.handshake.query;
