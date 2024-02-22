@@ -72,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
 
         const options: Partial<OneClickOptions> = {
           phone,
-          birthDate: dateUtils.toYYYYDDMM(String(birthDate)),
+          birthDate: birthDate ? dateUtils.toYYYYDDMM(birthDate) : undefined,
           redirectUrl,
           verificationOptions:
             verificationOptions as OneClickOptions['verificationOptions'],
