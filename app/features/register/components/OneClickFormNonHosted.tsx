@@ -141,13 +141,13 @@ export function OneClickFormNonHosted() {
             value={birthDate.value}
             onChange={handleFieldChange(birthDate)}
             error={birthDate.touched && !!birthDate.error}
-            helperText={(birthDate.touched && birthDate.error) || 'YYYY-MM-DD'}
+            helperText={(birthDate.touched && birthDate.error) || 'MM-DD-YYYY'}
             disabled={isFetching}
             sx={{ mt: 2 }}
             inputProps={{
               unmask: false,
               lazy: true,
-              mask: '0000-00-00',
+              mask: '00-00-0000',
               inputMode: 'numeric',
             }}
             InputProps={{

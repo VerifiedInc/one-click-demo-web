@@ -31,6 +31,7 @@ import { getBrandSet } from '~/utils/getBrandSet';
 import { OneClickFormNonHosted } from '~/features/register/components/OneClickFormNonHosted';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
 import { rooms } from '~/utils/socket';
+import { dateUtils } from '~/utils/date';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -71,7 +72,7 @@ export const action: ActionFunction = async ({ request }) => {
 
         const options: Partial<OneClickOptions> = {
           phone,
-          birthDate,
+          birthDate: dateUtils.toYYYYDDMM(String(birthDate)),
           redirectUrl,
           verificationOptions:
             verificationOptions as OneClickOptions['verificationOptions'],
