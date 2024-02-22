@@ -1,8 +1,13 @@
-import React from 'react';
+import { Box, BoxProps } from '@mui/material';
 
-export function WhiteLogoGreenCheck(props: React.SVGProps<SVGSVGElement>) {
+export function WhiteLogoGreenCheck(props: BoxProps) {
   return (
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 141 141' {...props}>
+    <Box
+      component='svg'
+      xmlns='http://www.w3.org/2000/svg'
+      viewBox='0 0 141 141'
+      {...props}
+    >
       <g fill='none' fillRule='evenodd'>
         <g fill='#FFF' transform='translate(-.201)'>
           <circle cx={70.5} cy={70.694} r={27.159} />
@@ -50,6 +55,6 @@ export function WhiteLogoGreenCheck(props: React.SVGProps<SVGSVGElement>) {
           <path d='M55.67 81.924 90.15 47.445c1.6-1.6 3.613-2.429 6.039-2.488 1.579-.033 4.077.583 5.985 2.492 1.924 1.924 2.522 4.52 2.495 5.989-.073 2.427-.906 4.436-2.498 6.028L67.69 93.945c-1.604 1.604-3.61 2.433-6.017 2.487-1.373.04-4.001-.485-6.001-2.485-1.89-1.89-2.545-4.46-2.48-5.996.012-2.378.838-4.387 2.477-6.027Z' />
         </g>
       </g>
-    </svg>
+    </Box>
   );
 }
