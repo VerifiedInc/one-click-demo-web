@@ -2,18 +2,19 @@ import { useTheme } from '@emotion/react';
 import { Button, ButtonProps } from '@mui/material';
 
 import { VerifiedIncLogo } from './VerifiedIncLogo';
+import { useAppContext } from '~/context/AppContext';
 
 type BookACallButtonProps = ButtonProps;
 
 export function BookACallButton(props: BookACallButtonProps) {
   const theme = useTheme() as unknown as any;
+  const appContext = useAppContext();
+  const bookACallUrl = appContext.config.bookACallUrl;
   const defaultProps = theme.components.MuiButton.defaultProps;
-  const href =
-    'https://calendly.com/d/5fg-xmg-9r6/verified-inc-intro-call?text_color=000000&primary_color=0dbc3d';
   return (
     <Button
       {...defaultProps}
-      href={href}
+      href={bookACallUrl}
       {...props}
       sx={{
         ...defaultProps.sx,

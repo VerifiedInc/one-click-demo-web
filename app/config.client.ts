@@ -6,6 +6,7 @@ export interface BrowserConfig {
   oneClickEnabled: boolean;
   noticeEnabled: boolean;
   noticeText: string;
+  bookACallUrl: string;
 }
 
 export const browserConfig: BrowserConfig =
