@@ -8,7 +8,8 @@ export function OneClickPoweredBy() {
       alt='1-Click Signup powered by Verified Inc.'
       px={4}
       mt={2}
-      width='90%'
+      width='100%'
+      maxWidth='350px'
       sx={{ textAlign: 'center' }}
     />
   );
