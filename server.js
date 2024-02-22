@@ -44,7 +44,10 @@ app.use(
         'font-src': ["'self'", 'https:'],
         'frame-ancestors': [
           "'self'",
+          'https://*.verified.inc',
           'https://docs.verified.inc',
+          'https://verified.inc',
+          'https://verifiedinc.webflow.io',
           'http://localhost:*',
         ],
         'base-uri': ["'self'"],
