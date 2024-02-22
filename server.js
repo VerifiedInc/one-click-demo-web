@@ -48,6 +48,7 @@ app.use(
           'https://docs.verified.inc',
           'https://verified.inc',
           'https://verifiedinc.webflow.io',
+          'https://verifiedinc.design.webflow.io',
           'http://localhost:*',
         ],
         'base-uri': ["'self'"],
