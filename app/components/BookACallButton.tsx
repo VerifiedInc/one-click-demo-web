@@ -1,7 +1,7 @@
 import { useTheme } from '@emotion/react';
-import { Box, Button, ButtonProps } from '@mui/material';
+import { Button, ButtonProps } from '@mui/material';
 
-import { WhiteLogoGreenCheck } from './WhiteLogoGreenCheck';
+import { VerifiedIncLogo } from './VerifiedIncLogo';
 
 type BookACallButtonProps = ButtonProps;
 
@@ -23,6 +23,7 @@ export function BookACallButton(props: BookACallButtonProps) {
         width: 'auto',
         minHeight: 30,
         fontFamily: ['"Lato"', 'sans-serif'].join(','),
+        lineHeight: 1.75,
         backgroundColor: '#0dbc3d!important',
         color: '#fff!important',
         borderColor: '#0dbc3d!important',
@@ -35,7 +36,7 @@ export function BookACallButton(props: BookACallButtonProps) {
       }}
     >
       Book a Call with{' '}
-      <WhiteLogoGreenCheck
+      {/* <WhiteLogoGreenCheck
         height={16}
         width={16}
         flexShrink={0}
@@ -45,9 +46,10 @@ export function BookACallButton(props: BookACallButtonProps) {
         top={-1}
       />{' '}
       Verified{' '}
-      <Box component='span' fontSize={10} ml={0.25}>
+      <Box component='span' fontSize={10} ml={0.25} lineHeight={0.5}>
         Inc.
-      </Box>
+      </Box> */}
+      <VerifiedIncLogo ml={0.5} />
     </Button>
   );
 }
