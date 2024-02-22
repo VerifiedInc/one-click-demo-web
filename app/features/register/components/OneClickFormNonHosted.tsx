@@ -12,6 +12,7 @@ import PhoneInput from '~/components/PhoneInput';
 
 import { oneClickNonHostedSchema } from '~/validations/oneClickNonHosted.schema';
 import { OneClickHeader } from '~/features/register/components/OneClickHeader';
+import { OneClickPoweredBy } from '~/features/register/components/OneClickPoweredBy';
 import { OneClickLegalText } from '~/features/register/components/OneClickLegalText';
 import { OneClickPromptDialogContent } from './OneClickPromptDialogContent';
 import { OneClickSMSDialogContent } from './OneClickSMSDialogContent';
@@ -140,13 +141,13 @@ export function OneClickFormNonHosted() {
             value={birthDate.value}
             onChange={handleFieldChange(birthDate)}
             error={birthDate.touched && !!birthDate.error}
-            helperText={(birthDate.touched && birthDate.error) || 'YYYY-MM-DD'}
+            helperText={(birthDate.touched && birthDate.error) || 'MM-DD-YYYY'}
             disabled={isFetching}
             sx={{ mt: 2 }}
             inputProps={{
               unmask: false,
               lazy: true,
-              mask: '0000-00-00',
+              mask: '00-00-0000',
               inputMode: 'numeric',
             }}
             InputProps={{
@@ -160,6 +161,7 @@ export function OneClickFormNonHosted() {
           )}
         </Box>
       </fetcher.Form>
+      <OneClickPoweredBy />
       <OneClickLegalText />
 
       <Dialog open={isSuccess && verificationOptions === 'only_link'}>

@@ -1,7 +1,7 @@
 import * as zod from 'zod';
 
 export const birthDateSchema = zod.string().refine((value: string) => {
-  const regex = /\d{4}-\d{2}-\d{2}/;
+  const regex = /\d{2}-\d{2}-\d{4}/;
   if (regex.test(value)) {
     const now = new Date();
     const minDate = new Date('1900-01-01');

@@ -9,6 +9,7 @@ export function OneClickPoweredBy() {
       px={4}
       mt={2}
       width='100%'
+      maxWidth='350px'
       sx={{ textAlign: 'center' }}
     />
   );
