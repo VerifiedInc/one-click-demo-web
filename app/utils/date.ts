@@ -1,6 +1,6 @@
 export const dateUtils = {
   /**
-   * Convert date from YYYY-MM-DD to DD-MM-YYYY
+   * Convert date from MM-DD-YYYY to YYYY-MM-DD
    * @param date
    * @returns
    */
