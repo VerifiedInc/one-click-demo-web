@@ -109,7 +109,7 @@ export default function PersonalInformation() {
       <Stack
         direction='column'
         spacing={2}
-        my={2}
+        mb={0}
         mt={4}
         width='100%'
         position='relative'
@@ -131,9 +131,6 @@ export default function PersonalInformation() {
             Get Started
           </Button>
         </Box>
-        <Button variant='outlined' fullWidth>
-          Book a Call
-        </Button>
       </Stack>
     </Box>
   );

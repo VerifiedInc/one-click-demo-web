@@ -85,7 +85,6 @@ export default function Verified() {
       >
         You're verified and signed up.
       </Typography>
-      <Button variant='outlined'>Book a Call</Button>
       {renderGoHomeButton()}
       <Form method='post'>
         <input name='action' value='logout' readOnly hidden />
