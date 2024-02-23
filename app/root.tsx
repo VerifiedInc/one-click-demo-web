@@ -147,6 +147,11 @@ const Document = withEmotionCache(
           <title>{brand.name + ' Demo'}</title>
           <link rel='icon' href={favicon} type='image/x-icon' />
           <link rel='apple-touch-icon' href={favicon} type='image/x-icon' />
+          <meta property='og:title' content={brand.name + ' Demo'} />
+          <meta
+            property='og:image'
+            content='https://uploads-ssl.webflow.com/639c99568848490eb3265dae/65bdf70ec914d702e07fd534_Open%20Graph%20Image%20-%201-Click%20Signup.png'
+          />
           <Meta />
           <Links />
         </head>

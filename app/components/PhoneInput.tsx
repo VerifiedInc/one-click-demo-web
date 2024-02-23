@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useRef, useState } from 'react';
 import { Box, InputBaseProps, TextField, TextFieldProps } from '@mui/material';
 
 import { InputMask } from './InputMask';
@@ -21,20 +21,21 @@ export type PhoneInputProps = {
 /**
  * Renders a phone input component with country selector and masking.
  */
-export default function PhoneInput({
-  name = 'phone',
-  label,
-  helperText,
-  onChange,
-  initialValue = '',
-  error = false,
-  value: valueProp,
-  autoFocus = false,
-  disabled = false,
-  inputProps: _inputProps,
-}: Readonly<PhoneInputProps>) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
+function PhoneInputComponent(
+  {
+    name = 'phone',
+    label,
+    helperText,
+    onChange,
+    initialValue = '',
+    error = false,
+    value: valueProp,
+    autoFocus = false,
+    disabled = false,
+    inputProps: _inputProps,
+  }: Readonly<PhoneInputProps>,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   /**
    * Represents the value of the phone input. Initially set to the initialValue passed in the props.
    */
@@ -58,7 +59,7 @@ export default function PhoneInput({
   };
 
   const inputProps: TextFieldProps = {
-    inputRef,
+    inputRef: ref,
     autoFocus,
     name: '_' + name,
     label,
@@ -99,3 +100,7 @@ export default function PhoneInput({
     </Box>
   );
 }
+
+const PhoneInput = forwardRef(PhoneInputComponent);
+
+export default PhoneInput;

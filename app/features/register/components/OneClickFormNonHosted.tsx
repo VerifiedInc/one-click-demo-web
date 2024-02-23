@@ -39,6 +39,7 @@ export function OneClickFormNonHosted() {
   const isSuccess = fetcherData?.success ?? false;
 
   const formRef = useRef<HTMLFormElement | null>(null);
+  const phoneInputRef = useRef<HTMLInputElement | null>(null);
 
   const redirectUrl = useMemo(() => {
     if (typeof window === 'undefined') return '';
@@ -101,6 +102,15 @@ export function OneClickFormNonHosted() {
     // Assign fone to ref so we can use it in the dialog without flikering when fetcherData is null.
     phoneRef.current = phoneFetcherData;
   }
+
+  useEffect(() => {
+    phoneInputRef.current?.focus({ preventScroll: true });
+    // Hack alert: scroll to top after focusing the phone input to prevent the page from scrolling to the bottom.
+    setTimeout(
+      () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }),
+      1
+    );
+  }, []);
 
   return (
     <>
