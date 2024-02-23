@@ -13,6 +13,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <p>test</p>
       <Container
         maxWidth='xs'
         sx={{
