@@ -149,7 +149,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const { searchParams } = url;
   const brandSet = await getBrandSet(searchParams);
 
-  const sharedCredentialsUuid = searchParams.get('sharedCredentialsUuid');
   const oneClickUuid = searchParams.get('1ClickUuid');
 
   if (oneClickUuid) {
@@ -178,35 +177,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       // Customer Note: in a real implementation this ought to fall back to the standard sign up form.
       if (!firstName) return logoutUseCase({ request });
 
-      return createUserSession(
-        request,
-        String(firstName),
-        `/verified?${searchParams.toString()}`
-      );
-    }
-  }
-
-  // If a sharedCredentialsUuid parameter exists, retrieve the associated credentials and
-  // create the user's session - re-directing them to /verified
-  if (sharedCredentialsUuid) {
-    const result = await sharedCredentials(sharedCredentialsUuid);
-    if (result) {
-      const { credentials } = result;
-      const fullNameCredential = credentials.find(
-        (credential) => credential.type === 'FullNameCredential'
-      ) as any;
-      if (!fullNameCredential) {
-        throw new Error('FullNameCredential is missing');
-      }
-      const fullName = fullNameCredential.data
-        .map((credential: any) => Object.values(credential.data)[0])
-        .slice(0, 1)
-        .join(' ');
-      return createUserSession(
-        request,
-        String(fullName),
-        `/verified?${searchParams.toString()}`
-      );
+      return redirect(`/verified?${searchParams.toString()}`);
     }
   }
 
