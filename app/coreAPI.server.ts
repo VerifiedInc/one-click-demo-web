@@ -399,6 +399,55 @@ export const getBrandDto = async (
   }
 };
 
+type GetBrandFromEmailResponse = {
+  apiKey: string;
+  '1ClickDemoUrl': string;
+  brandInfo: {
+    homepageUrl: string;
+    privacyUrl: string;
+    termsUrl: string;
+    logoImage: string;
+    cardImage: string;
+    primaryColor: string | null;
+  };
+};
+
+/**
+ * Get a brand by email.
+ * @param email
+ * @returns Brand API key.
+ */
+export const getBrandFromEmail = async (
+  email: string
+): Promise<GetBrandFromEmailResponse | null> => {
+  try {
+    const response = await fetch(
+      config.salesToolsServiceUrl + `/customers/brands`,
+      {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      console.log(await response.text());
+      return null;
+    }
+
+    const result: GetBrandFromEmailResponse = await response.json();
+
+    logger.info(`brand result: ${JSON.stringify(result)}`);
+
+    return result;
+  } catch (e) {
+    logger.error(`getBrandApiKeyFromEmail failed. Error: ${e}`);
+    return null;
+  }
+};
+
 /**
  * Get a brand API key.
  * @param brandUuid Brand uuid.

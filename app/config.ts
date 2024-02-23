@@ -18,6 +18,7 @@ interface Config {
   sessionSecret: string;
   verifiedApiKey: string;
   coreServiceUrl: string;
+  salesToolsServiceUrl: string;
   verifiedWalletUrl: string;
   demoUrl: string;
   sentryDSN: string;
@@ -43,6 +44,7 @@ export const config: Config = {
   sessionSecret: process.env.SESSION_SECRET || '',
   verifiedApiKey: process.env.VERIFIED_API_KEY || '',
   coreServiceUrl: process.env.CORE_SERVICE_URL || '',
+  salesToolsServiceUrl: process.env.SALES_TOOLS_SERVICE_URL || '',
   verifiedWalletUrl: process.env.VERIFIED_WALLET_URL || '',
   demoUrl: process.env.DEMO_URL || '',
   sentryDSN: process.env.SENTRY_DSN || '',

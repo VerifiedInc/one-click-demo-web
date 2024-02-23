@@ -1,37 +1,44 @@
 import { BrandDto } from '@verifiedinc/core-types';
 
 import { config } from '~/config';
-import { getBrandApiKey, getBrandDto } from '~/coreAPI.server';
+import { getBrandDto, getBrandFromEmail } from '~/coreAPI.server';
 
 import { getBrand } from './getBrand';
 import { logger } from '~/logger.server';
 
 export const getBrandSet = async (searchParams: URLSearchParams) => {
   let brand = getBrand(null);
-  let apiKey = config.verifiedApiKey;
+  let apiKey: string | null = config.verifiedApiKey;
 
   // Allow custom branding under environment flag.
   if (config.customBrandingEnabled) {
-    const brandUuid = searchParams.get('brand');
+    const email = searchParams.get('email');
 
     // Override possibly brand in session if query param is set.
-    if (brandUuid) {
-      logger.info(`getting brand: ${brandUuid}`);
+    if (email) {
+      logger.info(`getting brand from email: ${email}`);
 
-      apiKey = await getBrandApiKey(brandUuid, config.coreServiceAdminAuthKey);
+      const brandFromEmail = await getBrandFromEmail(email);
 
-      logger.info(`got api key: ${apiKey}`);
+      if (brandFromEmail) {
+        const oneClickDemoUrl = new URL(brandFromEmail?.['1ClickDemoUrl']);
+        const brandUuid = oneClickDemoUrl.searchParams.get('brand');
 
-      brand = getBrand(
-        brandUuid
-          ? ((await getBrandDto(
-              brandUuid,
-              config.coreServiceAdminAuthKey
-            )) as BrandDto)
-          : null
-      );
+        apiKey = brandFromEmail.apiKey;
 
-      logger.info(`got brand: ${JSON.stringify(brand)}`);
+        logger.info(`got api key: ${apiKey}`);
+
+        brand = getBrand(
+          brandUuid
+            ? ((await getBrandDto(
+                brandUuid,
+                config.coreServiceAdminAuthKey
+              )) as BrandDto)
+            : null
+        );
+
+        logger.info(`got brand: ${JSON.stringify(brand)}`);
+      }
     }
   }
 

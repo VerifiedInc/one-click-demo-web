@@ -7,6 +7,7 @@ import { stateSchema } from '~/validations/state.schema';
 import { countrySchema } from '~/validations/country.schema';
 import { SSNSchema } from '~/validations/ssn.schema';
 import { birthDateSchema } from '~/validations/birthDate.schema';
+import { dateUtils } from '~/utils/date';
 
 import { PersonalInformationLoader } from '~/features/personalInformation/types';
 
@@ -99,7 +100,7 @@ export function usePersonalInformationFields() {
     initialValue: (() => {
       if (!data.birthDate) return '';
       const date = new Date(Number(data.birthDate));
-      return date.toISOString().split('T')[0];
+      return dateUtils.toDDMMYYYY(date.toISOString().split('T')[0]);
     })(),
   });
 
