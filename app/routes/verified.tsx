@@ -8,11 +8,12 @@ import {
 } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 
-import { requireUserName } from '~/session.server';
+import { requireSession } from '~/session.server';
 
 import { VerifiedImage } from '~/components/VerifiedImage';
 import { useBrand } from '~/hooks/useBrand';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
+import { useFullName } from '~/hooks/useFullName';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -34,16 +35,16 @@ export const action: ActionFunction = async ({ request }) => {
 
 // The exported `loader` function will be called when the route makes a GET request, i.e. when it is rendered
 export const loader: LoaderFunction = async ({ request }) => {
-  // requireUserEmail will redirect to the login page if the user is not logged in
-  const name = await requireUserName(request);
-
-  // return the user to the route, so it can be displayed
-  return json({ name });
+  // requireSession will redirect to the login page if the required params is not present to return the required data
+  const session = await requireSession(request);
+  // return the session to the route, so it can be displayed
+  return json({ session });
 };
 
 export default function Verified() {
   const brand = useBrand();
-  const { name } = useLoaderData<typeof loader>();
+  const { session } = useLoaderData<typeof loader>();
+  const name = useFullName(session);
 
   const renderGoHomeButton = () => {
     const buttonProps = {

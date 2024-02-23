@@ -15,7 +15,7 @@ import {
 import { Box, Button, IconButton, Typography } from '@mui/material';
 
 import { driver, driverLinks } from '~/libs/driver';
-import { requireUserName } from '~/session.server';
+import { requireSession } from '~/session.server';
 
 import IconBoxAndLabel from '~/components/IconBoxAndLabel';
 import SpendSummary from '~/components/SpendSummary';
@@ -32,11 +32,10 @@ export const action: ActionFunction = async ({ request }) => {
 
 // The exported `loader` function will be called when the route makes a GET request, i.e. when it is rendered
 export const loader: LoaderFunction = async ({ request }) => {
-  // requireUser will redirect to the login page if the user is not logged in
-  const name = await requireUserName(request);
-
-  // return the user to the route, so it can be displayed
-  return json({ name });
+  // requireSession will redirect to the login page if the required params is not present to return the required data
+  const session = await requireSession(request);
+  // return the session to the route, so it can be displayed
+  return json({ session });
 };
 
 export default function Index() {

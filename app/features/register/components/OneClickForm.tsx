@@ -39,6 +39,7 @@ export function OneClickForm() {
   const isSuccess = fetcherData?.success ?? false;
 
   const formRef = useRef<HTMLFormElement | null>(null);
+  const phoneInputRef = useRef<HTMLInputElement | null>(null);
 
   const redirectUrl = typeof window !== 'undefined' ? window.location.href : '';
 
@@ -82,6 +83,15 @@ export function OneClickForm() {
     sessionStorage.setItem('verificationOptions', verificationOptions);
   }, [verificationOptions]);
 
+  useEffect(() => {
+    phoneInputRef.current?.focus({ preventScroll: true });
+    // Hack alert: scroll to top after focusing the phone input to prevent the page from scrolling to the bottom.
+    setTimeout(
+      () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }),
+      1
+    );
+  }, []);
+
   return (
     <>
       <Typography variant='h1' mt={0} align='center'>
@@ -105,9 +115,9 @@ export function OneClickForm() {
           <input name='apiKey' value={brand.apiKey} hidden readOnly />
           <input name='redirectUrl' value={redirectUrl} hidden readOnly />
           <PhoneInput
+            ref={phoneInputRef}
             name='phone'
             label='Phone'
-            autoFocus
             value={value}
             onChange={handlePhoneChange}
             error={touched && !!errorMessage}

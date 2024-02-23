@@ -1,7 +1,9 @@
-import { createCookieSessionStorage, json, redirect } from '@remix-run/node';
+import { createCookieSessionStorage, redirect } from '@remix-run/node';
 
 import { config } from './config';
 import { Brand } from './utils/getBrand';
+import { getBrandSet } from './utils/getBrandSet';
+import { getSharedCredentialsOneClick } from './coreAPI.server';
 
 /*************************
  * SESSION FUNCTIONALITY *
@@ -63,17 +65,26 @@ export const logout = async (request: Request, redirectUrl?: string) => {
 };
 
 /**
- * Requires an authenticated user w/ name to be in the session for a request
- * logs out if no user is found
+ * Requires 1ClickUiid query param to be set to mock user with a session.
+ * logs out if no result is found
  * @param {Request} request
- * @returns {Promise<string>} name
+ * @returns {Promise<OneClickDto>} oneClickDto
  */
-export const requireUserName = async (request: Request): Promise<string> => {
+export const requireSession = async (request: Request) => {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.searchParams);
-  const name = await getUserName(request);
 
-  if (name) return name;
+  const oneClickUuid = searchParams.get('1ClickUuid');
+
+  if (oneClickUuid) {
+    const brandSet = await getBrandSet(searchParams);
+    const result = await getSharedCredentialsOneClick(
+      brandSet.apiKey,
+      oneClickUuid
+    );
+
+    if (result) return result;
+  }
 
   throw await logout(
     request,
