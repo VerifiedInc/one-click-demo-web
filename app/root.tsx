@@ -150,7 +150,7 @@ const Document = withEmotionCache(
           <meta property='og:title' content={brand.name + ' Demo'} />
           <meta
             property='og:image'
-            content='https://uploads-ssl.webflow.com/639c99568848490eb3265dae/65bdf70ec914d702e07fd534_Open%20Graph%20Image%20-%201-Click%20Signup.png'
+            content='https://uploads-ssl.webflow.com/639c99568848490eb3265dae/65d91d5c75d51ff5a0034083_Open%20Graph%20Image%20-%20Home%20(1-Click%20Signup)-2.png'
           />
           <Meta />
           <Links />
