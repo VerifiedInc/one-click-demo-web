@@ -35,7 +35,7 @@ export function OneClickSMSDialogContent({
       // Remove the listener to infinite loop since it will redirect against the page that emits the event.
       socket?.io?.off('1-click-successful', handleOneClickSuccessful);
       const urlObject = new URL(url);
-      window.location.href = urlObject.href;
+      window.location.href = urlObject.href.replace('http://', 'https://');
     };
 
     socket?.io?.on('1-click-successful', handleOneClickSuccessful);
