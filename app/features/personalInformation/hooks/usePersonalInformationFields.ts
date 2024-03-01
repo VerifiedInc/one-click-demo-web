@@ -98,8 +98,10 @@ export function usePersonalInformationFields() {
     schema: birthDateSchema,
     initialValue: (() => {
       if (!data.birthDate) return '';
-      const date = new Date(Number(data.birthDate));
-      return date.toISOString().split('T')[0];
+      const birthDate = new Date(Number(data.birthDate));
+      const [components] = birthDate.toISOString().split('T');
+      const [year, month, date] = components.split('-');
+      return `${month}-${date}-${year}`;
     })(),
   });
 
