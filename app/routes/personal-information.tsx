@@ -51,10 +51,13 @@ export default function PersonalInformation() {
 
   const redirectUrl = useMemo(() => {
     if (typeof window === 'undefined') return '';
+    if (!oneClickDB.presentationRequest.brand.clientUrl) {
+      return dashboardPageLink;
+    }
 
     const url = new URL(window.location.href);
     const _redirectUrl = new URL(
-      oneClickDB.presentationRequest.brand.clientUrl || ''
+      oneClickDB.presentationRequest.brand.clientUrl
     );
     const optedOut = url.searchParams.get('optedOut');
     const verificationOptions = url.searchParams.get('verificationOptions');
