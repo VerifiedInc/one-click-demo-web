@@ -19,6 +19,8 @@ import { useFullName } from '~/hooks/useFullName';
 export const action: ActionFunction = async ({ request }) => {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.searchParams);
+  const searchParamsString = searchParams.toString();
+  const query = `${searchParamsString ? `?${searchParamsString}` : ''}`;
   const formData = await request.clone().formData();
   const action = formData.get('action');
 
@@ -26,9 +28,11 @@ export const action: ActionFunction = async ({ request }) => {
     case 'logout': {
       return logoutUseCase({ request });
     }
+    case 'account': {
+      return redirect(`/account${query}`);
+    }
     default: {
-      const searchParamsString = searchParams.toString();
-      return redirect(`/${searchParamsString ? `?${searchParamsString}` : ''}`);
+      return redirect(`/${query}`);
     }
   }
 };
@@ -46,14 +50,18 @@ export default function Verified() {
   const { session } = useLoaderData<typeof loader>();
   const name = useFullName(session);
 
+  const solidButtonProps = {
+    sx: {
+      mt: 3,
+      py: 2,
+      px: 3.5,
+      fontSize: '1.4rem',
+    },
+  };
+
   const renderGoHomeButton = () => {
     const buttonProps = {
-      sx: {
-        mt: 3,
-        py: 2,
-        px: 3.5,
-        fontSize: '1.4rem',
-      },
+      ...solidButtonProps,
       children: 'Go to Home',
     };
 
@@ -87,6 +95,10 @@ export default function Verified() {
         You're verified and signed up.
       </Typography>
       {renderGoHomeButton()}
+      <Form method='post'>
+        <input name='action' value='account' readOnly hidden />
+        <Button {...solidButtonProps}>See Account</Button>
+      </Form>
       <Form method='post'>
         <input name='action' value='logout' readOnly hidden />
         <Button
