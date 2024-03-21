@@ -14,10 +14,13 @@ export const birthDateSchema = zod.string().refine((value: string) => {
       59,
       999
     );
-    const valueDate = new Date(value);
+    const [month, date, year] = value.split('-');
+    // Safari does not support the format mm-dd-yyyy, thus having to use yyyy-mm-dd
+    const fixedDate = `${year}-${month}-${date}`;
+    const valueDate = new Date(fixedDate);
 
     if (valueDate >= minDate && valueDate <= maxDate) {
-      const date = Date.parse(String(new Date(value)));
+      const date = Date.parse(String(new Date(fixedDate)));
       return !isNaN(date);
     }
   }
