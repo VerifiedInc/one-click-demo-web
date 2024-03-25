@@ -45,7 +45,6 @@ const logTransports =
           level: config.logLevel || 'debug',
           format: consoleFormat,
         }),
-        new transports.Http(newRelicOptions),
       ]
     : [
         new transports.Console({
