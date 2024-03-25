@@ -1,6 +1,6 @@
 import winston, { createLogger, format, transports } from 'winston';
 import nrWinstonEnricher from '@newrelic/winston-enricher';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 
 import { config } from './config';
 import { AlertError } from './errors';
@@ -11,46 +11,49 @@ const newRelicOptions = {
   host: 'log-api.newrelic.com',
   path: '/log/v1',
   headers: {
-    'X-Licesnse-Key': config.newRelicLoggingLicenseKey,
+    'Api-Key': `${config.newRelicLicenseKey}`,
   },
   ssl: true,
   level: config.logLevel || 'debug',
   format: format.combine(newRelicFormatter(), format.json()),
 };
 
-const defaultFormat = format.printf((info) => `${info.level}: ${info.message}`);
-
-// add a timestamp when running locally. Timestamps can be added in supplementary fashion in deployed envs (e.g. by newrelic)
-const localFormat = format.combine(
-  format.colorize(),
-  format.timestamp({
-    format: 'mm:ss.SSS',
-  }),
-  format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
-);
-
-const consoleFormat = config.NODE_ENV === 'local' ? localFormat : defaultFormat;
+// Only adding the timestamp if running locally. Otherwise the timestamp is little redundant when can be added in supplementary fashion outside of the message itself.
+const consoleFormat =
+  config.NODE_ENV === 'local'
+    ? format.combine(
+        format.colorize(),
+        format.timestamp({
+          format: 'mm:ss.SSS',
+        }),
+        format.printf((info) => {
+          return `${info.timestamp} ${info.level}: ${info.message}`;
+        })
+      )
+    : format.combine(
+        format.printf((info) => {
+          return `${info.level}: ${info.message}`;
+        })
+      );
 
 // prevent reporting anywhere but to stdout if running locally
 // Note using NPM default log levels: https://github.com/winstonjs/winston#logging-levels
-const localTransports = [
-  new transports.Console({
-    format: consoleFormat,
-    level: config.logLevel || 'debug',
-  }),
-];
-
-// TODO: add http transport for newrelic
-const defaultTransports = [
-  new transports.Console({
-    format: consoleFormat,
-    level: config.logLevel || 'debug',
-  }),
-  new transports.Http(newRelicOptions),
-];
-
 const logTransports =
-  config.NODE_ENV === 'local' ? localTransports : defaultTransports;
+  config.NODE_ENV === 'local' || config.NODE_ENV === 'test'
+    ? [
+        new transports.Console({
+          level: config.logLevel || 'debug',
+          format: consoleFormat,
+        }),
+        new transports.Http(newRelicOptions),
+      ]
+    : [
+        new transports.Console({
+          level: config.logLevel || 'debug',
+          format: consoleFormat,
+        }),
+        new transports.Http(newRelicOptions),
+      ];
 
 // Configure the Winston logger. For the complete documentation see https://github.com/winstonjs/winston
 export const logger = createLogger({

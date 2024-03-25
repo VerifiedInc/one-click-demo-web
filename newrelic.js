@@ -5,12 +5,11 @@
  * See lib/config/default.js in the agent distribution for a more complete
  * description of configuration variables and their potential values.
  */
-exports.config = {
+module.exports = {
   /**
    * Array of application names.
-   * (value is just a placeholder, replace with actual application name)
    */
-  app_name: ['Remix Starter'],
+  app_name: ['1CS Demo'],
   /**
    * The agent is disable by default, should enable via env var, i.e. NEW_RELIC_ENABLED=true
    */
