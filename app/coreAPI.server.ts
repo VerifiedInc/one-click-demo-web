@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/remix';
 import { BrandDto, OneClickDBDto, OneClickDto } from '@verifiedinc/core-types';
 
 import { config } from '~/config';
@@ -332,6 +333,7 @@ export const oneClick = async (
 
     // If the result is not a match, throw an error
     if (!result?.match) {
+      Sentry.captureException(result);
       logger.debug(
         `Phone invalid or unsupported ${phone}. Error: ${result.message}`
       );
