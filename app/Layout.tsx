@@ -6,6 +6,7 @@ import type { PropsWithChildren } from 'react';
 import { useBrand } from './hooks/useBrand';
 import { useAppContext } from './context/AppContext';
 import { BookACallButton } from './components/BookACallButton';
+import { FileBugButton } from './components/FileBugButton';
 
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();
@@ -59,6 +60,7 @@ export default function Layout({ children }: PropsWithChildren) {
         {children}
         <Box mb={3} mx='auto'>
           <BookACallButton />
+          <FileBugButton />
         </Box>
       </Container>
     </Box>
