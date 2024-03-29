@@ -47,12 +47,16 @@ export default function Account() {
       >
         {Object.values(fields).map((field) => {
           if (!field.value) return null;
+          const isSSN = field.name === 'ssn';
+          const fieldValue = isSSN
+            ? '•••-••-' + field.value.slice(0, 5)
+            : field.value;
           return (
             <TextField
               key={field.name}
               name={field.name}
               label={field.label}
-              value={field.value}
+              value={fieldValue}
               onChange={field.change}
               InputProps={{ readOnly: true }}
               sx={{
