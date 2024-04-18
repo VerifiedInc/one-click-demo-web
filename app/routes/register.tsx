@@ -8,14 +8,12 @@ import { useActionData } from '@remix-run/react';
 import Box from '@mui/material/Box';
 import { Server } from 'socket.io';
 
-import { createUserSession } from '~/session.server';
 import { getErrorMessage, getErrorStatus } from '~/errors';
 import {
   getSharedCredentialsOneClick,
   hasMatchingCredentials,
   oneClick,
   OneClickOptions,
-  sharedCredentials,
 } from '~/coreAPI.server';
 import { config } from '~/config';
 import { logger } from '~/logger.server';
@@ -47,7 +45,7 @@ export const action: ActionFunction = async ({ request }) => {
   const redirectUrl = (formData.get('redirectUrl') as string) || undefined;
 
   const verificationOptions =
-    searchParams.get('verificationOptions') || 'only_link';
+    searchParams.get('verificationOptions') || 'only_code';
   const isHosted = searchParams.get('isHosted') !== 'false' ?? true;
 
   if (!action) {
