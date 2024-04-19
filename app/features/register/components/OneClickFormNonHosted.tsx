@@ -25,7 +25,7 @@ export function OneClickFormNonHosted() {
 
   const [searchParams] = useSearchParams();
   const verificationOptions =
-    searchParams.get('verificationOptions') || 'only_link';
+    searchParams.get('verificationOptions') || 'only_code';
 
   const [count, setCount] = useState<number>(0);
 

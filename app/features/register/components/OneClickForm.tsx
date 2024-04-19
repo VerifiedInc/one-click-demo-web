@@ -22,7 +22,7 @@ export function OneClickForm() {
 
   const [searchParams] = useSearchParams();
   const verificationOptions =
-    searchParams.get('verificationOptions') || 'only_link';
+    searchParams.get('verificationOptions') || 'only_code';
 
   const validation = phoneSchema.safeParse(value);
   const errorMessage = !validation.success
