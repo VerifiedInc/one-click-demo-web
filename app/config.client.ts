@@ -6,6 +6,8 @@ export interface BrowserConfig {
   oneClickEnabled: boolean;
   noticeEnabled: boolean;
   noticeText: string;
+  noticeButtonText: string;
+  noticeButtonLink: string;
   bookACallUrl: string;
 }
 

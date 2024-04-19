@@ -88,6 +88,8 @@ export const loader: LoaderFunction = async ({ context, request }) => {
     oneClickEnabled,
     noticeEnabled,
     noticeText,
+    noticeButtonText,
+    noticeButtonLink,
     bookACallUrl,
   } = config;
 
@@ -104,6 +106,8 @@ export const loader: LoaderFunction = async ({ context, request }) => {
       oneClickEnabled,
       noticeEnabled,
       noticeText,
+      noticeButtonText,
+      noticeButtonLink,
       bookACallUrl,
     },
     ...brandSet,
