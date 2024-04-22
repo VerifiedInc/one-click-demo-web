@@ -23,7 +23,7 @@ const validate = (value: string) => {
 };
 
 export const birthDateSchema = zod.string().refine((value: string) => {
-  const regex = /^\d{2}\/\d{2}\/\d{4}$/;
+  const regex = /\d{2}-\d{2}-\d{4}/;
   if (regex.test(value)) {
     return validate(value);
   }
