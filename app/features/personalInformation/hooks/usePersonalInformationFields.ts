@@ -168,7 +168,6 @@ export function usePersonalInformationFields() {
     () => [
       'firstName',
       'lastName',
-      'email',
       'line1',
       'city',
       'state',

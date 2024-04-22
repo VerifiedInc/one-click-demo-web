@@ -120,20 +120,25 @@ export default function PersonalInformation() {
         width='100%'
         position='relative'
       >
-        {Object.values(fields).map((field) => (
-          <TextField
-            key={field.name}
-            name={field.name}
-            label={field.label + (isRequired(field.name) ? ' *' : '')}
-            value={field.value}
-            onChange={field.change}
-            error={!!field.error}
-            helperText={field.error}
-            sx={fieldSx}
-            InputProps={{ inputComponent: InputMask as any }}
-            inputProps={{ ...(field as any)?.maskOptions }}
-          />
-        ))}
+        {Object.values(fields).map((field) => {
+          const maskOptions = (field as any)?.maskOptions;
+          return (
+            <TextField
+              key={field.name}
+              name={field.name}
+              label={field.label + (isRequired(field.name) ? ' *' : '')}
+              value={field.value}
+              onChange={field.change}
+              error={!!field.error}
+              helperText={field.error}
+              sx={fieldSx}
+              InputProps={{
+                inputComponent: maskOptions ? (InputMask as any) : undefined,
+              }}
+              inputProps={{ ...maskOptions }}
+            />
+          );
+        })}
         <Box sx={buttonContainerSx}>
           <Button onClick={handleGetStarted} fullWidth disabled={!isValid}>
             Get Started

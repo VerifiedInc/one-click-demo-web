@@ -162,6 +162,7 @@ export function OneClickFormNonHosted() {
             }}
             InputProps={{
               inputComponent: InputMask as any,
+              autoComplete: 'bday',
             }}
           />
           {error && (
