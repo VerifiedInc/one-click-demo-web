@@ -14,6 +14,7 @@ import { useBrand } from '~/hooks/useBrand';
 import { usePersonalInformationFields } from '~/features/personalInformation/hooks/usePersonalInformationFields';
 import { PersonalInformationLoader } from '~/features/personalInformation/types';
 import { getOneClickUseCase } from '~/features/oneClick/useCases/getOneClickUseCase';
+import { InputMask } from '~/components/InputMask';
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -90,6 +91,8 @@ export default function PersonalInformation() {
     window.location.href = redirectUrl;
   };
 
+  console.log(fields);
+
   return (
     <Box
       component='main'
@@ -127,6 +130,8 @@ export default function PersonalInformation() {
             error={!!field.error}
             helperText={field.error}
             sx={fieldSx}
+            InputProps={{ inputComponent: InputMask as any }}
+            inputProps={{ ...(field as any)?.maskOptions }}
           />
         ))}
         <Box sx={buttonContainerSx}>

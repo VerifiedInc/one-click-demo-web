@@ -11,6 +11,7 @@ import { birthDateSchema } from '~/validations/birthDate.schema';
 import { PersonalInformationLoader } from '~/features/personalInformation/types';
 
 import { useField } from '~/hooks/useField';
+import { useMaskField } from '~/hooks/useMaskField';
 
 export function usePersonalInformationFields() {
   const {
@@ -105,11 +106,30 @@ export function usePersonalInformationFields() {
     })(),
   });
 
-  const ssn = useField({
-    name: 'ssn',
-    label: 'SSN',
-    schema: SSNSchema,
-    initialValue: data?.ssn,
+  const ssn = useMaskField({
+    options: {
+      // Mask in the pattern of SSN.
+      mask: 'XXX[-]XX[-]0000',
+
+      // Use unmasked value.
+      unmask: true,
+
+      definitions: {
+        X: {
+          mask: '0',
+          displayChar: '•',
+        },
+      },
+
+      // Set input mode to numeric, so mobile virtual keyboards just show numeric keys.
+      inputMode: 'numeric',
+    },
+    field: {
+      name: 'ssn',
+      label: 'SSN',
+      schema: SSNSchema,
+      initialValue: data?.ssn,
+    },
   });
 
   const fields = useMemo(
