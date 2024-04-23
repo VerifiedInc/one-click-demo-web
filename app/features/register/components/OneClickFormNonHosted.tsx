@@ -4,7 +4,7 @@ import { Box, Dialog, TextField, Typography } from '@mui/material';
 import { red } from '@mui/material/colors';
 
 import { phoneSchema } from '~/validations/phone.schema';
-import { birthDateSchema } from '~/validations/birthDate.schema';
+import { shortenBirthDateSchema } from '~/validations/birthDate.schema';
 import { useBrand } from '~/hooks/useBrand';
 import { useField } from '~/hooks/useField';
 import { InputMask } from '~/components/InputMask';
@@ -21,7 +21,10 @@ export function OneClickFormNonHosted() {
   const brand = useBrand();
 
   const phone = useField({ name: 'phone', schema: phoneSchema });
-  const birthDate = useField({ name: 'birthDate', schema: birthDateSchema });
+  const birthDate = useField({
+    name: 'birthDate',
+    schema: shortenBirthDateSchema,
+  });
 
   const [searchParams] = useSearchParams();
   const verificationOptions =
@@ -151,17 +154,18 @@ export function OneClickFormNonHosted() {
             value={birthDate.value}
             onChange={handleFieldChange(birthDate)}
             error={birthDate.touched && !!birthDate.error}
-            helperText={(birthDate.touched && birthDate.error) || 'MM-DD-YYYY'}
+            helperText={(birthDate.touched && birthDate.error) || 'MMDD'}
             disabled={isFetching}
             sx={{ mt: 2 }}
             inputProps={{
               unmask: false,
               lazy: true,
-              mask: '00-00-0000',
+              mask: '0000',
               inputMode: 'numeric',
             }}
             InputProps={{
               inputComponent: InputMask as any,
+              autoComplete: 'bday',
             }}
           />
           {error && (
