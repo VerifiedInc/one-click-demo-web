@@ -6,7 +6,7 @@ import type { PropsWithChildren } from 'react';
 import { useBrand } from './hooks/useBrand';
 import { useAppContext } from './context/AppContext';
 import { FileBugButton } from './components/FileBugButton';
-import { CustomizableDialog } from '~/components/CustomizableDialog';
+import { CustomizableDialog } from '~/features/customConfig/components/CustomizableDialog';
 
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();

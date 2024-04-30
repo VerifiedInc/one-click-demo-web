@@ -2,25 +2,26 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Button,
   IconButton,
   Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
 import { ChevronLeft, Info } from '@mui/icons-material';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 type SectionAccordionProps = {
   children: ReactNode;
-  expanded?: boolean;
+  defaultExpanded?: boolean;
   title: string;
   description?: string;
   tip?: ReactNode;
 };
 
 export function SectionAccordion(props: SectionAccordionProps) {
-  const { children, expanded, title, description, tip } = props;
+  const { children, defaultExpanded, title, description, tip } = props;
+  const [expanded, setOpen] = useState(defaultExpanded);
+
   return (
     <Accordion
       expanded={expanded}
@@ -31,9 +32,11 @@ export function SectionAccordion(props: SectionAccordionProps) {
         },
         py: '0px !important',
         my: '0px !important',
+        mt: 2,
       }}
     >
       <AccordionSummary
+        onClick={() => setOpen((prev) => !prev)}
         expandIcon={
           <ChevronLeft
             fontSize='large'
@@ -51,7 +54,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
           },
         }}
       >
-        <Stack sx={{ alignItems: 'flex-start' }}>
+        <Stack sx={{ alignItems: 'flex-start', mr: 0.5 }}>
           <Stack direction='row' alignItems='center' spacing={1}>
             <Typography
               variant='body1'
@@ -59,7 +62,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
             >
               {title}
             </Typography>
-            <Tooltip title={tip}>
+            <Tooltip title={tip} arrow>
               <IconButton
                 size='small'
                 onClick={(e) => {
@@ -74,14 +77,19 @@ export function SectionAccordion(props: SectionAccordionProps) {
             <Typography
               variant='body2'
               color='text.disabled'
-              sx={{ fontSize: '16px', fontWeight: '400' }}
+              sx={{
+                alignSelf: 'flex-start',
+                textAlign: 'left!important',
+                fontSize: '16px',
+                fontWeight: '400',
+              }}
             >
               {description}
             </Typography>
           )}
         </Stack>
       </AccordionSummary>
-      <AccordionDetails>{children}</AccordionDetails>
+      <AccordionDetails sx={{ pt: 3 }}>{children}</AccordionDetails>
     </Accordion>
   );
 }

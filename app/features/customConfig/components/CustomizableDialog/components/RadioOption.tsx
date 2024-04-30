@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import {
+  Chip,
   IconButton,
   Radio,
   RadioProps,
@@ -8,16 +9,18 @@ import {
   Typography,
 } from '@mui/material';
 import { Info } from '@mui/icons-material';
+import { Box } from '@mui/system';
 
 type RadioOptionProps = RadioProps & {
+  isDefault?: boolean;
   title: string;
   description?: string;
   tip?: ReactNode;
 };
 export function RadioOption(props: RadioOptionProps) {
-  const { title, description, tip, ...radioProps } = props;
+  const { isDefault, title, description, tip, ...radioProps } = props;
   return (
-    <Stack>
+    <Stack direction='row' justifyContent='space-between' alignItems='center'>
       <Stack sx={{ alignItems: 'flex-start' }}>
         <Stack direction='row' alignItems='center' spacing={1}>
           <Radio
@@ -56,6 +59,11 @@ export function RadioOption(props: RadioOptionProps) {
           </Typography>
         )}
       </Stack>
+      <Box>
+        {isDefault && (
+          <Chip size='small' label='Default' color='info' variant='outlined' />
+        )}
+      </Box>
     </Stack>
   );
 }

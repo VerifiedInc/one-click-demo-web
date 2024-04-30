@@ -27,6 +27,8 @@ interface Config {
   noticeEnabled: boolean;
   noticeText: string;
   bookACallUrl: string;
+  dummyDataUrl: string;
+  realDataUrl: string;
 }
 
 export const config: Config = {
@@ -56,4 +58,6 @@ export const config: Config = {
     process.env.NOTICE_TEXT ||
     'This is a live demo of <a href="https://www.verified.inc/solutions/for-people#1-click-sign-up">1-Click Signup</a>. You will see dummy data. To try 1-Click Signup with real data, try our <a href=https://1click.demo.verifiedinc.com/>Production demo</a>',
   bookACallUrl: process.env.BOOK_A_CALL_URL || '',
+  dummyDataUrl: process.env.DUMMY_DATA_URL || '',
+  realDataUrl: process.env.REAL_DATA_URL || '',
 };
