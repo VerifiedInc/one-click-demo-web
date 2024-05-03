@@ -10,6 +10,7 @@ import { Server } from 'socket.io';
 
 import { getErrorMessage, getErrorStatus } from '~/errors';
 import {
+  getMinifiedText,
   getSharedCredentialsOneClick,
   hasMatchingCredentials,
   oneClick,
@@ -30,6 +31,7 @@ import { OneClickFormNonHosted } from '~/features/register/components/OneClickFo
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
 import { rooms } from '~/utils/socket';
 import { dateUtils } from '~/utils/date';
+import { JSONParseOrNull } from '~/utils/json';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -153,6 +155,14 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const brandSet = await getBrandSet(searchParams);
 
   const oneClickUuid = searchParams.get('1ClickUuid');
+  const configStateParam = searchParams.get('configState');
+
+  let configState = null;
+
+  if (configStateParam) {
+    const minifiedText = await getMinifiedText(configStateParam);
+    configState = JSONParseOrNull(minifiedText.text);
+  }
 
   if (oneClickUuid) {
     const result = await getSharedCredentialsOneClick(
@@ -184,7 +194,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     }
   }
 
-  return null;
+  return json({ configState });
 };
 
 export default function Register() {

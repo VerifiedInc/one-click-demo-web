@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { ChevronLeft, Info } from '@mui/icons-material';
 import { ReactNode, useState } from 'react';
+import { Tip } from '~/components/Tip';
 
 type SectionAccordionProps = {
   children: ReactNode;
@@ -40,7 +41,10 @@ export function SectionAccordion(props: SectionAccordionProps) {
         expandIcon={
           <ChevronLeft
             fontSize='large'
-            sx={{ color: '#0dbc3d', transform: 'rotate(0deg)' }}
+            sx={{
+              color: '#0dbc3d',
+              transform: 'rotate(0deg)',
+            }}
           />
         }
         sx={{
@@ -48,6 +52,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
             my: '0px !important',
           },
           '& .MuiAccordionSummary-expandIconWrapper': {
+            alignSelf: 'flex-start',
             '&.Mui-expanded': {
               transform: 'rotate(-90deg)',
             },
@@ -62,16 +67,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
             >
               {title}
             </Typography>
-            <Tooltip title={tip} arrow>
-              <IconButton
-                size='small'
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <Info />
-              </IconButton>
-            </Tooltip>
+            <Tip>{tip}</Tip>
           </Stack>
           {description && (
             <Typography

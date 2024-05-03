@@ -7,7 +7,6 @@ export function OriginalButton({ children, ...props }: ButtonProps) {
   const sx: SxProps = useMemo(() => {
     let style: SxProps = {
       ...defaultProps.sx,
-      ...props.sx,
       alignSelf: 'center',
       display: 'flex',
       width: 'auto',
@@ -19,6 +18,7 @@ export function OriginalButton({ children, ...props }: ButtonProps) {
       borderRadius: 1,
       py: 1,
       px: 3,
+      ...props.sx,
     };
 
     if (!props.disabled) {
@@ -39,8 +39,34 @@ export function OriginalButton({ children, ...props }: ButtonProps) {
       };
     }
 
+    if (props.variant === 'outlined') {
+      style = {
+        ...style,
+        backgroundColor: 'transparent',
+        color: '#0dbc3d!important',
+        borderColor: '#0dbc3d!important',
+      };
+    }
+
+    if (props.size === 'small') {
+      style = {
+        ...style,
+        minHeight: 20,
+        py: 1,
+        px: 2,
+        fontSize: '16px',
+      };
+    }
+
     return style;
-  }, [defaultProps.sx, props.disabled, props.sx]);
+  }, [
+    defaultProps.sx,
+    props.disabled,
+    props.size,
+    props.sx,
+    props.variant,
+    theme.palette.text.disabled,
+  ]);
 
   return (
     <Button

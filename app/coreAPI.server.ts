@@ -1,5 +1,10 @@
 import * as Sentry from '@sentry/remix';
-import { BrandDto, OneClickDBDto, OneClickDto } from '@verifiedinc/core-types';
+import {
+  BrandDto,
+  CredentialSchemaDto,
+  OneClickDBDto,
+  OneClickDto,
+} from '@verifiedinc/core-types';
 
 import { config } from '~/config';
 import { logger } from './logger.server';
@@ -290,7 +295,7 @@ export const getSharedCredentialsOneClick = async (
  * sends an SMS containing a link to allow user to do 1-click sign up.
  * Please note: This functionality is NOT and should NOT be called in the browser due to the sensitive nature
  * of the API key (verifiedApiKey).
- * 
+ *
  * Documentation: https://docs.verified.inc/api-overview#one-click
 
  * @param phone
@@ -471,6 +476,105 @@ export const getDBOneClick = async (uuid: string): Promise<OneClickDBDto> => {
     return await response.json();
   } catch (e) {
     logger.error(`db/1-click get error: ${e}`);
+    throw e;
+  }
+};
+
+type MinifiedTextResponse = {
+  uuid: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string;
+};
+
+/**
+ * Get a persisted minified text.
+ * @param uuid
+ */
+export const getMinifiedText = async (
+  uuid: string
+): Promise<MinifiedTextResponse> => {
+  logger.debug(`get minified-text with ${uuid}`);
+
+  try {
+    const headers = {
+      Authorization: 'Bearer ' + config.minifiedTextServiceAdminAuthKey,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      config.minifiedTextServiceUrl + `/db/minifiedText/${uuid}`,
+      {
+        method: 'GET',
+        headers,
+      }
+    );
+
+    return await response.json();
+  } catch (e) {
+    logger.error(`db/minifiedText get error: ${e}`);
+    throw e;
+  }
+};
+
+/**
+ * Creates a persisted minified text.
+ * @param payload
+ */
+export const createMinifiedText = async (
+  payload: string
+): Promise<MinifiedTextResponse> => {
+  logger.debug(`post minified-text with ${payload}`);
+
+  try {
+    const headers = {
+      Authorization: 'Bearer ' + config.minifiedTextServiceAdminAuthKey,
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      config.minifiedTextServiceUrl + `/db/minifiedText`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          text: payload,
+          // expires in 1 year
+          expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 365,
+        }),
+      }
+    );
+
+    return await response.json();
+  } catch (e) {
+    logger.error(`db/minifiedText post error: ${e}`);
+    throw e;
+  }
+};
+
+/**
+ * Get a persisted minified text.
+ */
+export const getSchemas = async (): Promise<CredentialSchemaDto['schemas']> => {
+  logger.debug(`get schemas`);
+
+  try {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      config.schemaResolverServiceUrl + `/jsonSchema`,
+      {
+        method: 'GET',
+        headers,
+      }
+    );
+
+    return await response.json();
+  } catch (e) {
+    logger.error(`/jsonSchema get error: ${e}`);
     throw e;
   }
 };

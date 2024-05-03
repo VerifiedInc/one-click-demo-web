@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import { Box } from '@mui/system';
+import { Tip } from '~/components/Tip';
 
 type RadioOptionProps = RadioProps & {
   isDefault?: boolean;
@@ -38,28 +39,24 @@ export function RadioOption(props: RadioOptionProps) {
           >
             {title}
           </Typography>
-          <Tooltip title={tip}>
-            <IconButton
-              size='small'
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <Info />
-            </IconButton>
-          </Tooltip>
+          <Tip>{tip}</Tip>
         </Stack>
         {description && (
           <Typography
             variant='body2'
             color='text.disabled'
-            sx={{ fontSize: '12px', fontWeight: '400', pl: 6.25 }}
+            sx={{
+              textAlign: 'left !important',
+              fontSize: '12px',
+              fontWeight: '400',
+              pl: 6.25,
+            }}
           >
             {description}
           </Typography>
         )}
       </Stack>
-      <Box>
+      <Box sx={{ mt: 1, alignSelf: 'flex-start' }}>
         {isDefault && (
           <Chip size='small' label='Default' color='info' variant='outlined' />
         )}

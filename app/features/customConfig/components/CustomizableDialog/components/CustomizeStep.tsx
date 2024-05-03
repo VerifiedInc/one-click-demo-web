@@ -9,6 +9,7 @@ import { DescriptionField } from '~/features/customConfig/components/Customizabl
 import { TitleField } from '~/features/customConfig/components/CustomizableDialog/components/TitleField';
 import { HostedField } from '~/features/customConfig/components/CustomizableDialog/components/HostedField';
 import { VerificationOptionsField } from '~/features/customConfig/components/CustomizableDialog/components/VerificationOptionsField';
+import { CredentialRequestsField } from '~/features/customConfig/components/CustomizableDialog/components/CredentialRequestsField';
 
 export function CustomizeStep({
   onBackPress,
@@ -37,6 +38,7 @@ export function CustomizeStep({
         </IconButton>
         <Typography variant='h2'>Customize Demo</Typography>
       </Stack>
+      <CredentialRequestsField />
       <VerificationOptionsField />
       <HostedField />
       <TitleField />

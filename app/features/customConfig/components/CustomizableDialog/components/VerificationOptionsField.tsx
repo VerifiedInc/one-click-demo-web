@@ -40,7 +40,7 @@ export function VerificationOptionsField() {
           value={OneClickContentVerificationOptions.BothLinkAndCode}
           title='Both code and link'
           description='Both a verification link and code'
-          tip={OneClickContentVerificationOptions.OnlyLink}
+          tip={OneClickContentVerificationOptions.BothLinkAndCode}
         />
       </RadioGroup>
     </SectionAccordion>

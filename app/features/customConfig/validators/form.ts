@@ -18,6 +18,9 @@ export const customDemoFormSchema = zod.object({
   credentialRequests: zod.array(zod.object({}).passthrough()),
 });
 
-export type CustomDemoForm = zod.infer<typeof customDemoFormSchema> & {
+export type CustomDemoForm = Omit<
+  zod.infer<typeof customDemoFormSchema>,
+  'credentialRequests'
+> & {
   credentialRequests: CredentialRequestDto[];
 };
