@@ -27,7 +27,7 @@ function CredentialRequestField({
         const _path = `${path}.${index}`;
         return (
           <CredentialRequestFieldProvider
-            key={_path}
+            key={_path + field.type}
             path={_path}
             field={field}
             fieldArray={fieldArray}

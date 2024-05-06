@@ -3,9 +3,14 @@ import { RadioGroup } from '@mui/material';
 import { RadioOption } from '~/features/customConfig/components/CustomizableDialog/components/RadioOption';
 import { DataFieldSection } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldSection';
 import { useCredentialRequestField } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
+import { useController } from 'react-hook-form';
+import { CustomDemoForm } from '~/features/customConfig/validators/form';
 
 export function DataFieldUserInput() {
   const credentialRequestField = useCredentialRequestField();
+  const field = useController<CustomDemoForm>({
+    name: `${credentialRequestField?.path as any}.allowUserInput` as any,
+  });
 
   return (
     <DataFieldSection
@@ -21,6 +26,10 @@ export function DataFieldUserInput() {
       <RadioGroup
         value={credentialRequestField?.field.allowUserInput}
         onChange={(_, value) => {
+          // Update form state
+          field.field.onChange({ target: { value: value === 'true' } });
+
+          // Update array state
           credentialRequestField?.fieldArray.update(
             credentialRequestField?.index,
             {

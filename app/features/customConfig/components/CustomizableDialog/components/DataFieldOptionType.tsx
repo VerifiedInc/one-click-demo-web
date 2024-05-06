@@ -47,7 +47,8 @@ export function DataFieldOptionType() {
         onChange={(_, value) => {
           if (!value) return;
 
-          credentialRequestField?.fieldArray.replace(
+          credentialRequestField?.fieldArray.update(
+            credentialRequestField?.index,
             buildDataFieldValue(value.id, schemas!)
           );
         }}

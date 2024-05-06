@@ -1,12 +1,17 @@
-import { MandatoryEnum } from '@verifiedinc/core-types';
+import { useController } from 'react-hook-form';
 import { RadioGroup } from '@mui/material';
+import { MandatoryEnum } from '@verifiedinc/core-types';
 
 import { RadioOption } from '~/features/customConfig/components/CustomizableDialog/components/RadioOption';
 import { DataFieldSection } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldSection';
 import { useCredentialRequestField } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
+import { CustomDemoForm } from '~/features/customConfig/validators/form';
 
 export function DataFieldMandatory() {
   const credentialRequestField = useCredentialRequestField();
+  const field = useController<CustomDemoForm>({
+    name: `${credentialRequestField?.path as any}.mandatory` as any,
+  });
 
   return (
     <DataFieldSection
@@ -20,10 +25,14 @@ export function DataFieldMandatory() {
       }
     >
       <RadioGroup
-        value={credentialRequestField?.field.mandatory}
+        value={field.field.value}
         onChange={(e) => {
           const value = e.target.value as MandatoryEnum;
 
+          // Update form state
+          field.field.onChange({ target: { value } });
+
+          // Update array state
           credentialRequestField?.fieldArray.update(
             credentialRequestField?.index,
             {

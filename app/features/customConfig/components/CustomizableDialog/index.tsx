@@ -3,7 +3,7 @@ import { useRouteLoaderData, useSearchParams } from '@remix-run/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dialog, SxProps } from '@mui/material';
-import { MandatoryEnum, MinifiedText } from '@verifiedinc/core-types';
+import { MinifiedText } from '@verifiedinc/core-types';
 
 import { useDebounce } from '~/hooks/useDebounce';
 
@@ -47,23 +47,11 @@ export function CustomizableDialog() {
   const [showDetailStep, setShowDetailStep] = useState(true);
   const form = useForm<CustomDemoForm>({
     resolver: zodResolver(customDemoFormSchema),
-    defaultValues: mapFormState({
-      ...data?.configState,
-      credentialRequests: [
-        {
-          type: 'EmailCredential',
-          mandatory: MandatoryEnum.NO,
-          description: '',
-          allowUserInput: true,
-        },
-      ],
-    }),
+    defaultValues: mapFormState(data?.configState || {}),
     mode: 'all',
   });
-  console.log(
-    form.watch().credentialRequests,
-    form.watch().credentialRequests.length
-  );
+  const isValid = form.formState.isValid;
+
   const [optionsState, setOptions] = useState<string | null>(null);
   const options = useDebounce(optionsState, 500);
 
@@ -74,14 +62,14 @@ export function CustomizableDialog() {
     });
 
     return subscription.unsubscribe;
-  }, [form]);
+  }, [form, isValid]);
 
   // Effect that updates remote state when options change
   useEffect(() => {
     const controller = new AbortController();
 
     const handleUpdateStatus = async () => {
-      if (!options) return;
+      if (!options || !isValid) return;
 
       const formData = new FormData();
       options && formData.set('state', options);
@@ -104,6 +92,7 @@ export function CustomizableDialog() {
     handleUpdateStatus();
 
     return () => controller.abort('cleanup');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 
   return (

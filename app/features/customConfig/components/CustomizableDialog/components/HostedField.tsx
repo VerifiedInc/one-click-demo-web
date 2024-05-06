@@ -25,7 +25,7 @@ export function HostedField() {
       }
     >
       <RadioGroup
-        {...isHosted.field}
+        value={isHosted.field.value}
         onChange={(_, value) => {
           isHosted.field.onChange({ target: { value: value === 'true' } });
         }}

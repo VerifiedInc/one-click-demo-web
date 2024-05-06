@@ -9,7 +9,7 @@ export const mapFormState = (data: any): CustomDemoForm => {
     environment: data.environment,
     verificationOptions:
       data.verificationOptions || OneClickContentVerificationOptions.OnlyCode,
-    isHosted: data.isHosted || true,
+    isHosted: data.isHosted ?? true,
     content: {
       title: data?.content?.title || OneClickContentTitle.Signup,
       description: data?.content?.description,

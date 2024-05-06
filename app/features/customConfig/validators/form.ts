@@ -4,7 +4,7 @@ import {
   OneClickContentVerificationOptions,
   OneClickEnvironment,
 } from '~/features/customConfig/types';
-import { CredentialRequestDto } from '@verifiedinc/core-types';
+import { CredentialRequestDto, MandatoryEnum } from '@verifiedinc/core-types';
 
 export const customDemoFormSchema = zod.object({
   environment: zod.nativeEnum(OneClickEnvironment),
@@ -15,7 +15,16 @@ export const customDemoFormSchema = zod.object({
     description: zod.string().optional(),
   }),
   redirectUrl: zod.string().url().optional(),
-  credentialRequests: zod.array(zod.object({}).passthrough()).min(1),
+  credentialRequests: zod
+    .array(
+      zod.object({
+        allowUserInput: zod.boolean(),
+        description: zod.string(),
+        mandatory: zod.nativeEnum(MandatoryEnum),
+        type: zod.string().min(1),
+      })
+    )
+    .min(1),
 });
 
 export type CustomDemoForm = Omit<
