@@ -51,6 +51,7 @@ export function CustomizableDialog() {
     mode: 'all',
   });
   const isValid = form.formState.isValid;
+  const isDirty = form.formState.isDirty;
 
   const [optionsState, setOptions] = useState<string | null>(null);
   const options = useDebounce(optionsState, 500);
@@ -69,7 +70,7 @@ export function CustomizableDialog() {
     const controller = new AbortController();
 
     const handleUpdateStatus = async () => {
-      if (!options || !isValid) return;
+      if (!options || !isValid || !isDirty) return;
 
       const formData = new FormData();
       options && formData.set('state', options);

@@ -1,12 +1,29 @@
-import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
-import { TextField } from '@mui/material';
+import { useRef, useState } from 'react';
 import { useController } from 'react-hook-form';
+import { debounce } from 'lodash';
+import { TextField } from '@mui/material';
+
+import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
 
 export function DescriptionField() {
-  const description = useController<CustomDemoForm>({
+  const field = useController<CustomDemoForm>({
     name: 'content.description',
   });
+
+  const [value, setValue] = useState(field.field.value || '');
+
+  const debounceChange = useRef(
+    debounce((value: string) => {
+      // Update form state
+      field.field.onChange({ target: { value } });
+    }, 500)
+  ).current;
+
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+    debounceChange(e.target.value);
+  };
 
   return (
     <SectionAccordion
@@ -20,11 +37,12 @@ export function DescriptionField() {
       }
     >
       <TextField
-        {...description.field}
-        error={!!description.fieldState.error}
+        {...field.field}
+        value={value}
+        onChange={handleChange}
+        error={!!field.fieldState.error}
         helperText={
-          description.fieldState.error?.message ||
-          'Optional — defaults to empty'
+          field.fieldState.error?.message || 'Optional — defaults to empty'
         }
         label='Description'
         color='success'

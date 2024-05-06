@@ -1,11 +1,27 @@
+import { useRef, useState } from 'react';
 import { useController } from 'react-hook-form';
+import { debounce } from 'lodash';
 import { TextField } from '@mui/material';
 
-import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
+import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
 
 export function RedirectUrlField() {
-  const redirectUrl = useController<CustomDemoForm>({ name: 'redirectUrl' });
+  const field = useController<CustomDemoForm>({ name: 'redirectUrl' });
+
+  const [value, setValue] = useState(field.field.value || '');
+
+  const debounceChange = useRef(
+    debounce((value: string) => {
+      // Update form state
+      field.field.onChange({ target: { value } });
+    }, 500)
+  ).current;
+
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+    debounceChange(e.target.value);
+  };
 
   return (
     <SectionAccordion
@@ -19,10 +35,12 @@ export function RedirectUrlField() {
       }
     >
       <TextField
-        {...redirectUrl.field}
-        error={!!redirectUrl.fieldState.error}
+        {...field.field}
+        value={value}
+        onChange={handleChange}
+        error={!!field.fieldState.error}
         helperText={
-          redirectUrl.fieldState.error?.message ||
+          field.fieldState.error?.message ||
           "Optional — defaults to brand's global redirect URL"
         }
         label='Redirect URL'
