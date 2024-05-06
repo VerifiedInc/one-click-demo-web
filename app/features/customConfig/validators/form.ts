@@ -15,7 +15,7 @@ export const customDemoFormSchema = zod.object({
     description: zod.string().optional(),
   }),
   redirectUrl: zod.string().url().optional(),
-  credentialRequests: zod.array(zod.object({}).passthrough()),
+  credentialRequests: zod.array(zod.object({}).passthrough()).min(1),
 });
 
 export type CustomDemoForm = Omit<

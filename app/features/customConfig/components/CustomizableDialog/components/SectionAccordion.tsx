@@ -21,7 +21,7 @@ type SectionAccordionProps = {
 
 export function SectionAccordion(props: SectionAccordionProps) {
   const { children, defaultExpanded, title, description, tip } = props;
-  const [expanded, setOpen] = useState(defaultExpanded);
+  const [expanded, setOpen] = useState(defaultExpanded || false);
 
   return (
     <Accordion

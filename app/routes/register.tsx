@@ -4,7 +4,6 @@ import {
   LoaderFunction,
   redirect,
 } from '@remix-run/node';
-import { useActionData } from '@remix-run/react';
 import Box from '@mui/material/Box';
 import { Server } from 'socket.io';
 
@@ -198,12 +197,9 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 };
 
 export default function Register() {
-  const actionData: ActionData | undefined = useActionData();
   const isOneClick = useIsOneClick();
   const isOneClickNonHosted = useIsOneClickNonHosted();
   const brand = useBrand();
-
-  console.log('actionData', actionData);
 
   return (
     <Box

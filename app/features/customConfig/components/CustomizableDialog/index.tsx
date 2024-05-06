@@ -3,7 +3,7 @@ import { useRouteLoaderData, useSearchParams } from '@remix-run/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dialog, SxProps } from '@mui/material';
-import { MinifiedText } from '@verifiedinc/core-types';
+import { MandatoryEnum, MinifiedText } from '@verifiedinc/core-types';
 
 import { useDebounce } from '~/hooks/useDebounce';
 
@@ -52,7 +52,7 @@ export function CustomizableDialog() {
       credentialRequests: [
         {
           type: 'EmailCredential',
-          mandatory: 'if_available',
+          mandatory: MandatoryEnum.NO,
           description: '',
           allowUserInput: true,
         },
@@ -60,6 +60,10 @@ export function CustomizableDialog() {
     }),
     mode: 'all',
   });
+  console.log(
+    form.watch().credentialRequests,
+    form.watch().credentialRequests.length
+  );
   const [optionsState, setOptions] = useState<string | null>(null);
   const options = useDebounce(optionsState, 500);
 
@@ -75,7 +79,6 @@ export function CustomizableDialog() {
   // Effect that updates remote state when options change
   useEffect(() => {
     const controller = new AbortController();
-    const signal = controller.signal;
 
     const handleUpdateStatus = async () => {
       if (!options) return;
@@ -84,7 +87,7 @@ export function CustomizableDialog() {
       options && formData.set('state', options);
 
       const response = await fetch(path(), {
-        signal,
+        signal: controller.signal,
         method: 'POST',
         body: formData,
       });
@@ -100,19 +103,11 @@ export function CustomizableDialog() {
 
     handleUpdateStatus();
 
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort('cleanup');
   }, [options]);
 
   return (
-    <Dialog
-      open
-      onClose={() => {
-        console.log('should close');
-      }}
-      sx={dialogStyle}
-    >
+    <Dialog open onClose={() => console.log('should close')} sx={dialogStyle}>
       <CustomConfigProvider>
         <FormProvider {...form}>
           {!showDetailStep && (

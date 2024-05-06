@@ -40,7 +40,7 @@ export function CustomConfigProvider({ children }: PropsWithChildren) {
 
     handleUpdateStatus();
 
-    return () => controller.abort();
+    return () => controller.abort('cleanup');
   }, []);
 
   return <Context.Provider value={{ schemas }}>{children}</Context.Provider>;

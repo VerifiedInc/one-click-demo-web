@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -9,7 +9,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { CheckCircle, ChevronLeft, Delete, Menu } from '@mui/icons-material';
+import { MandatoryEnum } from '@verifiedinc/core-types';
 
+import { RequiredLabel } from '~/components/RequiredLabel';
+import { useCredentialRequestField } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
 import { DataFieldOptionType } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldOptionType';
 import { DataFieldDescription } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldDescription';
 import { DataFieldMandatory } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldMandatory';
@@ -17,14 +20,45 @@ import { DataFieldUserInput } from '~/features/customConfig/components/Customiza
 
 type DataFieldAccordionProps = {
   defaultExpanded?: boolean;
-  title: ReactNode;
 };
 
 export function DataFieldAccordion(props: DataFieldAccordionProps) {
-  const { defaultExpanded, title } = props;
-  const [expanded, setOpen] = useState(defaultExpanded);
+  const { defaultExpanded } = props;
+  const credentialRequestField = useCredentialRequestField();
+  const [expanded, setOpen] = useState(defaultExpanded || false);
   const theme = useTheme();
   const chevronClassName = 'chevron';
+
+  const renderTitle = () => {
+    return (
+      <Typography variant='body1' sx={{ fontSize: '16px', fontWeight: '800' }}>
+        {credentialRequestField?.field.mandatory !== MandatoryEnum.NO ? (
+          <RequiredLabel>{credentialRequestField?.field.type}</RequiredLabel>
+        ) : (
+          credentialRequestField?.field.type
+        )}
+      </Typography>
+    );
+  };
+
+  const renderUserInput = () => {
+    if (!credentialRequestField?.field?.allowUserInput) return null;
+
+    return (
+      <Stack direction='row' alignItems='center' spacing={0.5} pl={5.25}>
+        <CheckCircle
+          sx={{ fontSize: '12px', color: theme.palette.text.disabled }}
+        />
+        <Typography
+          variant='body1'
+          color='text.disabled'
+          sx={{ fontSize: '12px', fontWeight: '400' }}
+        >
+          Allow User Input
+        </Typography>
+      </Stack>
+    );
+  };
 
   return (
     <Accordion
@@ -43,7 +77,18 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
         onClick={() => setOpen((prev) => !prev)}
         expandIcon={
           <>
-            <IconButton size='small'>
+            <IconButton
+              size='small'
+              onClick={(e) => {
+                e.stopPropagation();
+
+                if (!credentialRequestField) return;
+
+                credentialRequestField.fieldArray.remove(
+                  credentialRequestField.index
+                );
+              }}
+            >
               <Delete
                 fontSize='small'
                 sx={{
@@ -91,25 +136,9 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
               <IconButton size='small' color='success'>
                 <Menu />
               </IconButton>
-              <Typography
-                variant='body1'
-                sx={{ fontSize: '16px', fontWeight: '800' }}
-              >
-                {title}
-              </Typography>
+              {renderTitle()}
             </Stack>
-            <Stack direction='row' alignItems='center' spacing={0.5} pl={5.25}>
-              <CheckCircle
-                sx={{ fontSize: '12px', color: theme.palette.text.disabled }}
-              />
-              <Typography
-                variant='body1'
-                color='text.disabled'
-                sx={{ fontSize: '12px', fontWeight: '400' }}
-              >
-                Allow User Input
-              </Typography>
-            </Stack>
+            {renderUserInput()}
           </Stack>
         </Stack>
       </AccordionSummary>
