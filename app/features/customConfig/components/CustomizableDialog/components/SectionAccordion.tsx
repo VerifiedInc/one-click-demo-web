@@ -4,6 +4,7 @@ import {
   AccordionSummary,
   IconButton,
   Stack,
+  SxProps,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -17,6 +18,7 @@ type SectionAccordionProps = {
   title: string;
   description?: string;
   tip?: ReactNode;
+  sx?: SxProps;
 };
 
 export function SectionAccordion(props: SectionAccordionProps) {
@@ -27,6 +29,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
     <Accordion
       expanded={expanded}
       sx={{
+        ...props.sx,
         boxShadow: 'none',
         '&::before': {
           display: 'none',
@@ -50,6 +53,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
         sx={{
           '& .MuiAccordionSummary-content': {
             my: '0px !important',
+            alignSelf: 'flex-start',
           },
           '& .MuiAccordionSummary-expandIconWrapper': {
             alignSelf: 'flex-start',

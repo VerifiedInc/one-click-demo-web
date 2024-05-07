@@ -65,6 +65,11 @@ export function EnvironmentStep({
             Production: {appContext.config.realDataUrl}
           </>
         }
+        sx={{
+          '& .MuiAccordionDetails-root': {
+            py: 0,
+          },
+        }}
       >
         <RadioGroup {...environment.field}>
           <RadioOption

@@ -40,7 +40,10 @@ export function CustomConfigProvider({ children }: PropsWithChildren) {
 
     handleUpdateStatus();
 
-    return () => controller.abort('cleanup');
+    return () =>
+      controller.abort(
+        'cancelled by react strict effect cleanup, just ignore it'
+      );
   }, []);
 
   return <Context.Provider value={{ schemas }}>{children}</Context.Provider>;

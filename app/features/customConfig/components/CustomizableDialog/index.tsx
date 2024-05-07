@@ -40,12 +40,15 @@ const dialogStyle: SxProps = {
 };
 
 export function CustomizableDialog() {
+  const [searchParams, setSearchParams] = useSearchParams();
   // Get data from loader to consume configState from it
   const data = useRouteLoaderData('routes/register');
-  const [dialogOpen, setDialogOpen] = useState(true);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [showDetailStep, setShowDetailStep] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(true);
+  const [showDetailStep, setShowDetailStep] = useState(false);
+  const [optionsState, setOptions] = useState<string | null>(null);
+  const options = useDebounce(optionsState, 500);
+
   const form = useForm<CustomDemoForm>({
     resolver: zodResolver(customDemoFormSchema),
     defaultValues: mapFormState(data?.configState || {}),
@@ -53,9 +56,6 @@ export function CustomizableDialog() {
   });
   const isValid = form.formState.isValid;
   const isDirty = form.formState.isDirty;
-
-  const [optionsState, setOptions] = useState<string | null>(null);
-  const options = useDebounce(optionsState, 500);
 
   // Effect that watches the form state and updates the options state
   useEffect(() => {
@@ -93,7 +93,10 @@ export function CustomizableDialog() {
 
     handleUpdateStatus();
 
-    return () => controller.abort('cleanup');
+    return () =>
+      controller.abort(
+        'cancelled by react strict effect cleanup, just ignore it'
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 
