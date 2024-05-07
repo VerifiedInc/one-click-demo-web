@@ -18,19 +18,20 @@ import {
 import { config } from '~/config';
 import { logger } from '~/logger.server';
 
-import { useIsOneClick } from '~/hooks/useIsOneClick';
-import { useIsOneClickNonHosted } from '~/hooks/useIsOneClickNonHosted';
-import { ActionData } from '~/features/register/types';
-import { RegularForm } from '~/features/register/components/RegularForm';
-import { OneClickForm } from '~/features/register/components/OneClickForm';
-import { LogInAndRegister } from '~/components/LoginAndRegister';
-import { useBrand } from '~/hooks/useBrand';
 import { getBrandSet } from '~/utils/getBrandSet';
-import { OneClickFormNonHosted } from '~/features/register/components/OneClickFormNonHosted';
-import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
 import { rooms } from '~/utils/socket';
 import { dateUtils } from '~/utils/date';
 import { JSONParseOrNull } from '~/utils/json';
+
+import { useIsOneClick } from '~/hooks/useIsOneClick';
+import { useBrand } from '~/hooks/useBrand';
+import { useIsOneClickNonHosted } from '~/hooks/useIsOneClickNonHosted';
+import { RegularForm } from '~/features/register/components/RegularForm';
+import { OneClickForm } from '~/features/register/components/OneClickForm';
+import { LogInAndRegister } from '~/components/LoginAndRegister';
+import { OneClickFormNonHosted } from '~/features/register/components/OneClickFormNonHosted';
+import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
+import { mapOneClickOptions } from '~/features/oneClick/mappers/mapOneClickOptions';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -45,6 +46,7 @@ export const action: ActionFunction = async ({ request }) => {
   const apiKey = formData.get('apiKey');
   const redirectUrl = (formData.get('redirectUrl') as string) || undefined;
 
+  const configState = searchParams.get('configState');
   const verificationOptions =
     searchParams.get('verificationOptions') || 'only_code';
   const isHosted = searchParams.get('isHosted') !== 'false' ?? true;
@@ -74,6 +76,21 @@ export const action: ActionFunction = async ({ request }) => {
           ? dateUtils.toYYYYDDMM(dateUtils.formatDateMMDD(birthDate))
           : undefined;
 
+        let customOneClickOptions: Partial<OneClickOptions> = {};
+
+        logger.debug(`configState: ${configState}`);
+        if (typeof configState === 'string') {
+          const minifiedText = await getMinifiedText(configState);
+          const possiblyOptions = JSONParseOrNull(minifiedText.text);
+          if (typeof possiblyOptions === 'object') {
+            // Enforce the type of the custom one click options
+            customOneClickOptions = mapOneClickOptions(
+              possiblyOptions
+            ) as Partial<OneClickOptions>;
+          }
+          logger.debug(`custom one click options found: ${minifiedText}`);
+        }
+
         const options: Partial<OneClickOptions> = {
           phone,
           birthDate: formatterdBirthDate,
@@ -81,7 +98,10 @@ export const action: ActionFunction = async ({ request }) => {
           verificationOptions:
             verificationOptions as OneClickOptions['verificationOptions'],
           isHosted,
+          ...customOneClickOptions,
         };
+
+        console.log(options);
 
         const result = await oneClick(apiKey as string, options);
 

@@ -1,6 +1,6 @@
-export const JSONParseOrNull: (possiblyString: any) => string | null = (
-  possiblyString
-) => {
+export const JSONParseOrNull: (
+  possiblyString: any
+) => string | Record<string, any> | null = (possiblyString) => {
   if (!possiblyString || typeof possiblyString !== 'string') return null;
 
   try {

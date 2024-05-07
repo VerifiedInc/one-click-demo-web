@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Dialog, SxProps } from '@mui/material';
 import { MinifiedText } from '@verifiedinc/core-types';
 
+import { browserConfig } from '~/config.client';
+
 import { useDebounce } from '~/hooks/useDebounce';
 
 import { path } from '~/routes/custom-demo-state';
@@ -57,6 +59,30 @@ export function CustomizableDialog() {
   const isValid = form.formState.isValid;
   const isDirty = form.formState.isDirty;
 
+  const handleFormSubmission = (data: CustomDemoForm) => {
+    const url = new URL(window.location.href);
+    const isSandbox = url.origin === browserConfig.dummyDataUrl;
+    const isProduction = url.origin === browserConfig.realDataUrl;
+
+    // Redirect to real data environment if the current environment does not match the selected one
+    if (data.environment === 'production') {
+      if (!isProduction) {
+        window.location.href = `${browserConfig.realDataUrl}?${url.searchParams}`;
+        return;
+      }
+    }
+
+    // Redirect to dummy data environment if the current environment does not match the selected one
+    if (data.environment === 'sandbox') {
+      if (!isSandbox) {
+        window.location.href = `${browserConfig.dummyDataUrl}?${url.searchParams}`;
+        return;
+      }
+    }
+
+    setDialogOpen(false);
+  };
+
   // Effect that watches the form state and updates the options state
   useEffect(() => {
     const subscription = form.watch((data) => {
@@ -104,7 +130,7 @@ export function CustomizableDialog() {
     <Dialog open={dialogOpen} sx={dialogStyle}>
       <CustomConfigProvider>
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(() => setDialogOpen(false))}>
+          <form onSubmit={form.handleSubmit(handleFormSubmission)}>
             {!showDetailStep && (
               <EnvironmentStep
                 onCustomizePress={() => setShowDetailStep(true)}

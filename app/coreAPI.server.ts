@@ -514,7 +514,7 @@ export const getMinifiedText = async (
     return await response.json();
   } catch (e) {
     logger.error(`db/minifiedText get error: ${e}`);
-    throw e;
+    throw new Error('Malformed config state. Please try again');
   }
 };
 
