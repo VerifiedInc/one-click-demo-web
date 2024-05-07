@@ -42,6 +42,7 @@ const dialogStyle: SxProps = {
 export function CustomizableDialog() {
   // Get data from loader to consume configState from it
   const data = useRouteLoaderData('routes/register');
+  const [dialogOpen, setDialogOpen] = useState(true);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [showDetailStep, setShowDetailStep] = useState(true);
@@ -97,15 +98,19 @@ export function CustomizableDialog() {
   }, [options]);
 
   return (
-    <Dialog open onClose={() => console.log('should close')} sx={dialogStyle}>
+    <Dialog open={dialogOpen} sx={dialogStyle}>
       <CustomConfigProvider>
         <FormProvider {...form}>
-          {!showDetailStep && (
-            <EnvironmentStep onCustomizePress={() => setShowDetailStep(true)} />
-          )}
-          {showDetailStep && (
-            <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
-          )}
+          <form onSubmit={form.handleSubmit(() => setDialogOpen(false))}>
+            {!showDetailStep && (
+              <EnvironmentStep
+                onCustomizePress={() => setShowDetailStep(true)}
+              />
+            )}
+            {showDetailStep && (
+              <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
+            )}
+          </form>
         </FormProvider>
       </CustomConfigProvider>
     </Dialog>

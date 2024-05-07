@@ -83,6 +83,7 @@ export function EnvironmentStep({
       </SectionAccordion>
       <Stack>
         <OriginalButton
+          type='submit'
           sx={{ fontSize: '15px' }}
           startIcon={<PlayArrow />}
           disabled={!formContext.formState.isValid}
