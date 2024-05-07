@@ -101,7 +101,7 @@ export const action: ActionFunction = async ({ request }) => {
           ...customOneClickOptions,
         };
 
-        console.log(options);
+        console.log(JSON.stringify(options));
 
         const result = await oneClick(apiKey as string, options);
 

@@ -18,17 +18,17 @@ export const mapOneClickOptions = (data: any): Partial<OneClickOptions> => {
       allowUserInput: credentialRequest.allowUserInput,
     };
 
-    if (!Array.isArray(_data.children)) {
+    if (!Array.isArray(credentialRequest.children)) {
       return _data;
     }
 
     return {
       ..._data,
-      children: _data.children.map(mapCredentialRequests),
+      children: credentialRequest.children.map(mapCredentialRequests),
     };
   };
 
-  return {
+  const options: Partial<OneClickOptions> = {
     verificationOptions:
       data.verificationOptions || OneClickContentVerificationOptions.OnlyCode,
     isHosted: data.isHosted ?? true,
@@ -37,8 +37,13 @@ export const mapOneClickOptions = (data: any): Partial<OneClickOptions> => {
       description: data?.content?.description,
     },
     redirectUrl: data.redirectUrl,
-    credentialRequests: (data.credentialRequests || []).map(
-      mapCredentialRequests
-    ),
   };
+
+  if (data.credentialRequests?.length) {
+    options.credentialRequests = data.credentialRequests.map(
+      mapCredentialRequests
+    );
+  }
+
+  return options;
 };

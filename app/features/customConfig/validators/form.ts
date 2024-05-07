@@ -15,16 +15,14 @@ export const customDemoFormSchema = zod.object({
     description: zod.string().optional(),
   }),
   redirectUrl: zod.string().url().optional(),
-  credentialRequests: zod
-    .array(
-      zod.object({
-        allowUserInput: zod.boolean(),
-        description: zod.string(),
-        mandatory: zod.nativeEnum(MandatoryEnum),
-        type: zod.string().min(1),
-      })
-    )
-    .min(1),
+  credentialRequests: zod.array(
+    zod.object({
+      allowUserInput: zod.boolean(),
+      description: zod.string().optional(),
+      mandatory: zod.nativeEnum(MandatoryEnum),
+      type: zod.string().min(1),
+    })
+  ),
 });
 
 export type CustomDemoForm = Omit<

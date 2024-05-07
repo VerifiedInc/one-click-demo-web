@@ -16,6 +16,7 @@ import {
   CustomDemoForm,
   customDemoFormSchema,
 } from '~/features/customConfig/validators/form';
+import { defaultCredentialRequests } from '~/features/customConfig/components/CustomizableDialog/utils/defaultValues';
 import { mapFormState } from '~/features/customConfig/mappers/mapFormState';
 import { CustomizeStep } from '~/features/customConfig/components/CustomizableDialog/components/CustomizeStep';
 import { CustomConfigProvider } from '~/features/customConfig/contexts/CustomConfig';
@@ -53,7 +54,11 @@ export function CustomizableDialog() {
 
   const form = useForm<CustomDemoForm>({
     resolver: zodResolver(customDemoFormSchema),
-    defaultValues: mapFormState(data?.configState || {}),
+    defaultValues: mapFormState(
+      data?.configState || {
+        credentialRequests: defaultCredentialRequests,
+      }
+    ),
     mode: 'all',
   });
   const isValid = form.formState.isValid;
