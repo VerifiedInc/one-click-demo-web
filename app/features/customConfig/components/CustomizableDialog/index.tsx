@@ -66,13 +66,21 @@ export function CustomizableDialog() {
 
   const handleFormSubmission = (data: CustomDemoForm) => {
     const url = new URL(window.location.href);
+    const searchParams = new URLSearchParams(url.searchParams);
     const isSandbox = url.origin === browserConfig.dummyDataUrl;
     const isProduction = url.origin === browserConfig.realDataUrl;
+
+    searchParams.set(
+      'verificationOptions',
+      data.verificationOptions.toString()
+    );
+    searchParams.set('isHosted', data.isHosted.toString());
+    searchParams.set('configOpen', 'false');
 
     // Redirect to real data environment if the current environment does not match the selected one
     if (data.environment === 'production') {
       if (!isProduction) {
-        window.location.href = `${browserConfig.realDataUrl}?${url.searchParams}`;
+        window.location.href = `${browserConfig.realDataUrl}?${searchParams}`;
         return;
       }
     }
@@ -80,11 +88,12 @@ export function CustomizableDialog() {
     // Redirect to dummy data environment if the current environment does not match the selected one
     if (data.environment === 'sandbox') {
       if (!isSandbox) {
-        window.location.href = `${browserConfig.dummyDataUrl}?${url.searchParams}`;
+        window.location.href = `${browserConfig.dummyDataUrl}?${searchParams}`;
         return;
       }
     }
 
+    setSearchParams(searchParams);
     setDialogOpen(false);
   };
 

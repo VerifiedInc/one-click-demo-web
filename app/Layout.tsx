@@ -1,7 +1,8 @@
+import type { PropsWithChildren } from 'react';
+import { useSearchParams } from '@remix-run/react';
 import { Alert } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import type { PropsWithChildren } from 'react';
 
 import { useBrand } from './hooks/useBrand';
 import { useAppContext } from './context/AppContext';
@@ -11,6 +12,8 @@ import { CustomizableDialog } from '~/features/customConfig/components/Customiza
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();
   const appContext = useAppContext();
+  const [searchParams] = useSearchParams();
+  const isConfigHidden = searchParams.get('configOpen') === 'false';
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -62,7 +65,7 @@ export default function Layout({ children }: PropsWithChildren) {
           <FileBugButton />
         </Box>
       </Container>
-      <CustomizableDialog />
+      {!isConfigHidden && <CustomizableDialog />}
     </Box>
   );
 }
