@@ -28,7 +28,7 @@ export function CustomizeStep({
             bottom: 0,
             my: 'auto',
             width: '51px',
-            height: 'auto',
+            height: '51px',
             flexShrink: 0,
             aspectRatio: '1',
             ml: 0.5,

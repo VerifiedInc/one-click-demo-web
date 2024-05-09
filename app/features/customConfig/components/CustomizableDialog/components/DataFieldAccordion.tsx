@@ -17,6 +17,7 @@ import { DataFieldOptionType } from '~/features/customConfig/components/Customiz
 import { DataFieldDescription } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldDescription';
 import { DataFieldMandatory } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldMandatory';
 import { DataFieldUserInput } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldUserInput';
+import { DataFieldDeleteModal } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldDeleteModal';
 
 type DataFieldAccordionProps = {
   defaultExpanded?: boolean;
@@ -26,8 +27,16 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
   const { defaultExpanded } = props;
   const credentialRequestField = useCredentialRequestField();
   const [expanded, setOpen] = useState(defaultExpanded || false);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const theme = useTheme();
   const chevronClassName = 'chevron';
+
+  const handleRemove = () => {
+    if (!credentialRequestField) return;
+    setModalOpen(false);
+    credentialRequestField.fieldArray.remove(credentialRequestField.index);
+  };
 
   const renderTitle = () => {
     return (
@@ -81,12 +90,7 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
               size='small'
               onClick={(e) => {
                 e.stopPropagation();
-
-                if (!credentialRequestField) return;
-
-                credentialRequestField.fieldArray.remove(
-                  credentialRequestField.index
-                );
+                setModalOpen(true);
               }}
             >
               <Delete
@@ -150,6 +154,11 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
           <DataFieldUserInput />
         </Stack>
       </AccordionDetails>
+      <DataFieldDeleteModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={handleRemove}
+      />
     </Accordion>
   );
 }

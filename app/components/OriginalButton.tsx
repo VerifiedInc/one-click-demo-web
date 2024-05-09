@@ -28,6 +28,14 @@ export function OriginalButton({ children, ...props }: ButtonProps) {
         color: '#fff!important',
         borderColor: '#0dbc3d!important',
       };
+
+      if (props.color === 'error') {
+        style = {
+          ...style,
+          borderColor: `${theme.palette.error.main}!important`,
+          backgroundColor: `${theme.palette.error.main}!important`,
+        };
+      }
     }
 
     if (props.variant === 'text') {
