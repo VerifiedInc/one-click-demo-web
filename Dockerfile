@@ -35,4 +35,4 @@ RUN npm run db:migrate
 
 # bootstrapping using "node" (not using the npm start script) so that the running node process gets OS signals (e.g. SIGTERM) and can gracefully shut down
 # CMD syntax ref: https://www.baeldung.com/linux/docker-cmd-multiple-commands#2-run-multiple-commands-with-the-exec-form
-CMD ["/bin/bash", "-c", "cross-env NODE_ENV=production node -r newrelic ./server.js/"]
+CMD ["/bin/bash", "-c", "npm run db:migrate && cross-env NODE_ENV=production node -r newrelic ./server.js"]
