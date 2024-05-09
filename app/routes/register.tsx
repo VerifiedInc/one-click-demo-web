@@ -32,6 +32,7 @@ import { LogInAndRegister } from '~/components/LoginAndRegister';
 import { OneClickFormNonHosted } from '~/features/register/components/OneClickFormNonHosted';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
 import { mapOneClickOptions } from '~/features/oneClick/mappers/mapOneClickOptions';
+import { findStateByUuid } from 'prisma/state';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -179,8 +180,8 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   let configState = null;
 
   if (configStateParam) {
-    const minifiedText = await getMinifiedText(configStateParam);
-    configState = JSONParseOrNull(minifiedText.text);
+    const state = await findStateByUuid(configStateParam);
+    configState = JSONParseOrNull(state?.state);
   }
 
   if (oneClickUuid) {
