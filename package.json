@@ -21,6 +21,7 @@
     "prettier:check": "prettier --check .",
     "test": "NODE_ENV=test jest",
     "db:push": "npx prisma db push",
+    "db:migrate": "npx prisma migrate deploy",
     "db:baseline": "npx prisma migrate resolve --applied 0_init"
   },
   "lint-staged": {

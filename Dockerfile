@@ -29,6 +29,10 @@ RUN npm run delete_sourcemaps
 # remove local npm cache with "clean cache --force" because of the image's ummutable nature, no need for local cache (that lives in the image). Makes the overall image size smaller.
 RUN npm cache clean --force
 
+# Run baseline migration, and then migrate the database, ignore errors
+RUN npm run db:baseline || true
+RUN npm run db:migrate
+
 # bootstrapping using "node" (not using the npm start script) so that the running node process gets OS signals (e.g. SIGTERM) and can gracefully shut down
 # CMD syntax ref: https://www.baeldung.com/linux/docker-cmd-multiple-commands#2-run-multiple-commands-with-the-exec-form
 CMD ["/bin/bash", "-c", "cross-env NODE_ENV=production node -r newrelic ./server.js/"]
