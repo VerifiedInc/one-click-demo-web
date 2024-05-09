@@ -2,7 +2,6 @@ import { ActionFunction, json } from '@remix-run/node';
 
 import { getErrorMessage } from '~/errors';
 import { logger } from '~/logger.server';
-import { createMinifiedText, getMinifiedText } from '~/coreAPI.server';
 import { createState, findStateByUuid } from 'prisma/state';
 
 export const path = () => '/custom-demo-state';
