@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import { execSync } from 'child_process';
-import { StringNullableChain } from 'lodash';
 
 dotenv.config();
 
@@ -29,8 +28,6 @@ interface Config {
   bookACallUrl: string;
   dummyDataUrl: string;
   realDataUrl: string;
-  minifiedTextServiceUrl: string;
-  minifiedTextServiceAdminAuthKey: string;
   schemaResolverServiceUrl: string;
 }
 
@@ -63,8 +60,5 @@ export const config: Config = {
   bookACallUrl: process.env.BOOK_A_CALL_URL || '',
   dummyDataUrl: process.env.DUMMY_DATA_URL || '',
   realDataUrl: process.env.REAL_DATA_URL || '',
-  minifiedTextServiceUrl: process.env.MINIFIED_TEXT_SERVICE_URL || '',
-  minifiedTextServiceAdminAuthKey:
-    process.env.MINIFIED_TEXT_SERVICE_ADMIN_AUTH_KEY || '',
   schemaResolverServiceUrl: process.env.SCHEMA_RESOLVER_URL || '',
 };
