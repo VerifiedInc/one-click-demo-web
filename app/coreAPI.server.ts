@@ -479,3 +479,29 @@ export const getDBOneClick = async (uuid: string): Promise<OneClickDBDto> => {
     throw e;
   }
 };
+
+/**
+ * Get a persisted minified text.
+ */
+export const getSchemas = async (): Promise<CredentialSchemaDto['schemas']> => {
+  logger.debug(`get schemas`);
+
+  try {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      config.schemaResolverServiceUrl + `/jsonSchema`,
+      {
+        method: 'GET',
+        headers,
+      }
+    );
+
+    return await response.json();
+  } catch (e) {
+    logger.error(`/jsonSchema get error: ${e}`);
+    throw e;
+  }
+};

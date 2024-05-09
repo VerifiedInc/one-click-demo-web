@@ -9,7 +9,6 @@ import { Server } from 'socket.io';
 
 import { getErrorMessage, getErrorStatus } from '~/errors';
 import {
-  getMinifiedText,
   getSharedCredentialsOneClick,
   hasMatchingCredentials,
   oneClick,
@@ -81,15 +80,18 @@ export const action: ActionFunction = async ({ request }) => {
 
         logger.debug(`configState: ${configState}`);
         if (typeof configState === 'string') {
-          const minifiedText = await getMinifiedText(configState);
-          const possiblyOptions = JSONParseOrNull(minifiedText.text);
-          if (typeof possiblyOptions === 'object') {
-            // Enforce the type of the custom one click options
-            customOneClickOptions = mapOneClickOptions(
-              possiblyOptions
-            ) as Partial<OneClickOptions>;
+          const state = await findStateByUuid(configState);
+          if (state) {
+            const possiblyOptions = JSONParseOrNull(state.state);
+
+            if (possiblyOptions) {
+              // Enforce the type of the custom one click options
+              customOneClickOptions = mapOneClickOptions(
+                possiblyOptions
+              ) as Partial<OneClickOptions>;
+            }
+            logger.debug(`custom one click options found: ${state.state}`);
           }
-          logger.debug(`custom one click options found: ${minifiedText}`);
         }
 
         const options: Partial<OneClickOptions> = {
