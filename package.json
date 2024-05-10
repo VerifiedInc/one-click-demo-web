@@ -21,11 +21,9 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "test": "NODE_ENV=test jest",
-    "db:push": "prisma db push",
-    "db:generate": "prisma generate",
-    "db:baseline": "prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql",
-    "db:migrate": "prisma migrate resolve --applied 0_init || true && prisma db push && prisma migrate deploy",
-    "db:migration": "prisma migrate dev"
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:prod": "prisma migrate deploy",
+    "db:generate": "prisma generate"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
