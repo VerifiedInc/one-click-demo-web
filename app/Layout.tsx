@@ -10,14 +10,15 @@ import { CustomizableDialog } from '~/features/customConfig/components/Customiza
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();
   const [searchParams] = useSearchParams();
+  const configState = searchParams.get('configState');
   const dummyBrand = searchParams.get('dummyBrand');
   const realBrand = searchParams.get('realBrand');
   const isConfigHidden = searchParams.get('configOpen') === 'false';
 
   const shouldShowDialog = useMemo(() => {
-    // if (!dummyBrand && !realBrand) return false;
+    if (!dummyBrand && !realBrand && !configState) return false;
     return !isConfigHidden;
-  }, [dummyBrand, isConfigHidden, realBrand]);
+  }, [configState, dummyBrand, isConfigHidden, realBrand]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
