@@ -89,8 +89,6 @@ export const loader: LoaderFunction = async ({ context, request }) => {
     noticeEnabled,
     noticeText,
     bookACallUrl,
-    dummyDataUrl,
-    realDataUrl,
   } = config;
 
   return json({
@@ -107,8 +105,6 @@ export const loader: LoaderFunction = async ({ context, request }) => {
       noticeEnabled,
       noticeText,
       bookACallUrl,
-      dummyDataUrl,
-      realDataUrl,
     },
     ...brandSet,
   });

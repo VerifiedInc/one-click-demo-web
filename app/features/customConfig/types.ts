@@ -1,6 +1,6 @@
 export enum OneClickEnvironment {
-  Sandbox = 'sandbox',
-  Production = 'production',
+  Dummy = 'dummy',
+  Real = 'real',
 }
 
 export enum OneClickContentTitle {

@@ -1,19 +1,23 @@
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 import { useSearchParams } from '@remix-run/react';
-import { Alert } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
 import { useBrand } from './hooks/useBrand';
-import { useAppContext } from './context/AppContext';
 import { FileBugButton } from './components/FileBugButton';
 import { CustomizableDialog } from '~/features/customConfig/components/CustomizableDialog';
 
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();
-  const appContext = useAppContext();
   const [searchParams] = useSearchParams();
+  const dummyBrand = searchParams.get('dummyBrand');
+  const realBrand = searchParams.get('realBrand');
   const isConfigHidden = searchParams.get('configOpen') === 'false';
+
+  const shouldShowDialog = useMemo(() => {
+    // if (!dummyBrand && !realBrand) return false;
+    return !isConfigHidden;
+  }, [dummyBrand, isConfigHidden, realBrand]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -26,22 +30,6 @@ export default function Layout({ children }: PropsWithChildren) {
           flexDirection: 'column',
         }}
       >
-        {appContext.config.noticeEnabled && (
-          <Alert
-            severity='info'
-            sx={{
-              mt: 2,
-              color: 'text.secondary',
-              a: { color: 'text.secondary' },
-            }}
-          >
-            <span
-              dangerouslySetInnerHTML={{
-                __html: appContext.config.noticeText,
-              }}
-            />
-          </Alert>
-        )}
         <Box
           sx={{
             display: 'flex',
@@ -65,7 +53,7 @@ export default function Layout({ children }: PropsWithChildren) {
           <FileBugButton />
         </Box>
       </Container>
-      {!isConfigHidden && <CustomizableDialog />}
+      {shouldShowDialog && <CustomizableDialog />}
     </Box>
   );
 }

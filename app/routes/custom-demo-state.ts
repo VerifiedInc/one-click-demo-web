@@ -27,6 +27,8 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const formData = await request.formData();
     const state = formData.get('state');
+    const dummyBrand = formData.get('dummyBrand');
+    const realBrand = formData.get('realBrand');
 
     if (
       !state ||
@@ -36,7 +38,15 @@ export const action: ActionFunction = async ({ request }) => {
       throw new Error('Bad payload');
     }
 
-    const newState = await createState({ state });
+    if (typeof dummyBrand !== 'string') {
+      throw new Error('dummyBrand is required');
+    }
+
+    if (typeof realBrand !== 'string') {
+      throw new Error('realBrand is required');
+    }
+
+    const newState = await createState({ state, dummyBrand, realBrand });
 
     return json({ data: newState });
   } catch (error) {

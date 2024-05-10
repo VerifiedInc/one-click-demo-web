@@ -49,7 +49,9 @@ export function CustomizeStep({
           type='submit'
           sx={{ fontSize: '15px' }}
           startIcon={<PlayArrow />}
-          disabled={!formContext.formState.isValid}
+          disabled={
+            !formContext.formState.isValid || formContext.formState.isSubmitting
+          }
         >
           Start Demo
         </OriginalButton>

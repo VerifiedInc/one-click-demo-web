@@ -21,7 +21,9 @@
     "prettier:check": "prettier --check .",
     "test": "NODE_ENV=test jest",
     "db:push": "npx prisma db push",
-    "db:migrate": "npx prisma migrate resolve --applied 0_init || true && npx prisma migrate deploy"
+    "db:baseline": "npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql",
+    "db:migrate": "npx prisma migrate resolve --applied 0_init || true && npx prisma db push && npx prisma migrate deploy",
+    "db:migration": "npx prisma migrate dev"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",

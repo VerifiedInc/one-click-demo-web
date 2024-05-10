@@ -17,6 +17,9 @@ model State {
   uuid  String @id @default(uuid())
   state String
 
+  dummyBrand String
+  realBrand  String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

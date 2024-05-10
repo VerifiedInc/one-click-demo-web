@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouteLoaderData, useSearchParams } from '@remix-run/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Dialog, SxProps } from '@mui/material';
-import { MinifiedText } from '@verifiedinc/core-types';
-
-import { browserConfig } from '~/config.client';
-
-import { useDebounce } from '~/hooks/useDebounce';
 
 import { path } from '~/routes/custom-demo-state';
 
@@ -20,6 +15,7 @@ import { defaultCredentialRequests } from '~/features/customConfig/components/Cu
 import { mapFormState } from '~/features/customConfig/mappers/mapFormState';
 import { CustomizeStep } from '~/features/customConfig/components/CustomizableDialog/components/CustomizeStep';
 import { CustomConfigProvider } from '~/features/customConfig/contexts/CustomConfig';
+import { MappedState } from '~/features/state/types';
 
 const dialogStyle: SxProps = {
   '& .MuiPaper-root': {
@@ -45,31 +41,24 @@ const dialogStyle: SxProps = {
 export function CustomizableDialog() {
   const [searchParams, setSearchParams] = useSearchParams();
   // Get data from loader to consume configState from it
-  const data = useRouteLoaderData('routes/register');
+  const routerData = useRouteLoaderData<{ configState: MappedState | null }>(
+    'routes/register'
+  );
 
   const [dialogOpen, setDialogOpen] = useState(true);
   const [showDetailStep, setShowDetailStep] = useState(false);
-  const [optionsState, setOptions] = useState<string | null>(null);
-  const options = useDebounce(optionsState, 500);
 
   const form = useForm<CustomDemoForm>({
     resolver: zodResolver(customDemoFormSchema),
     defaultValues: mapFormState(
-      data?.configState || {
+      routerData?.configState?.state || {
         credentialRequests: defaultCredentialRequests,
       }
     ),
     mode: 'all',
   });
-  const isValid = form.formState.isValid;
-  const isDirty = form.formState.isDirty;
 
-  const handleFormSubmission = (data: CustomDemoForm) => {
-    const url = new URL(window.location.href);
-    const searchParams = new URLSearchParams(url.searchParams);
-    const isSandbox = url.origin === browserConfig.dummyDataUrl;
-    const isProduction = url.origin === browserConfig.realDataUrl;
-
+  const handleFormSubmission = async (data: CustomDemoForm) => {
     searchParams.set(
       'verificationOptions',
       data.verificationOptions.toString()
@@ -77,68 +66,28 @@ export function CustomizableDialog() {
     searchParams.set('isHosted', data.isHosted.toString());
     searchParams.set('configOpen', 'false');
 
-    // Redirect to real data environment if the current environment does not match the selected one
-    if (data.environment === 'production') {
-      if (!isProduction) {
-        window.location.href = `${browserConfig.realDataUrl}?${searchParams}`;
-        return;
-      }
-    }
+    const dummyBrand =
+      searchParams.get('dummyBrand') || routerData?.configState?.dummyBrand;
+    const realBrand =
+      searchParams.get('realBrand') || routerData?.configState?.realBrand;
+    const formData = new FormData();
+    formData.set('state', JSON.stringify(data));
+    dummyBrand && formData.set('dummyBrand', dummyBrand);
+    realBrand && formData.set('realBrand', realBrand);
 
-    // Redirect to dummy data environment if the current environment does not match the selected one
-    if (data.environment === 'sandbox') {
-      if (!isSandbox) {
-        window.location.href = `${browserConfig.dummyDataUrl}?${searchParams}`;
-        return;
-      }
-    }
+    const response = await fetch(path(), {
+      method: 'POST',
+      body: formData,
+    });
+    const { data: state } = await response.json();
 
+    console.log('custom demo state saved', state);
+
+    // Update url with the current state
+    searchParams.set('configState', state.uuid);
     setSearchParams(searchParams);
     setDialogOpen(false);
   };
-
-  // Effect that watches the form state and updates the options state
-  useEffect(() => {
-    const subscription = form.watch((data) => {
-      setOptions(JSON.stringify(data));
-    });
-
-    return subscription.unsubscribe;
-  }, [form, isValid]);
-
-  // Effect that updates remote state when options change
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const handleUpdateStatus = async () => {
-      if (!options || !isValid || !isDirty) return;
-
-      const formData = new FormData();
-      options && formData.set('state', options);
-
-      const response = await fetch(path(), {
-        signal: controller.signal,
-        method: 'POST',
-        body: formData,
-      });
-      const { data: minifiedText }: { data: MinifiedText } =
-        await response.json();
-
-      console.log('custom demo state saved', minifiedText);
-
-      // Update url with the current state
-      searchParams.set('configState', minifiedText.uuid);
-      setSearchParams(searchParams);
-    };
-
-    handleUpdateStatus();
-
-    return () =>
-      controller.abort(
-        'cancelled by react strict effect cleanup, just ignore it'
-      );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [options]);
 
   return (
     <Dialog open={dialogOpen} sx={dialogStyle}>

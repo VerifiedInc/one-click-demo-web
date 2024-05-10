@@ -26,8 +26,12 @@ interface Config {
   noticeEnabled: boolean;
   noticeText: string;
   bookACallUrl: string;
-  dummyDataUrl: string;
-  realDataUrl: string;
+  dummyEnvCoreServiceUrl: string;
+  dummyEnvCoreServiceAdminKey: string;
+  dummyEnvWalletUrl: string;
+  realEnvCoreServiceUrl: string;
+  realEnvCoreServiceAdminKey: string;
+  realEnvWalletUrl: string;
   schemaResolverServiceUrl: string;
 }
 
@@ -58,7 +62,12 @@ export const config: Config = {
     process.env.NOTICE_TEXT ||
     'This is a live demo of <a href="https://www.verified.inc/solutions/for-people#1-click-sign-up">1-Click Signup</a>. You will see dummy data. To try 1-Click Signup with real data, try our <a href=https://1click.demo.verifiedinc.com/>Production demo</a>',
   bookACallUrl: process.env.BOOK_A_CALL_URL || '',
-  dummyDataUrl: process.env.DUMMY_DATA_URL || '',
-  realDataUrl: process.env.REAL_DATA_URL || '',
   schemaResolverServiceUrl: process.env.SCHEMA_RESOLVER_URL || '',
+  dummyEnvCoreServiceUrl: process.env.DUMMY_ENV_CORE_SERVICE_URL || '',
+  dummyEnvCoreServiceAdminKey:
+    process.env.DUMMY_ENV_CORE_SERVICE_ADMIN_KEY || '',
+  dummyEnvWalletUrl: process.env.DUMMY_ENV_WALLET_URL || '',
+  realEnvCoreServiceUrl: process.env.REAL_ENV_CORE_SERVICE_URL || '',
+  realEnvCoreServiceAdminKey: process.env.REAL_ENV_CORE_SERVICE_ADMIN_KEY || '',
+  realEnvWalletUrl: process.env.REAL_ENV_WALLET_URL || '',
 };

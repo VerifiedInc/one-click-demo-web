@@ -20,7 +20,6 @@ import { logger } from '~/logger.server';
 import { getBrandSet } from '~/utils/getBrandSet';
 import { rooms } from '~/utils/socket';
 import { dateUtils } from '~/utils/date';
-import { JSONParseOrNull } from '~/utils/json';
 
 import { useIsOneClick } from '~/hooks/useIsOneClick';
 import { useBrand } from '~/hooks/useBrand';
@@ -31,7 +30,8 @@ import { LogInAndRegister } from '~/components/LoginAndRegister';
 import { OneClickFormNonHosted } from '~/features/register/components/OneClickFormNonHosted';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
 import { mapOneClickOptions } from '~/features/oneClick/mappers/mapOneClickOptions';
-import { findStateByUuid } from 'prisma/state';
+import { findState } from '~/features/state/services/findState';
+import { getBaseUrl } from '~/features/environment/helpers';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -45,11 +45,14 @@ export const action: ActionFunction = async ({ request }) => {
   const birthDate = (formData.get('birthDate') as string) || undefined;
   const apiKey = formData.get('apiKey');
   const redirectUrl = (formData.get('redirectUrl') as string) || undefined;
-
-  const configState = searchParams.get('configState');
   const verificationOptions =
     searchParams.get('verificationOptions') || 'only_code';
   const isHosted = searchParams.get('isHosted') !== 'false' ?? true;
+
+  const brandSet = await getBrandSet(searchParams);
+
+  const configStateParams = searchParams.get('configState');
+  const configState = await findState(configStateParams);
 
   if (!action) {
     return json({ error: 'Action must be populated' }, { status: 400 });
@@ -78,21 +81,18 @@ export const action: ActionFunction = async ({ request }) => {
 
         let customOneClickOptions: Partial<OneClickOptions> = {};
 
-        logger.debug(`configState: ${configState}`);
-        if (typeof configState === 'string') {
-          const state = await findStateByUuid(configState);
-          if (state) {
-            const possiblyOptions = JSONParseOrNull(state.state);
+        logger.debug(`configState: ${JSON.stringify(configState)}`);
 
-            if (possiblyOptions) {
-              // Enforce the type of the custom one click options
-              customOneClickOptions = mapOneClickOptions(
-                possiblyOptions
-              ) as Partial<OneClickOptions>;
-            }
-            logger.debug(`custom one click options found: ${state.state}`);
-          }
-        }
+        // Enforce the type of the custom one click options
+        customOneClickOptions = mapOneClickOptions(
+          configState?.state
+        ) as Partial<OneClickOptions>;
+
+        logger.debug(
+          `custom one click options found: ${JSON.stringify(
+            configState?.state
+          )}`
+        );
 
         const options: Partial<OneClickOptions> = {
           phone,
@@ -104,9 +104,10 @@ export const action: ActionFunction = async ({ request }) => {
           ...customOneClickOptions,
         };
 
-        console.log(JSON.stringify(options));
-
-        const result = await oneClick(apiKey as string, options);
+        const result = await oneClick(options, {
+          baseUrl: getBaseUrl(configState?.state.environment),
+          accessToken: brandSet.apiKey,
+        });
 
         logger.info(`oneClick result: ${JSON.stringify(result)}`);
 
@@ -182,8 +183,8 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   let configState = null;
 
   if (configStateParam) {
-    const state = await findStateByUuid(configStateParam);
-    configState = JSONParseOrNull(state?.state);
+    const state = await findState(configStateParam);
+    configState = state;
   }
 
   if (oneClickUuid) {

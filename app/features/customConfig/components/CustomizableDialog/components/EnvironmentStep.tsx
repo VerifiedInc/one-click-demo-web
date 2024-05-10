@@ -6,7 +6,6 @@ import { useBrand } from '~/hooks/useBrand';
 
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
 
-import { useAppContext } from '~/context/AppContext';
 import { OriginalButton } from '~/components/OriginalButton';
 import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
 import { RadioOption } from '~/features/customConfig/components/CustomizableDialog/components/RadioOption';
@@ -15,7 +14,6 @@ export function EnvironmentStep({
   onCustomizePress,
 }: Readonly<{ onCustomizePress(): void }>) {
   const brand = useBrand();
-  const appContext = useAppContext();
 
   const formContext = useFormContext<CustomDemoForm>();
   const environment = useController<CustomDemoForm>({ name: 'environment' });
@@ -48,11 +46,11 @@ export function EnvironmentStep({
               sx={{ maxWidth: 34, mx: 1, transform: 'translateY(8px)' }}
             />
           )}
-          Hooli
+          {brand.name}
         </Typography>
         <Typography sx={{ mt: 3 }}>
-          Experience the <i>fastest signup ever</i>. Sign up for Hooli with
-          verified data in just 10 seconds.
+          Experience the <i>fastest signup ever</i>. Sign up for {brand.name}{' '}
+          with verified data in just 10 seconds.
         </Typography>
       </Stack>
       <SectionAccordion
@@ -60,9 +58,9 @@ export function EnvironmentStep({
         title='Dummy or Real Data'
         tip={
           <>
-            Sandbox: {appContext.config.dummyDataUrl}
+            Sandbox
             <br />
-            Production: {appContext.config.realDataUrl}
+            Production
           </>
         }
         sx={{
@@ -73,16 +71,16 @@ export function EnvironmentStep({
       >
         <RadioGroup {...environment.field}>
           <RadioOption
-            value='sandbox'
+            value='dummy'
             title='Dummy data (sandbox)'
             description='Random example data'
-            tip={`Sandbox: ${appContext.config.dummyDataUrl}`}
+            tip='Sandbox'
           />
           <RadioOption
-            value='production'
+            value='real'
             title='Real, verified data (production)'
             description='Like SSN, DOB, Address, Name'
-            tip={`Production: ${appContext.config.realDataUrl}`}
+            tip='Production'
           />
         </RadioGroup>
       </SectionAccordion>
@@ -91,7 +89,9 @@ export function EnvironmentStep({
           type='submit'
           sx={{ fontSize: '15px' }}
           startIcon={<PlayArrow />}
-          disabled={!formContext.formState.isValid}
+          disabled={
+            !formContext.formState.isValid || formContext.formState.isSubmitting
+          }
         >
           Start Demo
         </OriginalButton>
