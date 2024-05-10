@@ -7,6 +7,7 @@ import { config } from '~/config';
 import { getBrandDto } from '~/coreAPI.server';
 import { logger } from '~/logger.server';
 import { Brand, getBrand } from '~/utils/getBrand';
+import { getBrandSet } from '~/utils/getBrandSet';
 
 // Convert buffer to webp.
 const toWebp = async (buffer: ArrayBuffer): Promise<Buffer> => {
@@ -20,15 +21,8 @@ const toWebp = async (buffer: ArrayBuffer): Promise<Buffer> => {
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.searchParams);
-  const brandUuid = searchParams.get('brand');
-  const brand: Brand | null = getBrand(
-    brandUuid
-      ? ((await getBrandDto(
-          brandUuid,
-          config.coreServiceAdminAuthKey
-        )) as BrandDto)
-      : null
-  );
+  const brandSet = await getBrandSet(searchParams);
+  const brand: Brand | null = brandSet.brand;
 
   try {
     if (!brand.logo.length) {
