@@ -7,6 +7,8 @@ export interface BrowserConfig {
   noticeEnabled: boolean;
   noticeText: string;
   bookACallUrl: string;
+  dummyDataUrl: string;
+  realDataUrl: string;
 }
 
 export const browserConfig: BrowserConfig =

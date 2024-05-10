@@ -4,7 +4,6 @@ import {
   LoaderFunction,
   redirect,
 } from '@remix-run/node';
-import { useActionData } from '@remix-run/react';
 import Box from '@mui/material/Box';
 import { Server } from 'socket.io';
 
@@ -18,18 +17,21 @@ import {
 import { config } from '~/config';
 import { logger } from '~/logger.server';
 
+import { getBrandSet } from '~/utils/getBrandSet';
+import { rooms } from '~/utils/socket';
+import { dateUtils } from '~/utils/date';
+
 import { useIsOneClick } from '~/hooks/useIsOneClick';
+import { useBrand } from '~/hooks/useBrand';
 import { useIsOneClickNonHosted } from '~/hooks/useIsOneClickNonHosted';
-import { ActionData } from '~/features/register/types';
 import { RegularForm } from '~/features/register/components/RegularForm';
 import { OneClickForm } from '~/features/register/components/OneClickForm';
 import { LogInAndRegister } from '~/components/LoginAndRegister';
-import { useBrand } from '~/hooks/useBrand';
-import { getBrandSet } from '~/utils/getBrandSet';
 import { OneClickFormNonHosted } from '~/features/register/components/OneClickFormNonHosted';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
-import { rooms } from '~/utils/socket';
-import { dateUtils } from '~/utils/date';
+import { mapOneClickOptions } from '~/features/oneClick/mappers/mapOneClickOptions';
+import { findState } from '~/features/state/services/findState';
+import { getBaseUrl } from '~/features/environment/helpers';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -43,10 +45,14 @@ export const action: ActionFunction = async ({ request }) => {
   const birthDate = (formData.get('birthDate') as string) || undefined;
   const apiKey = formData.get('apiKey');
   const redirectUrl = (formData.get('redirectUrl') as string) || undefined;
-
   const verificationOptions =
     searchParams.get('verificationOptions') || 'only_code';
   const isHosted = searchParams.get('isHosted') !== 'false' ?? true;
+
+  const brandSet = await getBrandSet(searchParams);
+
+  const configStateParams = searchParams.get('configState');
+  const configState = await findState(configStateParams);
 
   if (!action) {
     return json({ error: 'Action must be populated' }, { status: 400 });
@@ -73,6 +79,21 @@ export const action: ActionFunction = async ({ request }) => {
           ? dateUtils.toYYYYDDMM(dateUtils.formatDateMMDD(birthDate))
           : undefined;
 
+        let customOneClickOptions: Partial<OneClickOptions> = {};
+
+        logger.debug(`configState: ${JSON.stringify(configState)}`);
+
+        // Enforce the type of the custom one click options
+        customOneClickOptions = mapOneClickOptions(
+          configState?.state
+        ) as Partial<OneClickOptions>;
+
+        logger.debug(
+          `custom one click options found: ${JSON.stringify(
+            configState?.state
+          )}`
+        );
+
         const options: Partial<OneClickOptions> = {
           phone,
           birthDate: formatterdBirthDate,
@@ -80,9 +101,13 @@ export const action: ActionFunction = async ({ request }) => {
           verificationOptions:
             verificationOptions as OneClickOptions['verificationOptions'],
           isHosted,
+          ...customOneClickOptions,
         };
 
-        const result = await oneClick(apiKey as string, options);
+        const result = await oneClick(options, {
+          baseUrl: getBaseUrl(configState?.state.environment),
+          accessToken: brandSet.apiKey,
+        });
 
         logger.info(`oneClick result: ${JSON.stringify(result)}`);
 
@@ -153,6 +178,14 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const brandSet = await getBrandSet(searchParams);
 
   const oneClickUuid = searchParams.get('1ClickUuid');
+  const configStateParam = searchParams.get('configState');
+
+  let configState = null;
+
+  if (configStateParam) {
+    const state = await findState(configStateParam);
+    configState = state;
+  }
 
   if (oneClickUuid) {
     const result = await getSharedCredentialsOneClick(
@@ -184,16 +217,13 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     }
   }
 
-  return null;
+  return json({ configState });
 };
 
 export default function Register() {
-  const actionData: ActionData | undefined = useActionData();
   const isOneClick = useIsOneClick();
   const isOneClickNonHosted = useIsOneClickNonHosted();
   const brand = useBrand();
-
-  console.log('actionData', actionData);
 
   return (
     <Box

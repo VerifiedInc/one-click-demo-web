@@ -1,5 +1,10 @@
 import * as Sentry from '@sentry/remix';
-import { BrandDto, OneClickDBDto, OneClickDto } from '@verifiedinc/core-types';
+import {
+  BrandDto,
+  CredentialSchemaDto,
+  OneClickDBDto,
+  OneClickDto,
+} from '@verifiedinc/core-types';
 
 import { config } from '~/config';
 import { logger } from './logger.server';
@@ -290,17 +295,18 @@ export const getSharedCredentialsOneClick = async (
  * sends an SMS containing a link to allow user to do 1-click sign up.
  * Please note: This functionality is NOT and should NOT be called in the browser due to the sensitive nature
  * of the API key (verifiedApiKey).
- * 
+ *
  * Documentation: https://docs.verified.inc/api-overview#one-click
 
- * @param phone
  * @returns {Promise<{ url: string; phone: string }>} Returns an url that leads to 1-click signup request page
+ * @param partial
+ * @param options
  */
 export const oneClick = async (
-  apiKey: string,
-  oneClickOptions: Partial<OneClickOptions>
+  partial: Partial<OneClickOptions>,
+  options: { baseUrl: string; accessToken: string }
 ): Promise<{ url: string; phone: string }> => {
-  const { phone } = oneClickOptions;
+  const { phone } = partial;
 
   // short circuit if phone are not provided
   if (!phone) {
@@ -308,23 +314,24 @@ export const oneClick = async (
   }
 
   const headers = {
-    Authorization: 'Bearer ' + apiKey,
+    Authorization: 'Bearer ' + options.accessToken,
     'Content-Type': 'application/json',
   };
 
-  const options: OneClickOptions = {
+  const oneClickOptions: OneClickOptions = {
     phone,
-    ...oneClickOptions,
+    ...partial,
   };
 
-  if (phone) options.phone = phone?.startsWith('+1') ? phone : '+1' + phone;
+  if (phone)
+    oneClickOptions.phone = phone?.startsWith('+1') ? phone : '+1' + phone;
 
-  const body = JSON.stringify(options);
+  const body = JSON.stringify(oneClickOptions);
 
   try {
     logger.info(`calling oneClick with headers ${JSON.stringify(headers)}`);
 
-    const response = await fetch(config.coreServiceUrl + '/1-click', {
+    const response = await fetch(options.baseUrl + '/1-click', {
       method: 'POST',
       headers,
       body,
@@ -369,26 +376,23 @@ const mapBrandDto = (brandDto: BrandDto): Partial<BrandDto> => ({
 /**
  * Get a brand DTO by uuid.
  * @param brandUuid Brand uuid.
- * @param accessToken Access token to access core service API.
+ * @param options
  * @returns
  */
 export const getBrandDto = async (
   brandUuid: string,
-  accessToken: string
+  options: { baseUrl: string; accessToken: string }
 ): Promise<Partial<BrandDto> | null> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + accessToken,
+      Authorization: 'Bearer ' + options.accessToken,
       'Content-Type': 'application/json',
     };
 
-    const response = await fetch(
-      config.coreServiceUrl + `/brands/${brandUuid}`,
-      {
-        method: 'GET',
-        headers,
-      }
-    );
+    const response = await fetch(options.baseUrl + `/brands/${brandUuid}`, {
+      method: 'GET',
+      headers,
+    });
 
     if (!response.ok) return null;
 
@@ -404,16 +408,16 @@ export const getBrandDto = async (
 /**
  * Get a brand API key.
  * @param brandUuid Brand uuid.
- * @param accessToken Access token to access core service API.
+ * @param options
  * @returns Brand API key.
  */
 export const getBrandApiKey = async (
   brandUuid: string,
-  accessToken: string
+  options: { accessToken: string; baseUrl: string }
 ): Promise<string> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + accessToken,
+      Authorization: 'Bearer ' + options.accessToken,
       'Content-Type': 'application/json',
     };
 
@@ -422,8 +426,7 @@ export const getBrandApiKey = async (
     );
 
     const response = await fetch(
-      config.coreServiceUrl +
-        `/db/apiKeys?brandUuid=${brandUuid}&$select[]=key`,
+      options.baseUrl + `/db/apiKeys?brandUuid=${brandUuid}&$select[]=key`,
       {
         method: 'GET',
         headers,
@@ -471,6 +474,32 @@ export const getDBOneClick = async (uuid: string): Promise<OneClickDBDto> => {
     return await response.json();
   } catch (e) {
     logger.error(`db/1-click get error: ${e}`);
+    throw e;
+  }
+};
+
+/**
+ * Get a persisted minified text.
+ */
+export const getSchemas = async (): Promise<CredentialSchemaDto['schemas']> => {
+  logger.debug(`get schemas`);
+
+  try {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    const response = await fetch(
+      config.schemaResolverServiceUrl + `/jsonSchema`,
+      {
+        method: 'GET',
+        headers,
+      }
+    );
+
+    return await response.json();
+  } catch (e) {
+    logger.error(`/jsonSchema get error: ${e}`);
     throw e;
   }
 };

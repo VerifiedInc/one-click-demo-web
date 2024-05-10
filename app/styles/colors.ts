@@ -1,6 +1,10 @@
 export const white = '#ffffff';
 export const black = '#1C1300';
 
+export const original = '#0dbc3d';
+export const lightOriginal = '#5ef06d';
+export const darkOriginal = '#008a01';
+
 export const orange = '#FFAD00';
 export const lightOrange = '#FACE6F';
 export const darkOrange = '#CB8A00';

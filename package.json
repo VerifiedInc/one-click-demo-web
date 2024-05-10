@@ -20,9 +20,10 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "test": "NODE_ENV=test jest",
-    "migrate": "knex migrate:latest",
-    "migrate:make": "knex migrate:make",
-    "migrate:down": "knex migrate:down"
+    "db:push": "npx prisma db push",
+    "db:baseline": "npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql",
+    "db:migrate": "npx prisma migrate resolve --applied 0_init || true && npx prisma db push && npx prisma migrate deploy",
+    "db:migration": "npx prisma migrate dev"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
@@ -44,9 +45,11 @@
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.5",
+    "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.5",
     "@newrelic/winston-enricher": "^4.0.1",
+    "@prisma/client": "^5.13.0",
     "@remix-run/express": "^1.18.0",
     "@remix-run/node": "^1.18.0",
     "@remix-run/react": "^1.18.0",
@@ -70,6 +73,7 @@
     "pg": "^8.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.3",
     "react-imask": "^7.2.1",
     "redis": "^4.6.13",
     "sharp": "^0.33.2",
@@ -111,6 +115,7 @@
     "lint-staged": "^13.1.0",
     "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5",
+    "prisma": "^5.13.0",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"

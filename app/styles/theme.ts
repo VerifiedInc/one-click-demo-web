@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import * as colors from './colors';
+import { InputProps as StandardInputProps } from '@mui/material/Input/Input';
+import { BaseTextFieldProps } from '@mui/material/TextField/TextField';
 
 declare module '@mui/material/styles' {
   // custom palette
@@ -221,6 +223,15 @@ export const theme = (_theme: { main: string; light: string; dark: string }) =>
       MuiTextField: {
         defaultProps: {
           fullWidth: true,
+        },
+        styleOverrides: {
+          root: {
+            '&.original': {
+              '& .MuiInputBase-root ': {
+                borderRadius: '4px',
+              },
+            },
+          },
         },
       },
       MuiListItemButton: {
