@@ -1,3 +1,4 @@
 public/build
 build
 .trunk
+app/generated/client
