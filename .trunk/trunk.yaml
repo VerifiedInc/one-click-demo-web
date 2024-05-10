@@ -20,7 +20,6 @@ lint:
     - linters: [ALL]
       paths:
         - Dockerfile
-        - app/generated/client
   enabled:
     - checkov@3.2.44
     - git-diff-check
