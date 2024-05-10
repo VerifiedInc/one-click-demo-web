@@ -5,6 +5,7 @@
     "npm": "9.5.0"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "build": "remix build",
     "build:sourcemap": "remix build --sourcemap",
     "sentry:upload_sourcemaps": "node ./node_modules/@sentry/remix/scripts/sentry-upload-sourcemaps.js",
@@ -20,10 +21,11 @@
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "test": "NODE_ENV=test jest",
-    "db:push": "npx prisma db push",
-    "db:baseline": "npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql",
-    "db:migrate": "npx prisma migrate resolve --applied 0_init || true && npx prisma db push && npx prisma migrate deploy && npx prisma generate",
-    "db:migration": "npx prisma migrate dev"
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:baseline": "prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql",
+    "db:migrate": "prisma migrate resolve --applied 0_init || true && prisma db push && prisma migrate deploy",
+    "db:migration": "prisma migrate dev"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
