@@ -22,7 +22,7 @@ RUN --mount=type=ssh,id=github npm ci
 COPY ./ /app/
 
 # Generate prisma client
-RUN npn run db:generate
+RUN npm run db:generate
 # Remix generate different hashes for chunks with sourcemap flag on build.
 RUN npm run build:sourcemap
 # We must delete sourcemaps since is discouraged to keep them in production.
