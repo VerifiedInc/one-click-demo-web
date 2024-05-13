@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # Debug database url
-echo DATABASE_URL
+echo "DATABASE_URL: $DATABASE_URL"
+
+# Run the database migrations
+prisma migrate dev
 
 # Run the database migrations
 prisma migrate deploy
