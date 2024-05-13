@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouteLoaderData, useSearchParams } from '@remix-run/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -88,6 +88,9 @@ export function CustomizableDialog() {
     setSearchParams(searchParams);
     setDialogOpen(false);
   };
+  useEffect(() => {
+    console.log('form.formState.isValid', form.formState.isValid);
+  }, [form.formState]);
 
   return (
     <Dialog open={dialogOpen} sx={dialogStyle}>
