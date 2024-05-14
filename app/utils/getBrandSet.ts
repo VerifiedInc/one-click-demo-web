@@ -1,4 +1,5 @@
 import { BrandDto } from '@verifiedinc/core-types';
+import { PrismaClient } from '@prisma/client';
 
 import { config } from '~/config';
 import { getBrandApiKey, getBrandDto } from '~/coreAPI.server';
@@ -9,13 +10,16 @@ import { logger } from '~/logger.server';
 import { findState } from '~/features/state/services/findState';
 import { getAdminKey, getBaseUrl, ifEnv } from '~/features/environment/helpers';
 
-export const getBrandSet = async (searchParams: URLSearchParams) => {
+export const getBrandSet = async (
+  prisma: PrismaClient,
+  searchParams: URLSearchParams
+) => {
   let brand = getBrand(null);
   let apiKey = config.verifiedApiKey;
 
   // Allow custom branding under environment flag.
   if (config.customBrandingEnabled) {
-    const state = await findState(searchParams.get('configState'));
+    const state = await findState(prisma, searchParams.get('configState'));
     const brandParam = searchParams.get('brand');
     const dummyBrandParam = searchParams.get('dummyBrand') || state?.dummyBrand;
     const realBrandParam = searchParams.get('realBrand') || state?.realBrand;

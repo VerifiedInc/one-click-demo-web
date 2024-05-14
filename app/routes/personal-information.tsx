@@ -16,11 +16,11 @@ import { PersonalInformationLoader } from '~/features/personalInformation/types'
 import { getOneClickUseCase } from '~/features/oneClick/useCases/getOneClickUseCase';
 import { InputMask } from '~/components/InputMask';
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, context }) => {
   const url = new URL(request.url);
   const { searchParams } = url;
 
-  const oneClick = await getOneClickUseCase({ request });
+  const oneClick = await getOneClickUseCase({ context, request });
 
   if (oneClick?.success) return json(oneClick.success);
 

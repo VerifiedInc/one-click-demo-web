@@ -6,6 +6,7 @@ import {
 } from '@remix-run/node';
 import Box from '@mui/material/Box';
 import { Server } from 'socket.io';
+import { PrismaClient } from '@prisma/client';
 
 import { getErrorMessage, getErrorStatus } from '~/errors';
 import {
@@ -34,7 +35,7 @@ import { findState } from '~/features/state/services/findState';
 import { getBaseUrl } from '~/features/environment/helpers';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, context }) => {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.searchParams);
   const formData = await request.formData();
@@ -49,10 +50,16 @@ export const action: ActionFunction = async ({ request }) => {
     searchParams.get('verificationOptions') || 'only_code';
   const isHosted = searchParams.get('isHosted') !== 'false' ?? true;
 
-  const brandSet = await getBrandSet(searchParams);
+  const brandSet = await getBrandSet(
+    context.prisma as PrismaClient,
+    searchParams
+  );
 
   const configStateParams = searchParams.get('configState');
-  const configState = await findState(configStateParams);
+  const configState = await findState(
+    context.prisma as PrismaClient,
+    configStateParams
+  );
 
   if (!action) {
     return json({ error: 'Action must be populated' }, { status: 400 });
@@ -108,6 +115,7 @@ export const action: ActionFunction = async ({ request }) => {
           baseUrl: getBaseUrl(configState?.state.environment),
           accessToken: brandSet.apiKey,
           stateUuid: configState?.uuid,
+          requestUrl: url,
         });
 
         logger.info(`oneClick result: ${JSON.stringify(result)}`);
@@ -176,7 +184,10 @@ export const action: ActionFunction = async ({ request }) => {
 export const loader: LoaderFunction = async ({ request, context }) => {
   const url = new URL(request.url);
   const { searchParams } = url;
-  const brandSet = await getBrandSet(searchParams);
+  const brandSet = await getBrandSet(
+    context.prisma as PrismaClient,
+    searchParams
+  );
 
   const oneClickUuid = searchParams.get('1ClickUuid');
   const configStateParam = searchParams.get('configState');
@@ -184,7 +195,10 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   let configState = null;
 
   if (configStateParam) {
-    const state = await findState(configStateParam);
+    const state = await findState(
+      context.prisma as PrismaClient,
+      configStateParam
+    );
     configState = state;
   }
 

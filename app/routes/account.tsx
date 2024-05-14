@@ -6,11 +6,11 @@ import { Box, Typography, Stack, TextField, Button } from '@mui/material';
 import { getOneClickUseCase } from '~/features/oneClick/useCases/getOneClickUseCase';
 import { usePersonalInformationFields } from '~/features/personalInformation/hooks/usePersonalInformationFields';
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ context, request }) => {
   const url = new URL(request.url);
   const { searchParams } = url;
 
-  const oneClick = await getOneClickUseCase({ request });
+  const oneClick = await getOneClickUseCase({ context, request });
 
   if (oneClick?.success) return json(oneClick.success);
 

@@ -1,11 +1,23 @@
+import type { AppLoadContext } from '@remix-run/node';
+import { PrismaClient } from '@prisma/client';
+
 import { logger } from '~/logger.server';
 import { getDBOneClick, getSharedCredentialsOneClick } from '~/coreAPI.server';
 import { getBrandSet } from '~/utils/getBrandSet';
 
-export async function getOneClickUseCase({ request }: { request: Request }) {
+export async function getOneClickUseCase({
+  context,
+  request,
+}: {
+  context: AppLoadContext;
+  request: Request;
+}) {
   const url = new URL(request.url);
   const { searchParams } = url;
-  const brandSet = await getBrandSet(searchParams);
+  const brandSet = await getBrandSet(
+    context.prisma as PrismaClient,
+    searchParams
+  );
 
   const oneClickUuid = searchParams.get('1ClickUuid');
 

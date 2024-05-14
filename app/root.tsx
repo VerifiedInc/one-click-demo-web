@@ -20,6 +20,7 @@ import {
   ThemeProvider,
   unstable_useEnhancedEffect as useEnhancedEffect,
 } from '@mui/material';
+import { PrismaClient } from '@prisma/client';
 
 import { config } from './config';
 import { initLogRocket } from './logrocket';
@@ -76,7 +77,10 @@ export const links: LinksFunction = () => [
 export const loader: LoaderFunction = async ({ context, request }) => {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.searchParams);
-  const brandSet = await getBrandSet(searchParams);
+  const brandSet = await getBrandSet(
+    context.prisma as PrismaClient,
+    searchParams
+  );
 
   const { cspNonce } = context;
   const {

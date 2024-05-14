@@ -1,16 +1,21 @@
 import { ActionFunction, json } from '@remix-run/node';
+import { PrismaClient } from '@prisma/client';
+
+import { createState, findStateByUuid } from 'prisma/state';
 
 import { getErrorMessage } from '~/errors';
 import { logger } from '~/logger.server';
-import { createState, findStateByUuid } from 'prisma/state';
 
 export const path = () => '/custom-demo-state';
 
-export const get: ActionFunction = async ({ params }) => {
+export const get: ActionFunction = async ({ params, context }) => {
   try {
     if (!params.uuid) throw new Error('UUID is missing');
 
-    const state = await findStateByUuid(params.uuid);
+    const state = await findStateByUuid(
+      context.prisma as PrismaClient,
+      params.uuid
+    );
     if (!state) {
       throw new Error('State not found');
     }
@@ -23,7 +28,7 @@ export const get: ActionFunction = async ({ params }) => {
   }
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, context }) => {
   try {
     const formData = await request.formData();
     const state = formData.get('state');
@@ -46,7 +51,11 @@ export const action: ActionFunction = async ({ request }) => {
       throw new Error('realBrand is required');
     }
 
-    const newState = await createState({ state, dummyBrand, realBrand });
+    const newState = await createState(context.prisma as PrismaClient, {
+      state,
+      dummyBrand,
+      realBrand,
+    });
 
     return json({ data: newState });
   } catch (error) {

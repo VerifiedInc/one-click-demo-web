@@ -1,6 +1,7 @@
 import { LoaderFunction, Response } from '@remix-run/node';
 import axios from 'axios';
 import sharp from 'sharp';
+import { PrismaClient } from '@prisma/client';
 
 import { logger } from '~/logger.server';
 import { Brand, getBrand } from '~/utils/getBrand';
@@ -15,10 +16,13 @@ const toWebp = async (buffer: ArrayBuffer): Promise<Buffer> => {
  * Loader function to fetch the favicon for the brand.
  * Return default favicon if brand is not found.
  */
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, context }) => {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.searchParams);
-  const brandSet = await getBrandSet(searchParams);
+  const brandSet = await getBrandSet(
+    context.prisma as PrismaClient,
+    searchParams
+  );
   const brand: Brand | null = brandSet.brand;
 
   try {
