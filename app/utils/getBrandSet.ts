@@ -20,7 +20,11 @@ export const getBrandSet = async (searchParams: URLSearchParams) => {
     const dummyBrandParam = searchParams.get('dummyBrand') || state?.dummyBrand;
     const realBrandParam = searchParams.get('realBrand') || state?.realBrand;
     const hasEnvBrands = !!state?.dummyBrand && !!state?.realBrand;
-    const environment = hasEnvBrands ? state?.state.environment : 'dummy';
+    const environment = hasEnvBrands
+      ? state?.state.environment
+      : brandParam
+      ? undefined
+      : 'dummy';
 
     const brandUuid = ifEnv(environment, [
       realBrandParam,
