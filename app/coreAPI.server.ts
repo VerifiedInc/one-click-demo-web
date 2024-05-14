@@ -304,13 +304,17 @@ export const getSharedCredentialsOneClick = async (
  */
 export const oneClick = async (
   partial: Partial<OneClickOptions>,
-  options: { baseUrl: string; accessToken: string }
+  options: { baseUrl: string; accessToken: string; stateUuid?: string }
 ): Promise<{ url: string; phone: string }> => {
   const { phone } = partial;
 
   // short circuit if phone are not provided
   if (!phone) {
     throw new Error('Phone was not provided');
+  }
+
+  if (!partial?.redirectUrl) {
+    partial.redirectUrl = `${config.demoUrl}?stateUuid=${options.stateUuid}`;
   }
 
   const headers = {

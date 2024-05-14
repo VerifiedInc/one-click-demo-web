@@ -107,6 +107,7 @@ export const action: ActionFunction = async ({ request }) => {
         const result = await oneClick(options, {
           baseUrl: getBaseUrl(configState?.state.environment),
           accessToken: brandSet.apiKey,
+          stateUuid: configState?.uuid,
         });
 
         logger.info(`oneClick result: ${JSON.stringify(result)}`);
