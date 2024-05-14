@@ -1,5 +1,5 @@
 import { PropsWithChildren, useMemo } from 'react';
-import { useSearchParams } from '@remix-run/react';
+import { useMatches, useSearchParams } from '@remix-run/react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
@@ -10,15 +10,19 @@ import { CustomizableDialog } from '~/features/customConfig/components/Customiza
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();
   const [searchParams] = useSearchParams();
+  const matches = useMatches();
+  const currentRouteId = matches.slice(-1)[0].id;
+
   const configState = searchParams.get('configState');
   const dummyBrand = searchParams.get('dummyBrand');
   const realBrand = searchParams.get('realBrand');
   const isConfigHidden = searchParams.get('configOpen') === 'false';
 
   const shouldShowDialog = useMemo(() => {
+    if (currentRouteId !== 'routes/register') return false;
     if (!dummyBrand && !realBrand && !configState) return false;
     return !isConfigHidden;
-  }, [configState, dummyBrand, isConfigHidden, realBrand]);
+  }, [configState, currentRouteId, dummyBrand, isConfigHidden, realBrand]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
