@@ -314,7 +314,7 @@ export const oneClick = async (
   }
 
   if (!partial?.redirectUrl) {
-    partial.redirectUrl = `${config.demoUrl}?stateUuid=${options.stateUuid}`;
+    partial.redirectUrl = `${config.demoUrl}?configState=${options.stateUuid}`;
   }
 
   const headers = {
