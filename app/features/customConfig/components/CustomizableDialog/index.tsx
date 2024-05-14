@@ -50,11 +50,20 @@ export function CustomizableDialog() {
 
   const form = useForm<CustomDemoForm>({
     resolver: zodResolver(customDemoFormSchema),
-    defaultValues: mapFormState(
-      routerData?.configState?.state || {
-        credentialRequests: defaultCredentialRequests,
+    defaultValues: async () => {
+      const url = new URL(window.location.href);
+      const defaultValues = mapFormState(
+        routerData?.configState?.state || {
+          credentialRequests: defaultCredentialRequests,
+        }
+      );
+
+      if (!defaultValues.redirectUrl) {
+        defaultValues.redirectUrl = url.toString();
       }
-    ),
+
+      return defaultValues;
+    },
     mode: 'all',
   });
   const { isDirty } = form.formState;
