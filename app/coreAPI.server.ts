@@ -328,14 +328,6 @@ export const oneClick = async (
     }
   }
 
-  // if the redirectUrl is not provided, add the configState query parameter to the requestUrl
-  if (!partial?.redirectUrl) {
-    const url = new URL(options.requestUrl);
-    url.searchParams.set('configState', `${options.stateUuid}`);
-    url.searchParams.set('configOpen', 'false');
-    partial.redirectUrl = url.toString();
-  }
-
   const headers = {
     Authorization: 'Bearer ' + options.accessToken,
     'Content-Type': 'application/json',
