@@ -31,9 +31,9 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 // The exported `loader` function will be called when the route makes a GET request, i.e. when it is rendered
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, context }) => {
   // requireSession will redirect to the login page if the required params is not present to return the required data
-  const session = await requireSession(request);
+  const session = await requireSession(request, context);
   // return the session to the route, so it can be displayed
   return json({ session });
 };

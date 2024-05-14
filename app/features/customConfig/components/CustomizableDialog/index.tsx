@@ -57,6 +57,7 @@ export function CustomizableDialog() {
     ),
     mode: 'all',
   });
+  const { isDirty } = form.formState;
 
   const handleFormSubmission = async (data: CustomDemoForm) => {
     searchParams.set(
@@ -75,22 +76,22 @@ export function CustomizableDialog() {
     dummyBrand && formData.set('dummyBrand', dummyBrand);
     realBrand && formData.set('realBrand', realBrand);
 
-    const response = await fetch(path(), {
-      method: 'POST',
-      body: formData,
-    });
-    const { data: state } = await response.json();
+    if (isDirty) {
+      const response = await fetch(path(), {
+        method: 'POST',
+        body: formData,
+      });
+      const { data: state } = await response.json();
 
-    console.log('custom demo state saved', state);
+      console.log('custom demo state saved', state);
 
-    // Update url with the current state
-    searchParams.set('configState', state.uuid);
+      // Update url with the current state
+      searchParams.set('configState', state.uuid);
+    }
+
     setSearchParams(searchParams);
     setDialogOpen(false);
   };
-  useEffect(() => {
-    console.log('form.formState.isValid', form.formState.isValid);
-  }, [form.formState]);
 
   return (
     <Dialog open={dialogOpen} sx={dialogStyle}>

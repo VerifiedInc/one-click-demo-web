@@ -1,4 +1,9 @@
-import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import {
+  AppLoadContext,
+  createCookieSessionStorage,
+  redirect,
+} from '@remix-run/node';
+import { PrismaClient } from '@prisma/client';
 
 import { config } from './config';
 import { Brand } from './utils/getBrand';
@@ -70,14 +75,20 @@ export const logout = async (request: Request, redirectUrl?: string) => {
  * @param {Request} request
  * @returns {Promise<OneClickDto>} oneClickDto
  */
-export const requireSession = async (request: Request) => {
+export const requireSession = async (
+  request: Request,
+  context: AppLoadContext
+) => {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.searchParams);
 
   const oneClickUuid = searchParams.get('1ClickUuid');
 
   if (oneClickUuid) {
-    const brandSet = await getBrandSet(searchParams);
+    const brandSet = await getBrandSet(
+      context.prisma as PrismaClient,
+      searchParams
+    );
     const result = await getSharedCredentialsOneClick(
       brandSet.apiKey,
       oneClickUuid

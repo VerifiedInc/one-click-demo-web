@@ -8,6 +8,9 @@ const helmet = require('helmet');
 const { createRequestHandler } = require('@remix-run/express');
 const http = require('http');
 const socketIo = require('./app/lib/socket-io');
+const prisma = require('./prisma/prisma');
+
+console.log(prisma);
 
 const BUILD_DIR = path.join(process.cwd(), 'build');
 
@@ -120,6 +123,7 @@ app.all(
           getLoadContext: () => ({
             cspNonce: res.locals.cspNonce,
             socketIo: socketIo.getInstance(),
+            prisma,
           }),
         })(req, res, next);
       }
@@ -131,6 +135,7 @@ app.all(
           getLoadContext: () => ({
             cspNonce: res.locals.cspNonce,
             socketIo: socketIo.getInstance(),
+            prisma,
           }),
         })(req, res, next);
       }
