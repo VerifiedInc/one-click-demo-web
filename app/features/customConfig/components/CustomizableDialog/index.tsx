@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouteLoaderData, useSearchParams } from '@remix-run/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,22 +48,21 @@ export function CustomizableDialog() {
   const [dialogOpen, setDialogOpen] = useState(true);
   const [showDetailStep, setShowDetailStep] = useState(false);
 
+  const url =
+    typeof window !== 'undefined' ? new URL(window.location.href) : '';
+  const defaultValues = mapFormState(
+    routerData?.configState?.state || {
+      credentialRequests: defaultCredentialRequests,
+    }
+  );
+
+  if (!defaultValues.redirectUrl) {
+    defaultValues.redirectUrl = url.toString();
+  }
+
   const form = useForm<CustomDemoForm>({
     resolver: zodResolver(customDemoFormSchema),
-    defaultValues: async () => {
-      const url = new URL(window.location.href);
-      const defaultValues = mapFormState(
-        routerData?.configState?.state || {
-          credentialRequests: defaultCredentialRequests,
-        }
-      );
-
-      if (!defaultValues.redirectUrl) {
-        defaultValues.redirectUrl = url.toString();
-      }
-
-      return defaultValues;
-    },
+    defaultValues,
     mode: 'all',
   });
   const { isDirty } = form.formState;

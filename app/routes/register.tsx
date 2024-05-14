@@ -115,6 +115,7 @@ export const action: ActionFunction = async ({ request, context }) => {
           baseUrl: getBaseUrl(configState?.state.environment),
           accessToken: brandSet.apiKey,
           stateUuid: configState?.uuid,
+          requestUrl: url,
         });
 
         logger.info(`oneClick result: ${JSON.stringify(result)}`);

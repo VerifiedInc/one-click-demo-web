@@ -304,7 +304,12 @@ export const getSharedCredentialsOneClick = async (
  */
 export const oneClick = async (
   partial: Partial<OneClickOptions>,
-  options: { baseUrl: string; accessToken: string; stateUuid?: string }
+  options: {
+    baseUrl: string;
+    accessToken: string;
+    stateUuid?: string;
+    requestUrl: URL;
+  }
 ): Promise<{ url: string; phone: string }> => {
   const { phone } = partial;
 
@@ -313,8 +318,20 @@ export const oneClick = async (
     throw new Error('Phone was not provided');
   }
 
+  // if the redirectUrl is provided and is the same origin as the demo, add the configState query parameter
+  if (partial.redirectUrl) {
+    if (partial.redirectUrl.includes(options.requestUrl.hostname)) {
+      const url = new URL(partial.redirectUrl);
+      url.searchParams.set('configState', `${options.stateUuid}`);
+      partial.redirectUrl = url.toString();
+    }
+  }
+
+  // if the redirectUrl is not provided, add the configState query parameter to the requestUrl
   if (!partial?.redirectUrl) {
-    partial.redirectUrl = `${config.demoUrl}?configState=${options.stateUuid}`;
+    const url = new URL(options.requestUrl);
+    url.searchParams.set('configState', `${options.stateUuid}`);
+    partial.redirectUrl = url.toString();
   }
 
   const headers = {
