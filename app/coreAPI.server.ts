@@ -323,6 +323,7 @@ export const oneClick = async (
     if (partial.redirectUrl.includes(options.requestUrl.hostname)) {
       const url = new URL(partial.redirectUrl);
       url.searchParams.set('configState', `${options.stateUuid}`);
+      url.searchParams.set('configOpen', 'false');
       partial.redirectUrl = url.toString();
     }
   }
@@ -331,6 +332,7 @@ export const oneClick = async (
   if (!partial?.redirectUrl) {
     const url = new URL(options.requestUrl);
     url.searchParams.set('configState', `${options.stateUuid}`);
+    url.searchParams.set('configOpen', 'false');
     partial.redirectUrl = url.toString();
   }
 
