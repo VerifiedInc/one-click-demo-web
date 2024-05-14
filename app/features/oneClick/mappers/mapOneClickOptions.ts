@@ -7,7 +7,9 @@ import {
   OneClickContentVerificationOptions,
 } from '~/features/customConfig/types';
 
-export const mapOneClickOptions = (data: any): Partial<OneClickOptions> => {
+export const mapOneClickOptions = (
+  data?: Record<string, any>
+): Partial<OneClickOptions> => {
   const mapCredentialRequests = (
     credentialRequest: CredentialRequestDto
   ): CredentialRequestDto => {
@@ -30,16 +32,16 @@ export const mapOneClickOptions = (data: any): Partial<OneClickOptions> => {
 
   const options: Partial<OneClickOptions> = {
     verificationOptions:
-      data.verificationOptions || OneClickContentVerificationOptions.OnlyCode,
-    isHosted: data.isHosted ?? true,
+      data?.verificationOptions || OneClickContentVerificationOptions.OnlyCode,
+    isHosted: data?.isHosted ?? true,
     content: {
       title: data?.content?.title || OneClickContentTitle.Signup,
       description: data?.content?.description,
     },
-    redirectUrl: data.redirectUrl,
+    redirectUrl: data?.redirectUrl,
   };
 
-  if (data.credentialRequests?.length) {
+  if (data?.credentialRequests?.length) {
     options.credentialRequests = data.credentialRequests.map(
       mapCredentialRequests
     );

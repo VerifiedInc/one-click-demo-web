@@ -1,10 +1,7 @@
 import { LoaderFunction, Response } from '@remix-run/node';
 import axios from 'axios';
-import { BrandDto } from '@verifiedinc/core-types';
 import sharp from 'sharp';
 
-import { config } from '~/config';
-import { getBrandDto } from '~/coreAPI.server';
 import { logger } from '~/logger.server';
 import { Brand, getBrand } from '~/utils/getBrand';
 import { getBrandSet } from '~/utils/getBrandSet';
