@@ -400,11 +400,11 @@ const mapBrandDto = (brandDto: BrandDto): Partial<BrandDto> => ({
  */
 export const getBrandDto = async (
   brandUuid: string,
-  options: { baseUrl: string; apiKey: string }
+  options: { baseUrl: string; adminKey: string }
 ): Promise<Partial<BrandDto> | null> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + options.apiKey,
+      Authorization: 'Bearer ' + options.adminKey,
       'Content-Type': 'application/json',
     };
 
@@ -432,11 +432,11 @@ export const getBrandDto = async (
  */
 export const getBrandApiKey = async (
   brandUuid: string,
-  options: { apiKey: string; baseUrl: string }
+  options: { adminKey: string; baseUrl: string }
 ): Promise<string> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + options.apiKey,
+      Authorization: 'Bearer ' + options.adminKey,
       'Content-Type': 'application/json',
     };
 

@@ -45,14 +45,14 @@ export const getBrandSet = async (
 
       apiKey = await getBrandApiKey(brandUuid, {
         baseUrl,
-        apiKey: adminKey,
+        adminKey,
       });
 
       logger.info(`got api key: ${apiKey}`);
 
       const brandDto = await getBrandDto(brandUuid, {
         baseUrl,
-        apiKey: adminKey,
+        adminKey,
       });
 
       brand = getBrand(brandUuid ? (brandDto as BrandDto) : null);
