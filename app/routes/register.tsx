@@ -206,7 +206,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   if (oneClickUuid && !hasOptedOut) {
     const result = await getSharedCredentialsOneClick(oneClickUuid, {
       baseUrl: getBaseUrl(configState?.state.environment),
-      accessToken: brandSet.apiKey,
+      apiKey: brandSet.apiKey,
     });
     if (result) {
       // Emit the 1-click successful event to the socket.io room.

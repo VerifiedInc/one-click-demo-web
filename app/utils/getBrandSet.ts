@@ -52,7 +52,7 @@ export const getBrandSet = async (
 
       const brandDto = await getBrandDto(brandUuid, {
         baseUrl,
-        accessToken,
+        apiKey: accessToken,
       });
 
       brand = getBrand(brandUuid ? (brandDto as BrandDto) : null);

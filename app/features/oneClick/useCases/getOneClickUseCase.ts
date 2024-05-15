@@ -41,7 +41,7 @@ export async function getOneClickUseCase({
     logger.info('1click uuid value found and opted out is not true');
     const oneClick = await getSharedCredentialsOneClick(oneClickUuid, {
       baseUrl: getBaseUrl(configState.state.environment),
-      accessToken: brandSet.apiKey,
+      apiKey: brandSet.apiKey,
     });
     const oneClickDB = await getDBOneClick(oneClickUuid);
 

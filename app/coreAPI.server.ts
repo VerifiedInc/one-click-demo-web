@@ -254,10 +254,10 @@ export const sharedCredentials = async (uuid: string) => {
  */
 export const getSharedCredentialsOneClick = async (
   uuid: string,
-  options: { baseUrl: string; accessToken: string }
+  options: { baseUrl: string; apiKey: string }
 ) => {
   const headers = {
-    Authorization: 'Bearer ' + options.accessToken,
+    Authorization: 'Bearer ' + options.apiKey,
     'Content-Type': 'application/json',
   };
 
@@ -400,11 +400,11 @@ const mapBrandDto = (brandDto: BrandDto): Partial<BrandDto> => ({
  */
 export const getBrandDto = async (
   brandUuid: string,
-  options: { baseUrl: string; accessToken: string }
+  options: { baseUrl: string; apiKey: string }
 ): Promise<Partial<BrandDto> | null> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + options.accessToken,
+      Authorization: 'Bearer ' + options.apiKey,
       'Content-Type': 'application/json',
     };
 

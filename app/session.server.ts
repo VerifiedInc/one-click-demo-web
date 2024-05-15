@@ -104,7 +104,7 @@ export const requireSession = async (
 
     const result = await getSharedCredentialsOneClick(oneClickUuid, {
       baseUrl: getBaseUrl(configState.state.environment),
-      accessToken: brandSet.apiKey,
+      apiKey: brandSet.apiKey,
     });
 
     if (result) return result;
