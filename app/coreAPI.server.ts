@@ -344,7 +344,11 @@ export const oneClick = async (
   const body = JSON.stringify(oneClickOptions);
 
   try {
-    logger.info(`calling oneClick with headers ${JSON.stringify(headers)}`);
+    logger.info(
+      `calling oneClick for ${
+        oneClickOptions?.phone ?? ''
+      } with headers ${JSON.stringify(headers)}`
+    );
 
     const response = await fetch(options.baseUrl + '/1-click', {
       method: 'POST',
