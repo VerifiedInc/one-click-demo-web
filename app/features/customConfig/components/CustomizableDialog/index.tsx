@@ -56,8 +56,9 @@ export function CustomizableDialog() {
     }
   );
 
-  if (!defaultValues.redirectUrl) {
-    defaultValues.redirectUrl = url.toString();
+  if (!defaultValues.redirectUrl && url) {
+    const origin = (url as URL).origin;
+    defaultValues.redirectUrl = `${origin}/verified`;
   }
 
   const form = useForm<CustomDemoForm>({
