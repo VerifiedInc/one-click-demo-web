@@ -432,11 +432,11 @@ export const getBrandDto = async (
  */
 export const getBrandApiKey = async (
   brandUuid: string,
-  options: { accessToken: string; baseUrl: string }
+  options: { apiKey: string; baseUrl: string }
 ): Promise<string> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + options.accessToken,
+      Authorization: 'Bearer ' + options.apiKey,
       'Content-Type': 'application/json',
     };
 
