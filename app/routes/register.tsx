@@ -237,8 +237,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   if (hasOptedOut) {
     url.searchParams.delete('1ClickUuid');
     url.searchParams.delete('optedOut');
-    // Remove the configOpen query param if it exists to allow user to re-enter the config if config state is not present.
-    url.searchParams.delete('configOpen');
     return redirect(url.toString());
   }
 

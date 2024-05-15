@@ -57,7 +57,7 @@ export function CustomizableDialog() {
   );
 
   if (!defaultValues.redirectUrl && url) {
-    defaultValues.redirectUrl = `${url.origin}${url.pathname}`;
+    defaultValues.redirectUrl = `${url.origin}/register`;
   }
 
   const form = useForm<CustomDemoForm>({
