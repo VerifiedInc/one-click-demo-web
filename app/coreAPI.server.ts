@@ -253,16 +253,16 @@ export const sharedCredentials = async (uuid: string) => {
  * @returns {Promise<OneClickDto | null>} if a match for the request is found, returns the shared credentials, if no match is found returns null
  */
 export const getSharedCredentialsOneClick = async (
-  apiKey: string,
-  uuid: string
+  uuid: string,
+  options: { baseUrl: string; accessToken: string }
 ) => {
   const headers = {
-    Authorization: 'Bearer ' + apiKey,
+    Authorization: 'Bearer ' + options.accessToken,
     'Content-Type': 'application/json',
   };
 
   try {
-    const response = await fetch(config.coreServiceUrl + '/1-click/' + uuid, {
+    const response = await fetch(options.baseUrl + '/1-click/' + uuid, {
       method: 'GET',
       headers,
     });

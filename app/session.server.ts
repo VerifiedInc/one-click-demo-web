@@ -9,6 +9,9 @@ import { config } from './config';
 import { Brand } from './utils/getBrand';
 import { getBrandSet } from './utils/getBrandSet';
 import { getSharedCredentialsOneClick } from './coreAPI.server';
+import { getBaseUrl } from '~/features/environment/helpers';
+import { findState } from '~/features/state/services/findState';
+import { MappedState } from '~/features/state/types';
 
 /*************************
  * SESSION FUNCTIONALITY *
@@ -83,16 +86,26 @@ export const requireSession = async (
   const searchParams = new URLSearchParams(url.searchParams);
 
   const oneClickUuid = searchParams.get('1ClickUuid');
+  const configStateParam = searchParams.get('configState');
+  let configState: MappedState | null = null;
 
-  if (oneClickUuid) {
+  if (configStateParam) {
+    configState = await findState(
+      context.prisma as PrismaClient,
+      configStateParam
+    );
+  }
+
+  if (oneClickUuid && configState) {
     const brandSet = await getBrandSet(
       context.prisma as PrismaClient,
       searchParams
     );
-    const result = await getSharedCredentialsOneClick(
-      brandSet.apiKey,
-      oneClickUuid
-    );
+
+    const result = await getSharedCredentialsOneClick(oneClickUuid, {
+      baseUrl: getBaseUrl(configState.state.environment),
+      accessToken: brandSet.apiKey,
+    });
 
     if (result) return result;
   }
