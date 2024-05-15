@@ -22,7 +22,8 @@ export async function getOneClickUseCase({
   const oneClickUuid = searchParams.get('1ClickUuid');
   const optedOut = url.searchParams.get('optedOut');
 
-  if (oneClickUuid && !optedOut) {
+  // if the oneClickUuid is present and the user has not opted out
+  if (oneClickUuid && optedOut !== 'true') {
     const oneClick = await getSharedCredentialsOneClick(
       brandSet.apiKey,
       oneClickUuid
