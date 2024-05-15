@@ -57,8 +57,7 @@ export function CustomizableDialog() {
   );
 
   if (!defaultValues.redirectUrl && url) {
-    const origin = (url as URL).origin;
-    defaultValues.redirectUrl = `${origin}/verified`;
+    defaultValues.redirectUrl = `${url.origin}/register`;
   }
 
   const form = useForm<CustomDemoForm>({
