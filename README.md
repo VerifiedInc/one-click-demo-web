@@ -67,7 +67,7 @@ docker pull postgres:latest
 Run image:
 
 ```sh
-docker run --name one-click-demo-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=one_click_demo -p 5444:5432 -d postgres
+docker run --name one-click-demo-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=oneclick_demo -p 5444:5432 -d postgres
 ```
 
 #### Migration And Entity

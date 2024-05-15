@@ -40,16 +40,19 @@ export const getBrandSet = async (
     if (brandUuid) {
       logger.info(`getting brand: ${brandUuid}`);
 
+      const baseUrl = getBaseUrl(environment);
+      const adminKey = getAdminKey(environment);
+
       apiKey = await getBrandApiKey(brandUuid, {
-        baseUrl: getBaseUrl(environment),
-        accessToken: getAdminKey(environment),
+        baseUrl,
+        adminKey,
       });
 
       logger.info(`got api key: ${apiKey}`);
 
       const brandDto = await getBrandDto(brandUuid, {
-        baseUrl: getBaseUrl(environment),
-        accessToken: getAdminKey(environment),
+        baseUrl,
+        adminKey,
       });
 
       brand = getBrand(brandUuid ? (brandDto as BrandDto) : null);

@@ -253,16 +253,16 @@ export const sharedCredentials = async (uuid: string) => {
  * @returns {Promise<OneClickDto | null>} if a match for the request is found, returns the shared credentials, if no match is found returns null
  */
 export const getSharedCredentialsOneClick = async (
-  apiKey: string,
-  uuid: string
+  uuid: string,
+  options: { baseUrl: string; apiKey: string }
 ) => {
   const headers = {
-    Authorization: 'Bearer ' + apiKey,
+    Authorization: 'Bearer ' + options.apiKey,
     'Content-Type': 'application/json',
   };
 
   try {
-    const response = await fetch(config.coreServiceUrl + '/1-click/' + uuid, {
+    const response = await fetch(options.baseUrl + '/1-click/' + uuid, {
       method: 'GET',
       headers,
     });
@@ -400,11 +400,11 @@ const mapBrandDto = (brandDto: BrandDto): Partial<BrandDto> => ({
  */
 export const getBrandDto = async (
   brandUuid: string,
-  options: { baseUrl: string; accessToken: string }
+  options: { baseUrl: string; adminKey: string }
 ): Promise<Partial<BrandDto> | null> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + options.accessToken,
+      Authorization: 'Bearer ' + options.adminKey,
       'Content-Type': 'application/json',
     };
 
@@ -432,11 +432,11 @@ export const getBrandDto = async (
  */
 export const getBrandApiKey = async (
   brandUuid: string,
-  options: { accessToken: string; baseUrl: string }
+  options: { adminKey: string; baseUrl: string }
 ): Promise<string> => {
   try {
     const headers = {
-      Authorization: 'Bearer ' + options.accessToken,
+      Authorization: 'Bearer ' + options.adminKey,
       'Content-Type': 'application/json',
     };
 

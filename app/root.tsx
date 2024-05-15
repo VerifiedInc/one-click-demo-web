@@ -111,6 +111,7 @@ export const loader: LoaderFunction = async ({ context, request }) => {
       bookACallUrl,
     },
     ...brandSet,
+    queryString: searchParams.toString(),
   });
 };
 
@@ -119,14 +120,18 @@ interface DocumentProps {
   cspNonce: string;
   env: BrowserConfig;
   brand: Brand;
+  queryString: string;
 }
 
 // set up Emotion for mui styles
 // ref: https://github.com/mui/material-ui/blob/master/examples/remix-with-typescript/app/root.tsx
 const Document = withEmotionCache(
-  ({ children, cspNonce, env, brand }: DocumentProps, emotionCache) => {
+  (
+    { children, cspNonce, env, brand, queryString }: DocumentProps,
+    emotionCache
+  ) => {
     const clientStyleData = useContext(ClientStyleContext);
-    const favicon = `/favicon?brand=${brand.uuid}`;
+    const favicon = `/favicon?${queryString}`;
 
     // only executed on client
     useEnhancedEffect(() => {
@@ -213,7 +218,7 @@ export function ErrorBoundary({ error }: { error: unknown }) {
 }
 
 export default function App() {
-  let { cspNonce, env, brand } = useLoaderData<typeof loader>();
+  let { cspNonce, env, brand, queryString } = useLoaderData<typeof loader>();
 
   // fixes an issue with the nonce being reapplied on client hydration, and every time the loader is called
   // ref: https://github.com/remix-run/remix/issues/183
@@ -227,7 +232,12 @@ export default function App() {
   }, []);
 
   return (
-    <Document cspNonce={cspNonce} env={env} brand={brand}>
+    <Document
+      cspNonce={cspNonce}
+      env={env}
+      brand={brand}
+      queryString={queryString}
+    >
       <Outlet />
     </Document>
   );
