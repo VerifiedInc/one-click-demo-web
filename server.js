@@ -10,8 +10,6 @@ const http = require('http');
 const socketIo = require('./app/lib/socket-io');
 const prisma = require('./prisma/prisma');
 
-console.log(prisma);
-
 const BUILD_DIR = path.join(process.cwd(), 'build');
 
 const app = express();

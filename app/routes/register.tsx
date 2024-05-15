@@ -190,6 +190,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   );
 
   const oneClickUuid = searchParams.get('1ClickUuid');
+  const hasOptedOut = searchParams.get('optedOut') === 'true';
   const configStateParam = searchParams.get('configState');
 
   let configState = null;
@@ -202,7 +203,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     configState = state;
   }
 
-  if (oneClickUuid) {
+  if (oneClickUuid && !hasOptedOut) {
     const result = await getSharedCredentialsOneClick(
       brandSet.apiKey,
       oneClickUuid
@@ -230,6 +231,15 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
       return redirect(`/verified?${searchParams.toString()}`);
     }
+  }
+
+  // Remove the 1-click query params from the URL if the user has opted out.
+  if (hasOptedOut) {
+    url.searchParams.delete('1ClickUuid');
+    url.searchParams.delete('optedOut');
+    // Remove the configOpen query param if it exists to allow user to re-enter the config if config state is not present.
+    url.searchParams.delete('configOpen');
+    return redirect(url.toString());
   }
 
   return json({ configState });

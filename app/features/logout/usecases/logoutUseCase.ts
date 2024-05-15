@@ -9,6 +9,7 @@ export const logoutUseCase = async ({ request }: { request: Request }) => {
   searchParams.delete('1ClickUuid');
   searchParams.delete('sharedCredentialsUuid');
   searchParams.delete('optedOut');
+  searchParams.delete('configOpen');
 
   if (verificationOptions) {
     searchParams.set('verificationOptions', String(verificationOptions));
