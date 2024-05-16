@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import { useBrand } from './hooks/useBrand';
 import { FileBugButton } from './components/FileBugButton';
 import { CustomizableDialog } from '~/features/customConfig/components/CustomizableDialog';
+import { CustomizeButton } from '~/features/customConfig/components/CustomizeButton';
 
 export default function Layout({ children }: PropsWithChildren) {
   const brand = useBrand();
@@ -56,6 +57,7 @@ export default function Layout({ children }: PropsWithChildren) {
         {children}
         <Box mb={3} mx='auto'>
           <FileBugButton />
+          <CustomizeButton />
         </Box>
       </Container>
       {shouldShowDialog && <CustomizableDialog />}
