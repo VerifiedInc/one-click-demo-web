@@ -10,6 +10,9 @@ export function TitleField() {
   const title = useController<CustomDemoForm>({
     name: 'content.title',
   });
+  const isHosted = useController<CustomDemoForm>({
+    name: 'isHosted',
+  });
 
   return (
     <SectionAccordion
@@ -29,24 +32,28 @@ export function TitleField() {
           title={OneClickContentTitle.Signup}
           description='"1-Click Signup"'
           tip='Signup'
+          disabled={!isHosted.field.value}
         />
         <RadioOption
           value={OneClickContentTitle.Signin}
           title={OneClickContentTitle.Signin}
           description='"1-Click Signin"'
           tip='Signin'
+          disabled={!isHosted.field.value}
         />
         <RadioOption
           value={OneClickContentTitle.Verify}
           title={OneClickContentTitle.Verify}
           description='"1-Click Verify"'
           tip='Verify'
+          disabled={!isHosted.field.value}
         />
         <RadioOption
           value={OneClickContentTitle.Apply}
           title={OneClickContentTitle.Apply}
           description='"1-Click Apply"'
           tip='Apply'
+          disabled={!isHosted.field.value}
         />
       </RadioGroup>
     </SectionAccordion>
