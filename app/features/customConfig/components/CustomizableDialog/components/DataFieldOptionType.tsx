@@ -23,6 +23,7 @@ export function DataFieldOptionType() {
         label: schema.$id,
         id: schema.$id,
       }))
+      .filter((schema) => schema.id !== 'IdentityCredential')
       .sort((a, b) => (a.label < b.label ? -1 : 1));
   }, [schemas]);
   const selectedValue = useMemo(() => {
