@@ -19,6 +19,10 @@ export default function Layout({ children }: PropsWithChildren) {
   const realBrand = searchParams.get('realBrand');
   const isConfigHidden = searchParams.get('configOpen') === 'false';
 
+  const shouldShowCustomizeButton = useMemo(() => {
+    return currentRouteId === 'routes/register';
+  }, [currentRouteId]);
+
   const shouldShowDialog = useMemo(() => {
     if (currentRouteId !== 'routes/register') return false;
     if (!dummyBrand && !realBrand && !configState) return false;
@@ -57,7 +61,7 @@ export default function Layout({ children }: PropsWithChildren) {
         {children}
         <Box mb={3} mx='auto'>
           <FileBugButton />
-          <CustomizeButton />
+          {shouldShowCustomizeButton && <CustomizeButton />}
         </Box>
       </Container>
       {shouldShowDialog && <CustomizableDialog />}
