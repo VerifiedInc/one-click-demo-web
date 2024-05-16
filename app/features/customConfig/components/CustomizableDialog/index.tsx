@@ -82,6 +82,21 @@ export function CustomizableDialog() {
       }
     }
 
+    // If the default types are changed, redirect to the verified page
+    const untouchedDefaultTypes = [
+      'FullNameCredential',
+      'EmailCredential',
+      'PhoneCredential',
+      'AddressCredential',
+      'BirthDateCredential',
+      'SsnCredential',
+    ].every((type) => {
+      return data.credentialRequests.some((request) => request.type === type);
+    });
+    if (!untouchedDefaultTypes) {
+      data.redirectUrl = `${currentUrl.origin}/verified`;
+    }
+
     searchParams.set(
       'verificationOptions',
       data.verificationOptions.toString()
