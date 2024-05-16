@@ -68,6 +68,20 @@ export function CustomizableDialog() {
   const { isDirty } = form.formState;
 
   const handleFormSubmission = async (data: CustomDemoForm) => {
+    const currentUrl = new URL(window.location.href);
+
+    // Redirect to personal-information if is non-hosted flow and no redirectUrl is provided
+    if (data.redirectUrl) {
+      const redirectUrl = new URL(data.redirectUrl);
+      if (currentUrl.pathname === redirectUrl.pathname && !data.isHosted) {
+        data.redirectUrl = `${redirectUrl.origin}/personal-information`;
+      }
+    } else {
+      if (!data.isHosted) {
+        data.redirectUrl = `${currentUrl.origin}/personal-information`;
+      }
+    }
+
     searchParams.set(
       'verificationOptions',
       data.verificationOptions.toString()

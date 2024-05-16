@@ -4,6 +4,7 @@ export type PersonalInformationLoader = {
   oneClick: {
     credentials: {
       email?: string;
+      phone?: string;
       fullName?:
         | {
             firstName?: string;
