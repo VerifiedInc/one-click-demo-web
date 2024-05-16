@@ -4,7 +4,7 @@ import { Code } from '@mui/icons-material';
 
 export function Tip({ children }: PropsWithChildren) {
   return (
-    <Tooltip title={children} arrow>
+    <Tooltip title={children} arrow enterTouchDelay={0}>
       <IconButton
         size='small'
         onClick={(e) => {
