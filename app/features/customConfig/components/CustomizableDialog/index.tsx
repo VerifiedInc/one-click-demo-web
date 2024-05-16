@@ -93,7 +93,7 @@ export function CustomizableDialog() {
     ].every((type) => {
       return data.credentialRequests.some((request) => request.type === type);
     });
-    if (!untouchedDefaultTypes) {
+    if (!untouchedDefaultTypes && !data.isHosted) {
       data.redirectUrl = `${currentUrl.origin}/verified`;
     }
 
