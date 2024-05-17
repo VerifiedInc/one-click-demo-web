@@ -228,6 +228,7 @@ export const theme = (_theme: { main: string; light: string; dark: string }) =>
           root: {
             '&.original': {
               '& .MuiInputBase-root ': {
+                fontFamily: 'Lato',
                 borderRadius: '4px',
               },
             },
@@ -332,6 +333,16 @@ export const theme = (_theme: { main: string; light: string; dark: string }) =>
             py: 2,
             px: 3.5,
             fontSize: '1.4rem',
+          },
+        },
+      },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            fontFamily: 'Menlo!important',
+            '& pre': {
+              fontFamily: 'Menlo!important',
+            },
           },
         },
       },

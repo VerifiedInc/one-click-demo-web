@@ -80,7 +80,7 @@ export function CredentialRequestsField() {
       tip={
         <>
           <pre>POST /1-click</pre>
-          <pre>{`{\n  content?: {\n    credentialRequests?: CredentialRequest[] \n  }\n}`}</pre>
+          <pre>{`{\n  credentialRequests?: CredentialRequest[]\n}`}</pre>
         </>
       }
     >

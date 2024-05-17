@@ -35,7 +35,11 @@ export function RadioOption(props: RadioOptionProps) {
           />
           <Typography
             variant='body1'
-            sx={{ fontSize: '16px', fontWeight: '400' }}
+            sx={{
+              fontSize: '16px',
+              fontWeight: '400',
+              textAlign: 'left !important',
+            }}
           >
             {title}
           </Typography>
@@ -47,6 +51,7 @@ export function RadioOption(props: RadioOptionProps) {
             color='text.disabled'
             sx={{
               textAlign: 'left !important',
+              alignSelf: 'flex-start',
               fontSize: '12px',
               fontWeight: '400',
               pl: 6.25,
@@ -58,7 +63,13 @@ export function RadioOption(props: RadioOptionProps) {
       </Stack>
       <Box sx={{ mt: 1, alignSelf: 'flex-start' }}>
         {isDefault && (
-          <Chip size='small' label='Default' color='info' variant='outlined' />
+          <Chip
+            size='small'
+            label='Default'
+            color='info'
+            variant='outlined'
+            sx={{ fontFamily: 'Lato' }}
+          />
         )}
       </Box>
     </Stack>

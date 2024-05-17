@@ -67,7 +67,12 @@ export function SectionAccordion(props: SectionAccordionProps) {
           <Stack direction='row' alignItems='center' spacing={1}>
             <Typography
               variant='body1'
-              sx={{ fontSize: '20px', fontWeight: '800' }}
+              sx={{
+                fontSize: '20px',
+                fontWeight: '800',
+                textAlign: 'left !important',
+                // alignSelf: 'flex-start'
+              }}
             >
               {title}
             </Typography>

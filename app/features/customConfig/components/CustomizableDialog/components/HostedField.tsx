@@ -22,7 +22,7 @@ export function HostedField() {
       tip={
         <>
           <pre>POST /1-click</pre>
-          <pre>{`{\n  isHosted: boolean\n}`}</pre>
+          <pre>{`{\n  isHosted?: boolean\n}`}</pre>
         </>
       }
     >

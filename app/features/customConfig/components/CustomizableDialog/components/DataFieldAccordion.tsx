@@ -8,7 +8,13 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CheckCircle, ChevronLeft, Delete, Menu } from '@mui/icons-material';
+import {
+  CheckCircle,
+  ChevronLeft,
+  Close,
+  Delete,
+  Menu,
+} from '@mui/icons-material';
 import { MandatoryEnum } from '@verifiedinc/core-types';
 
 import { RequiredLabel } from '~/components/RequiredLabel';
@@ -18,6 +24,7 @@ import { DataFieldDescription } from '~/features/customConfig/components/Customi
 import { DataFieldMandatory } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldMandatory';
 import { DataFieldUserInput } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldUserInput';
 import { DataFieldDeleteModal } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldDeleteModal';
+import { prettyField } from '~/utils/credential';
 
 type DataFieldAccordionProps = {
   defaultExpanded?: boolean;
@@ -39,29 +46,49 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
   };
 
   const renderTitle = () => {
+    const type = prettyField(credentialRequestField?.field.type || '');
     return (
-      <Typography variant='body1' sx={{ fontSize: '16px', fontWeight: '800' }}>
+      <Typography
+        variant='body1'
+        sx={{
+          fontSize: '16px',
+          fontWeight: '800',
+          textAlign: 'left !important',
+          alignSelf: 'flex-start',
+        }}
+      >
         {credentialRequestField?.field.mandatory !== MandatoryEnum.NO ? (
-          <RequiredLabel>{credentialRequestField?.field.type}</RequiredLabel>
+          <RequiredLabel>{type}</RequiredLabel>
         ) : (
-          credentialRequestField?.field.type
+          type
         )}
       </Typography>
     );
   };
 
   const renderUserInput = () => {
-    if (!credentialRequestField?.field?.allowUserInput) return null;
+    const allowUserInput = credentialRequestField?.field?.allowUserInput;
 
     return (
       <Stack direction='row' alignItems='center' spacing={0.5} pl={5.25}>
-        <CheckCircle
-          sx={{ fontSize: '12px', color: theme.palette.text.disabled }}
-        />
+        {allowUserInput ? (
+          <CheckCircle
+            sx={{ fontSize: '12px', color: theme.palette.text.disabled }}
+          />
+        ) : (
+          <Close
+            sx={{ fontSize: '12px', color: theme.palette.text.disabled }}
+          />
+        )}
         <Typography
           variant='body1'
           color='text.disabled'
-          sx={{ fontSize: '12px', fontWeight: '400' }}
+          sx={{
+            fontSize: '12px',
+            fontWeight: '400',
+            alignSelf: 'flex-start',
+            textAlign: 'left!important',
+          }}
         >
           Allow User Input
         </Typography>
