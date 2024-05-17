@@ -1,4 +1,4 @@
-import { useController } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import { RadioGroup } from '@mui/material';
 
 import { useBrand } from '~/hooks/useBrand';
@@ -6,12 +6,14 @@ import { useBrand } from '~/hooks/useBrand';
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
 import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
 import { RadioOption } from '~/features/customConfig/components/CustomizableDialog/components/RadioOption';
+import { OneClickContentTitle } from '~/features/customConfig/types';
 
 export function HostedField() {
   const brand = useBrand();
   const isHosted = useController<CustomDemoForm>({
     name: 'isHosted',
   });
+  const form = useFormContext<CustomDemoForm>();
 
   return (
     <SectionAccordion
@@ -27,7 +29,17 @@ export function HostedField() {
       <RadioGroup
         value={isHosted.field.value}
         onChange={(_, value) => {
-          isHosted.field.onChange({ target: { value: value === 'true' } });
+          const isHostedValue = value === 'true';
+          isHosted.field.onChange({ target: { value: isHostedValue } });
+
+          if (!isHostedValue) {
+            const url = new URL(window.location.href);
+            form.setValue('content.title', OneClickContentTitle.Signup);
+            form.setValue('content.description', '');
+            form.setValue('redirectUrl', `${url.origin}/register`, {
+              shouldValidate: true,
+            });
+          }
         }}
       >
         <RadioOption

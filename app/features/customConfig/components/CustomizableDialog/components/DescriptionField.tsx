@@ -10,20 +10,9 @@ export function DescriptionField() {
   const field = useController<CustomDemoForm>({
     name: 'content.description',
   });
-
-  const [value, setValue] = useState(field.field.value || '');
-
-  const debounceChange = useRef(
-    debounce((value: string) => {
-      // Update form state
-      field.field.onChange({ target: { value } });
-    }, 500)
-  ).current;
-
-  const handleChange = (e: any) => {
-    setValue(e.target.value);
-    debounceChange(e.target.value);
-  };
+  const isHosted = useController<CustomDemoForm>({
+    name: 'isHosted',
+  });
 
   return (
     <SectionAccordion
@@ -38,8 +27,10 @@ export function DescriptionField() {
     >
       <TextField
         {...field.field}
-        value={value}
-        onChange={handleChange}
+        value={field.field.value}
+        onChange={(e) => {
+          field.field.onChange({ target: { value: e.target.value } });
+        }}
         error={!!field.fieldState.error}
         helperText={
           field.fieldState.error?.message || 'Optional — defaults to empty'
@@ -48,6 +39,7 @@ export function DescriptionField() {
         color='success'
         size='small'
         className='original'
+        disabled={!isHosted.field.value}
       />
     </SectionAccordion>
   );

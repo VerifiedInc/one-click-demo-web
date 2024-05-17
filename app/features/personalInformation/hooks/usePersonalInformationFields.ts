@@ -12,6 +12,7 @@ import { PersonalInformationLoader } from '~/features/personalInformation/types'
 
 import { useField } from '~/hooks/useField';
 import { useMaskField } from '~/hooks/useMaskField';
+import { phoneSchema } from '~/validations/phone.schema';
 
 export function usePersonalInformationFields() {
   const {
@@ -49,6 +50,13 @@ export function usePersonalInformationFields() {
     label: 'Email',
     schema: emailSchema,
     initialValue: data.email,
+  });
+
+  const phone = useField({
+    name: 'phone',
+    label: 'Phone',
+    schema: phoneSchema,
+    initialValue: data.phone,
   });
 
   const line1 = useField({
@@ -138,11 +146,12 @@ export function usePersonalInformationFields() {
       middleName,
       lastName,
       email,
+      phone,
       line1,
       line2,
       city,
-      state,
       country,
+      state,
       zipCode,
       birthDate,
       ssn,
@@ -152,11 +161,12 @@ export function usePersonalInformationFields() {
       middleName,
       lastName,
       email,
+      phone,
       line1,
       line2,
       city,
-      state,
       country,
+      state,
       zipCode,
       birthDate,
       ssn,
@@ -168,6 +178,8 @@ export function usePersonalInformationFields() {
     () => [
       'firstName',
       'lastName',
+      'email',
+      'phone',
       'line1',
       'city',
       'state',
