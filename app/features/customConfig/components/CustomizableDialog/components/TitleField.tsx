@@ -24,6 +24,11 @@ export function TitleField() {
           <pre>{`{\n  content?: {\n    title?: enum \n  }\n}`}</pre>
         </>
       }
+      sx={{
+        '& .MuiAccordionDetails-root': {
+          py: 0.5,
+        },
+      }}
     >
       <RadioGroup {...title.field}>
         <RadioOption

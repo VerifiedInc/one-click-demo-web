@@ -33,7 +33,9 @@ type DataFieldAccordionProps = {
 export function DataFieldAccordion(props: DataFieldAccordionProps) {
   const { defaultExpanded } = props;
   const credentialRequestField = useCredentialRequestField();
-  const [expanded, setOpen] = useState(defaultExpanded || false);
+  const isNew: boolean = (credentialRequestField?.field as any).isNew;
+
+  const [expanded, setOpen] = useState(defaultExpanded || isNew || false);
   const [modalOpen, setModalOpen] = useState(false);
 
   const theme = useTheme();

@@ -55,6 +55,7 @@ export function RadioOption(props: RadioOptionProps) {
               fontSize: '12px',
               fontWeight: '400',
               pl: 6.25,
+              mt: -1,
             }}
           >
             {description}

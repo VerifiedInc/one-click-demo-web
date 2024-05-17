@@ -25,6 +25,11 @@ export function HostedField() {
           <pre>{`{\n  isHosted?: boolean\n}`}</pre>
         </>
       }
+      sx={{
+        '& .MuiAccordionDetails-root': {
+          py: 0.5,
+        },
+      }}
     >
       <RadioGroup
         value={isHosted.field.value}

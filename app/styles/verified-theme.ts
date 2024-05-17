@@ -193,6 +193,13 @@ export const theme = createTheme({
   },
   typography,
   components: {
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          zIndex: 1305,
+        },
+      },
+    },
     MuiTextField: {
       defaultProps: {
         fullWidth: true,

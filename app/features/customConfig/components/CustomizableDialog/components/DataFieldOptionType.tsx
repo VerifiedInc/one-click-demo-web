@@ -1,7 +1,9 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useController } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 import { CredentialRequestDto } from '@verifiedinc/core-types';
+
+import { prettyField } from '~/utils/credential';
 
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
 import { useCredentialRequestField } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
@@ -11,16 +13,18 @@ import { buildDataFieldValue } from '~/features/customConfig/components/Customiz
 
 export function DataFieldOptionType() {
   const credentialRequestField = useCredentialRequestField();
+  const isNew: boolean = (credentialRequestField?.field as any).isNew;
   const field = useController<CustomDemoForm>({
     name: `${credentialRequestField?.path as any}` as any,
   });
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { schemas } = useCustomConfig();
   const schemaValues = useMemo(() => {
     if (!schemas) return [];
     return Object.values(schemas)
       .map((schema) => ({
-        label: schema.$id,
+        label: prettyField(schema.$id),
         id: schema.$id,
       }))
       .filter((schema) => {
@@ -33,6 +37,11 @@ export function DataFieldOptionType() {
     const type = (field.field?.value as CredentialRequestDto)?.type;
     return schemaValues?.find((value) => value.id === type);
   }, [field, schemaValues]);
+
+  useEffect(() => {
+    if (!isNew) return;
+    inputRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isNew]);
 
   return (
     <DataFieldSection
@@ -47,6 +56,7 @@ export function DataFieldOptionType() {
       }
     >
       <Autocomplete
+        ref={inputRef}
         value={selectedValue}
         onChange={(_, value) => {
           if (!value) return;

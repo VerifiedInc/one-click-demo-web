@@ -55,9 +55,12 @@ function CredentialRequestField({
       })}
       {path === 'credentialRequests' && (
         <OriginalButton
-          onClick={() =>
-            fieldArray.append(buildDataFieldValue('', customConfig.schemas!))
-          }
+          onClick={() => {
+            fieldArray.append({
+              ...buildDataFieldValue('', customConfig.schemas!),
+              isNew: true,
+            } as any);
+          }}
           size='small'
           variant='outlined'
           startIcon={<Add />}
@@ -74,7 +77,6 @@ function CredentialRequestField({
 export function CredentialRequestsField() {
   return (
     <SectionAccordion
-      defaultExpanded
       title='Data Fields'
       description='What data your brand will ask the user to share'
       tip={
