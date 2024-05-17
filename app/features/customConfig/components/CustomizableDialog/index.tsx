@@ -106,14 +106,16 @@ export function CustomizableDialog() {
     searchParams.set('isHosted', data.isHosted.toString());
     searchParams.set('configOpen', 'false');
 
-    const dummyBrand =
-      searchParams.get('dummyBrand') || routerData?.configState?.dummyBrand;
-    const realBrand =
-      searchParams.get('realBrand') || routerData?.configState?.realBrand;
+    const secondaryEnvBrand =
+      searchParams.get('secondaryEnvBrand') ||
+      routerData?.configState?.secondaryEnvBrand;
+    const primaryEnvBrand =
+      searchParams.get('primaryEnvBrand') ||
+      routerData?.configState?.primaryEnvBrand;
     const formData = new FormData();
     formData.set('state', JSON.stringify(data));
-    dummyBrand && formData.set('dummyBrand', dummyBrand);
-    realBrand && formData.set('realBrand', realBrand);
+    secondaryEnvBrand && formData.set('secondaryEnvBrand', secondaryEnvBrand);
+    primaryEnvBrand && formData.set('primaryEnvBrand', primaryEnvBrand);
 
     if (isDirty) {
       const response = await fetch(path(), {

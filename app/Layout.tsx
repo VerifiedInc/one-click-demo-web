@@ -15,8 +15,8 @@ export default function Layout({ children }: PropsWithChildren) {
   const currentRouteId = matches.slice(-1)[0].id;
 
   const configState = searchParams.get('configState');
-  const dummyBrand = searchParams.get('dummyBrand');
-  const realBrand = searchParams.get('realBrand');
+  const secondaryEnvBrand = searchParams.get('secondaryEnvBrand');
+  const primaryEnvBrand = searchParams.get('primaryEnvBrand');
   const isConfigHidden = searchParams.get('configOpen') === 'false';
 
   const shouldShowCustomizeButton = useMemo(() => {
@@ -25,9 +25,15 @@ export default function Layout({ children }: PropsWithChildren) {
 
   const shouldShowDialog = useMemo(() => {
     if (currentRouteId !== 'routes/register') return false;
-    if (!dummyBrand && !realBrand && !configState) return false;
+    if (!secondaryEnvBrand && !primaryEnvBrand && !configState) return false;
     return !isConfigHidden;
-  }, [configState, currentRouteId, dummyBrand, isConfigHidden, realBrand]);
+  }, [
+    configState,
+    currentRouteId,
+    secondaryEnvBrand,
+    isConfigHidden,
+    primaryEnvBrand,
+  ]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
