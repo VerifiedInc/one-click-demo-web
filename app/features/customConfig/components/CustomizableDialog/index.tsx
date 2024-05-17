@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useRouteLoaderData, useSearchParams } from '@remix-run/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Dialog, SxProps } from '@mui/material';
+import { Dialog, SxProps, ThemeProvider } from '@mui/material';
+
+import { theme } from '~/styles/verified-theme';
 
 import { path } from '~/routes/custom-demo-state';
 
@@ -132,20 +134,22 @@ export function CustomizableDialog() {
 
   return (
     <Dialog open={dialogOpen} sx={dialogStyle}>
-      <CustomConfigProvider>
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmission)}>
-            {!showDetailStep && (
-              <EnvironmentStep
-                onCustomizePress={() => setShowDetailStep(true)}
-              />
-            )}
-            {showDetailStep && (
-              <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
-            )}
-          </form>
-        </FormProvider>
-      </CustomConfigProvider>
+      <ThemeProvider theme={theme}>
+        <CustomConfigProvider>
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(handleFormSubmission)}>
+              {!showDetailStep && (
+                <EnvironmentStep
+                  onCustomizePress={() => setShowDetailStep(true)}
+                />
+              )}
+              {showDetailStep && (
+                <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
+              )}
+            </form>
+          </FormProvider>
+        </CustomConfigProvider>
+      </ThemeProvider>
     </Dialog>
   );
 }
