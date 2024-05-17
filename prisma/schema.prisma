@@ -17,8 +17,6 @@ model State {
   uuid  String @id @default(uuid())
   state String
 
-  dummyBrand        String?
-  realBrand         String?
   secondaryEnvBrand String?
   primaryEnvBrand   String?
 
