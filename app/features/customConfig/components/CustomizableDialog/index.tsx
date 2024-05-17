@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useRouteLoaderData, useSearchParams } from '@remix-run/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Dialog, SxProps } from '@mui/material';
+import { Dialog, SxProps, ThemeProvider } from '@mui/material';
+
+import { theme } from '~/styles/verified-theme';
 
 import { path } from '~/routes/custom-demo-state';
 
@@ -104,14 +106,16 @@ export function CustomizableDialog() {
     searchParams.set('isHosted', data.isHosted.toString());
     searchParams.set('configOpen', 'false');
 
-    const dummyBrand =
-      searchParams.get('dummyBrand') || routerData?.configState?.dummyBrand;
-    const realBrand =
-      searchParams.get('realBrand') || routerData?.configState?.realBrand;
+    const secondaryEnvBrand =
+      searchParams.get('secondaryEnvBrand') ||
+      routerData?.configState?.secondaryEnvBrand;
+    const primaryEnvBrand =
+      searchParams.get('primaryEnvBrand') ||
+      routerData?.configState?.primaryEnvBrand;
     const formData = new FormData();
     formData.set('state', JSON.stringify(data));
-    dummyBrand && formData.set('dummyBrand', dummyBrand);
-    realBrand && formData.set('realBrand', realBrand);
+    secondaryEnvBrand && formData.set('secondaryEnvBrand', secondaryEnvBrand);
+    primaryEnvBrand && formData.set('primaryEnvBrand', primaryEnvBrand);
 
     if (isDirty) {
       const response = await fetch(path(), {
@@ -132,20 +136,22 @@ export function CustomizableDialog() {
 
   return (
     <Dialog open={dialogOpen} sx={dialogStyle}>
-      <CustomConfigProvider>
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(handleFormSubmission)}>
-            {!showDetailStep && (
-              <EnvironmentStep
-                onCustomizePress={() => setShowDetailStep(true)}
-              />
-            )}
-            {showDetailStep && (
-              <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
-            )}
-          </form>
-        </FormProvider>
-      </CustomConfigProvider>
+      <ThemeProvider theme={theme}>
+        <CustomConfigProvider>
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(handleFormSubmission)}>
+              {!showDetailStep && (
+                <EnvironmentStep
+                  onCustomizePress={() => setShowDetailStep(true)}
+                />
+              )}
+              {showDetailStep && (
+                <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
+              )}
+            </form>
+          </FormProvider>
+        </CustomConfigProvider>
+      </ThemeProvider>
     </Dialog>
   );
 }

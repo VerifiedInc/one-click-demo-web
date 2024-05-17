@@ -32,8 +32,8 @@ export const action: ActionFunction = async ({ request, context }) => {
   try {
     const formData = await request.formData();
     const state = formData.get('state');
-    const dummyBrand = formData.get('dummyBrand');
-    const realBrand = formData.get('realBrand');
+    const secondaryEnvBrand = formData.get('secondaryEnvBrand');
+    const primaryEnvBrand = formData.get('primaryEnvBrand');
 
     if (
       !state ||
@@ -43,18 +43,18 @@ export const action: ActionFunction = async ({ request, context }) => {
       throw new Error('Bad payload');
     }
 
-    if (typeof dummyBrand !== 'string') {
-      throw new Error('dummyBrand is required');
+    if (typeof secondaryEnvBrand !== 'string') {
+      throw new Error('secondaryEnvBrand is required');
     }
 
-    if (typeof realBrand !== 'string') {
-      throw new Error('realBrand is required');
+    if (typeof primaryEnvBrand !== 'string') {
+      throw new Error('primaryEnvBrand is required');
     }
 
     const newState = await createState(context.prisma as PrismaClient, {
       state,
-      dummyBrand,
-      realBrand,
+      secondaryEnvBrand,
+      primaryEnvBrand,
     });
 
     return json({ data: newState });

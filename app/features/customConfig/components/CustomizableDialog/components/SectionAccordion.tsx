@@ -1,15 +1,14 @@
+import { ReactNode, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  IconButton,
   Stack,
   SxProps,
-  Tooltip,
   Typography,
 } from '@mui/material';
-import { ChevronLeft, Info } from '@mui/icons-material';
-import { ReactNode, useState } from 'react';
+import { ChevronLeft } from '@mui/icons-material';
+
 import { Tip } from '~/components/Tip';
 
 type SectionAccordionProps = {
@@ -51,6 +50,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
           />
         }
         sx={{
+          minHeight: 'auto!important',
           '& .MuiAccordionSummary-content': {
             my: '0px !important',
             alignSelf: 'flex-start',
@@ -67,7 +67,11 @@ export function SectionAccordion(props: SectionAccordionProps) {
           <Stack direction='row' alignItems='center' spacing={1}>
             <Typography
               variant='body1'
-              sx={{ fontSize: '20px', fontWeight: '800' }}
+              sx={{
+                fontSize: '20px',
+                fontWeight: '800',
+                textAlign: 'left !important',
+              }}
             >
               {title}
             </Typography>

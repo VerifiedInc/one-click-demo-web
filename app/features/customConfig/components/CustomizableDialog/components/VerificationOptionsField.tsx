@@ -21,6 +21,11 @@ export function VerificationOptionsField() {
           <pre>{`{\n  verificationOptions?: enum\n}`}</pre>
         </>
       }
+      sx={{
+        '& .MuiAccordionDetails-root': {
+          py: 0.5,
+        },
+      }}
     >
       <RadioGroup {...verificationOptions.field}>
         <RadioOption

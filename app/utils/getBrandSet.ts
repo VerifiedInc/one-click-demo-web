@@ -21,9 +21,11 @@ export const getBrandSet = async (
   if (config.customBrandingEnabled) {
     const state = await findState(prisma, searchParams.get('configState'));
     const brandParam = searchParams.get('brand');
-    const dummyBrandParam = searchParams.get('dummyBrand') || state?.dummyBrand;
-    const realBrandParam = searchParams.get('realBrand') || state?.realBrand;
-    const hasEnvBrands = !!state?.dummyBrand && !!state?.realBrand;
+    const secondaryEnvBrandParam =
+      searchParams.get('secondaryEnvBrand') || state?.secondaryEnvBrand;
+    const primaryEnvBrandParam =
+      searchParams.get('primaryEnvBrand') || state?.primaryEnvBrand;
+    const hasEnvBrands = !!state?.secondaryEnvBrand && !!state?.primaryEnvBrand;
     const environment = hasEnvBrands
       ? state?.state.environment
       : brandParam
@@ -31,8 +33,8 @@ export const getBrandSet = async (
       : 'dummy';
 
     const brandUuid = ifEnv(environment, [
-      realBrandParam,
-      dummyBrandParam,
+      primaryEnvBrandParam,
+      secondaryEnvBrandParam,
       brandParam,
     ]);
 

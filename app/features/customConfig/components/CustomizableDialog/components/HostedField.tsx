@@ -22,9 +22,14 @@ export function HostedField() {
       tip={
         <>
           <pre>POST /1-click</pre>
-          <pre>{`{\n  isHosted: boolean\n}`}</pre>
+          <pre>{`{\n  isHosted?: boolean\n}`}</pre>
         </>
       }
+      sx={{
+        '& .MuiAccordionDetails-root': {
+          py: 0.5,
+        },
+      }}
     >
       <RadioGroup
         value={isHosted.field.value}
