@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { LoaderFunction, json, redirect } from '@remix-run/node';
-import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
+import { useNavigate, useSearchParams } from '@remix-run/react';
 import {
   Box,
   Button,
@@ -12,7 +12,6 @@ import {
 
 import { useBrand } from '~/hooks/useBrand';
 import { usePersonalInformationFields } from '~/features/personalInformation/hooks/usePersonalInformationFields';
-import { PersonalInformationLoader } from '~/features/personalInformation/types';
 import { getOneClickUseCase } from '~/features/oneClick/useCases/getOneClickUseCase';
 import { InputMask } from '~/components/InputMask';
 
@@ -31,13 +30,18 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 export default function PersonalInformation() {
   const brand = useBrand();
   const { fields, isValid, requiredFields } = usePersonalInformationFields();
-  const { oneClickDB } = useLoaderData<PersonalInformationLoader>();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
+
   const dashboardPageLink = useMemo(() => {
     const searchParamsString = searchParams.toString();
     return `/${searchParamsString ? `?${searchParamsString}` : ''}`;
+  }, [searchParams]);
+
+  const successPageLink = useMemo(() => {
+    const searchParamsString = searchParams.toString();
+    return `/verified${searchParamsString ? `?${searchParamsString}` : ''}`;
   }, [searchParams]);
 
   const fieldSx: SxProps = { width: '100%' };
@@ -50,40 +54,6 @@ export default function PersonalInformation() {
       'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 1) 35%)',
   };
 
-  const redirectUrl = useMemo(() => {
-    if (typeof window === 'undefined') return '';
-    const redirectUrlString = oneClickDB.presentationRequest.redirectUrl;
-    if (!redirectUrlString) {
-      return dashboardPageLink;
-    }
-
-    const url = new URL(window.location.href);
-    const _redirectUrl = new URL(redirectUrlString);
-    const optedOut = url.searchParams.get('optedOut');
-    const verificationOptions = url.searchParams.get('verificationOptions');
-    const isHosted = url.searchParams.get('isHosted');
-
-    _redirectUrl.searchParams.set('1ClickUuid', oneClickDB.uuid);
-
-    if (optedOut) {
-      _redirectUrl.searchParams.set('optedOut', optedOut);
-    }
-
-    if (verificationOptions) {
-      _redirectUrl.searchParams.set('verificationOptions', verificationOptions);
-    }
-
-    if (isHosted) {
-      _redirectUrl.searchParams.set('isHosted', isHosted);
-    }
-
-    return _redirectUrl.toString();
-  }, [
-    dashboardPageLink,
-    oneClickDB.presentationRequest.redirectUrl,
-    oneClickDB.uuid,
-  ]);
-
   const isRequired = (fieldName: string) => requiredFields.includes(fieldName);
 
   const handleGetStarted = () => {
@@ -91,7 +61,7 @@ export default function PersonalInformation() {
       navigate(dashboardPageLink);
       return;
     }
-    window.location.href = redirectUrl;
+    navigate(successPageLink);
   };
 
   return (
