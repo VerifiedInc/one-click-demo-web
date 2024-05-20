@@ -9,6 +9,7 @@ export const prettyField = (field: string) =>
     .map((word) => {
       if (word === 'Id') return 'ID';
       if (word === 'Zip') return 'ZIP';
+      if (word === 'Ssn') return 'SSN';
       return word;
     })
     .filter((e) => e !== 'Credential')
