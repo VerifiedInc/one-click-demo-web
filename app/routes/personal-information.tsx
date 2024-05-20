@@ -78,7 +78,11 @@ export default function PersonalInformation() {
     }
 
     return _redirectUrl.toString();
-  }, [dashboardPageLink, redirectUrlString, oneClickDB.uuid]);
+  }, [
+    dashboardPageLink,
+    oneClickDB.presentationRequest.redirectUrl,
+    oneClickDB.uuid,
+  ]);
 
   const isRequired = (fieldName: string) => requiredFields.includes(fieldName);
 
