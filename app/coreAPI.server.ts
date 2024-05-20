@@ -473,22 +473,22 @@ export const getBrandApiKey = async (
  * @param uuid
  * @returns
  */
-export const getDBOneClick = async (uuid: string): Promise<OneClickDBDto> => {
+export const getDBOneClick = async (
+  uuid: string,
+  options: { adminKey: string; baseUrl: string }
+): Promise<OneClickDBDto> => {
   logger.debug(`get 1-click ${uuid}`);
 
   try {
     const headers = {
-      Authorization: 'Bearer ' + config.coreServiceAdminAuthKey,
+      Authorization: 'Bearer ' + options.adminKey,
       'Content-Type': 'application/json',
     };
 
-    const response = await fetch(
-      config.coreServiceUrl + `/db/1-click/${uuid}`,
-      {
-        method: 'GET',
-        headers,
-      }
-    );
+    const response = await fetch(options.baseUrl + `/db/1-click/${uuid}`, {
+      method: 'GET',
+      headers,
+    });
 
     return await response.json();
   } catch (e) {

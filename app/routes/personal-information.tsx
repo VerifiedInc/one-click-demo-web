@@ -95,8 +95,6 @@ export default function PersonalInformation() {
     window.location.href = redirectUrl;
   };
 
-  console.log(fields);
-
   return (
     <Box
       component='main'
