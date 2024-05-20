@@ -18,7 +18,6 @@ type MaskFieldOptions = {
 export function useMaskField({ options, field }: MaskFieldOptions) {
   const _field = useField(field);
   const proxyChangeEvent = (event: any) => {
-    console.log(event);
     _field.change(event);
   };
   return {

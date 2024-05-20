@@ -6,7 +6,7 @@ import { getDBOneClick, getSharedCredentialsOneClick } from '~/coreAPI.server';
 import { getBrandSet } from '~/utils/getBrandSet';
 import { MappedState } from '~/features/state/types';
 import { findState } from '~/features/state/services/findState';
-import { getBaseUrl } from '~/features/environment/helpers';
+import { getAdminKey, getBaseUrl } from '~/features/environment/helpers';
 
 export async function getOneClickUseCase({
   context,
@@ -43,7 +43,10 @@ export async function getOneClickUseCase({
       baseUrl: getBaseUrl(configState.state.environment),
       apiKey: brandSet.apiKey,
     });
-    const oneClickDB = await getDBOneClick(oneClickUuid);
+    const oneClickDB = await getDBOneClick(oneClickUuid, {
+      baseUrl: getBaseUrl(configState.state.environment),
+      adminKey: getAdminKey(configState.state.environment),
+    });
 
     if (oneClick && oneClickDB) {
       return { success: { oneClick, oneClickDB } };
