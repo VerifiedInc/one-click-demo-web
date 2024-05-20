@@ -52,14 +52,13 @@ export default function PersonalInformation() {
 
   const redirectUrl = useMemo(() => {
     if (typeof window === 'undefined') return '';
-    if (!oneClickDB.presentationRequest.brand.clientUrl) {
+    const redirectUrlString = oneClickDB.presentationRequest.redirectUrl;
+    if (!redirectUrlString) {
       return dashboardPageLink;
     }
 
     const url = new URL(window.location.href);
-    const _redirectUrl = new URL(
-      oneClickDB.presentationRequest.brand.clientUrl
-    );
+    const _redirectUrl = new URL(redirectUrlString);
     const optedOut = url.searchParams.get('optedOut');
     const verificationOptions = url.searchParams.get('verificationOptions');
     const isHosted = url.searchParams.get('isHosted');
@@ -79,11 +78,7 @@ export default function PersonalInformation() {
     }
 
     return _redirectUrl.toString();
-  }, [
-    dashboardPageLink,
-    oneClickDB.presentationRequest.brand.clientUrl,
-    oneClickDB.uuid,
-  ]);
+  }, [dashboardPageLink, redirectUrlString, oneClickDB.uuid]);
 
   const isRequired = (fieldName: string) => requiredFields.includes(fieldName);
 
