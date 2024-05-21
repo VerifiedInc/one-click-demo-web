@@ -100,9 +100,7 @@ export function EnvironmentStep({
           sx={{ fontSize: '15px' }}
           startIcon={<PlayArrow />}
           disabled={
-            !environment.field.value ||
-            !formContext.formState.isValid ||
-            formContext.formState.isSubmitting
+            !environment.field.value || formContext.formState.isSubmitting
           }
         >
           Start Demo
