@@ -240,5 +240,15 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontFamily: 'monospace!important',
+          '& pre': {
+            fontFamily: 'monospace!important',
+          },
+        },
+      },
+    },
   },
 });

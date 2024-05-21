@@ -69,8 +69,14 @@ export function CustomizableDialog() {
   });
   const { isDirty } = form.formState;
 
-  const handleFormSubmission = async (data: CustomDemoForm) => {
+  const handleFormSubmission = async (_data: CustomDemoForm) => {
     const currentUrl = new URL(window.location.href);
+    const data = _data;
+
+    // Remove empty credential requests
+    data.credentialRequests = data.credentialRequests.filter(
+      (credentialRequest) => !!credentialRequest.type
+    );
 
     // Redirect to personal-information if is non-hosted flow and no redirectUrl is provided
     if (data.redirectUrl) {

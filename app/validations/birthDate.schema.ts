@@ -12,10 +12,12 @@ const validate = (value: string) => {
     59,
     999
   );
-  const valueDate = new Date(value);
+  // Safari doesn't allow date strings with hyphens
+  const formattedValue = value.replace(/-/g, '/');
+  const valueDate = new Date(formattedValue);
 
   if (valueDate >= minDate && valueDate <= maxDate) {
-    const date = Date.parse(String(new Date(value)));
+    const date = Date.parse(String(new Date(formattedValue)));
     return !isNaN(date);
   }
 

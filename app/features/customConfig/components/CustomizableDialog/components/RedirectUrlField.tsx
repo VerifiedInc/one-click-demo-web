@@ -20,6 +20,9 @@ export function RedirectUrlField() {
           <pre>{`{\n  redirectUrl?: string\n}`}</pre>
         </>
       }
+      sx={{
+        opacity: isHosted.field.value ? 1 : 0.5,
+      }}
     >
       <TextField
         {...field.field}

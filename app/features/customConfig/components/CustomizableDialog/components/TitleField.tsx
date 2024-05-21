@@ -25,6 +25,7 @@ export function TitleField() {
         </>
       }
       sx={{
+        opacity: isHosted.field.value ? 1 : 0.5,
         '& .MuiAccordionDetails-root': {
           py: 0.5,
         },
