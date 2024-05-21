@@ -80,7 +80,7 @@ export function EnvironmentStep({
           </Stack>
           <RadioGroup {...environment.field}>
             <RadioOption
-              value='mock'
+              value='dummy'
               title='Mock data (sandbox)'
               description='Random example data'
               tip='Sandbox'
