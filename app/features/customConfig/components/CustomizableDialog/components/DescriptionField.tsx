@@ -24,6 +24,9 @@ export function DescriptionField() {
           <pre>{`{\n  content?: {\n    description?: string \n  }\n}`}</pre>
         </>
       }
+      sx={{
+        opacity: isHosted.field.value ? 1 : 0.5,
+      }}
     >
       <TextField
         {...field.field}

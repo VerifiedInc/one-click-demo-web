@@ -55,6 +55,7 @@ function CredentialRequestField({
       })}
       {path === 'credentialRequests' && (
         <OriginalButton
+          type='button'
           onClick={() => {
             fieldArray.append({
               ...buildDataFieldValue('', customConfig.schemas!),

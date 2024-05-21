@@ -21,7 +21,7 @@ export const customDemoFormSchema = zod.object({
         allowUserInput: zod.boolean(),
         description: zod.string().optional(),
         mandatory: zod.nativeEnum(MandatoryEnum),
-        type: zod.string().min(1),
+        type: zod.string(),
         children: zod.array(zod.object({}).passthrough()).optional(),
       })
     )

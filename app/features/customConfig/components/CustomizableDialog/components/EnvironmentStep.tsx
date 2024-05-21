@@ -67,7 +67,7 @@ export function EnvironmentStep({
                   textAlign: 'left !important',
                 }}
               >
-                Dummy or Real Data
+                Mock or Real Data
               </Typography>
               <Tip>
                 <>
@@ -80,8 +80,8 @@ export function EnvironmentStep({
           </Stack>
           <RadioGroup {...environment.field}>
             <RadioOption
-              value='dummy'
-              title='Dummy data (sandbox)'
+              value='mock'
+              title='Mock data (sandbox)'
               description='Random example data'
               tip='Sandbox'
             />
@@ -100,7 +100,9 @@ export function EnvironmentStep({
           sx={{ fontSize: '15px' }}
           startIcon={<PlayArrow />}
           disabled={
-            !environment.field.value || formContext.formState.isSubmitting
+            !environment.field.value ||
+            !formContext.formState.isValid ||
+            formContext.formState.isSubmitting
           }
         >
           Start Demo
