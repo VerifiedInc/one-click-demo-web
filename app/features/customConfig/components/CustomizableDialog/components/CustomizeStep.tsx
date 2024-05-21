@@ -1,4 +1,4 @@
-import { useFormContext } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import { IconButton, Stack, Typography } from '@mui/material';
 import { ArrowBack, PlayArrow } from '@mui/icons-material';
 
@@ -15,6 +15,7 @@ export function CustomizeStep({
   onBackPress,
 }: Readonly<{ onBackPress(): void }>) {
   const formContext = useFormContext<CustomDemoForm>();
+  const environment = useController<CustomDemoForm>({ name: 'environment' });
 
   return (
     <>
@@ -50,7 +51,7 @@ export function CustomizeStep({
           sx={{ fontSize: '15px' }}
           startIcon={<PlayArrow />}
           disabled={
-            !formContext.formState.isValid || formContext.formState.isSubmitting
+            !environment.field.value || formContext.formState.isSubmitting
           }
         >
           Start Demo
