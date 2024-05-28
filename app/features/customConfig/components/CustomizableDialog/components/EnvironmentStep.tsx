@@ -84,12 +84,22 @@ export function EnvironmentStep({
               title='Mock data (sandbox)'
               description='Random example data'
               tip='Sandbox'
+              inputProps={
+                {
+                  'data-testid': 'custom-demo-dialog-environment-mock-radio',
+                } as any
+              }
             />
             <RadioOption
               value='real'
               title='Real, verified data (production)'
               description='Like SSN, DOB, Address, Name'
               tip='Production'
+              inputProps={
+                {
+                  'data-testid': 'custom-demo-dialog-environment-real-radio',
+                } as any
+              }
             />
           </RadioGroup>
         </Stack>

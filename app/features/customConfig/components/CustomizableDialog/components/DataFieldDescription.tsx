@@ -55,6 +55,9 @@ export function DataFieldDescription() {
         color='success'
         size='small'
         className='original'
+        inputProps={{
+          'data-testid': 'custom-demo-dialog-data-field-description-input',
+        }}
       />
     </DataFieldSection>
   );

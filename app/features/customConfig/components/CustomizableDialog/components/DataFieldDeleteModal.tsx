@@ -66,6 +66,7 @@ export function DataFieldDeleteModal({
           size='small'
           onClick={onClose}
           sx={buttonStyle}
+          data-testid='custom-demo-dialog-data-field-delete-cancel-button'
         >
           Don't Delete
         </OriginalButton>
@@ -74,6 +75,7 @@ export function DataFieldDeleteModal({
           size='small'
           onClick={onConfirm}
           sx={buttonStyle}
+          data-testid='custom-demo-dialog-data-field-delete-confirm-button'
         >
           Delete
         </OriginalButton>

@@ -110,6 +110,7 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
         mt: 0,
         p: '8px !important',
       }}
+      data-testid='custom-demo-dialog-data-field-accordion'
     >
       <AccordionSummary
         onClick={() => setOpen((prev) => !prev)}

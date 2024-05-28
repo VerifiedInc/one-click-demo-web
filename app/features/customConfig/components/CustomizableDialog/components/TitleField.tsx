@@ -30,6 +30,7 @@ export function TitleField() {
           py: 0.5,
         },
       }}
+      data-testid='custom-demo-dialog-title-accordion'
     >
       <RadioGroup {...title.field}>
         <RadioOption

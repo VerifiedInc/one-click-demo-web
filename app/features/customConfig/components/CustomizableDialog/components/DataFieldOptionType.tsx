@@ -76,6 +76,9 @@ export function DataFieldOptionType() {
             size='small'
             className='original'
             fullWidth
+            inputProps={{
+              'data-testid': 'custom-demo-dialog-data-field-type-input',
+            }}
           />
         )}
         disabled={(credentialRequestField?.level || 0) > 0 || schemas === null}

@@ -19,6 +19,7 @@ export function DataFieldSection(props: DataFieldSectionProps) {
         <Typography
           variant='body1'
           sx={{ fontSize: '16px', fontWeight: '700' }}
+          data-testid='custom-demo-dialog-data-field-title'
         >
           {title}
         </Typography>
@@ -33,6 +34,7 @@ export function DataFieldSection(props: DataFieldSectionProps) {
             fontSize: '12px',
             fontWeight: '400',
           }}
+          data-testid='custom-demo-dialog-data-field-description'
         >
           {description}
         </Typography>

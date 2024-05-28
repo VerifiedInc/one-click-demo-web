@@ -27,6 +27,7 @@ export function DescriptionField() {
       sx={{
         opacity: isHosted.field.value ? 1 : 0.5,
       }}
+      data-testid='custom-demo-dialog-description-accordion'
     >
       <TextField
         {...field.field}
