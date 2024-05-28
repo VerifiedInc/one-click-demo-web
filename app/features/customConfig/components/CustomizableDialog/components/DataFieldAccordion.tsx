@@ -122,6 +122,7 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
                 e.stopPropagation();
                 setModalOpen(true);
               }}
+              data-testid='custom-demo-dialog-data-field-delete-button'
             >
               <Delete
                 fontSize='small'
