@@ -77,6 +77,7 @@ export function DataFieldOptionType() {
             className='original'
             fullWidth
             inputProps={{
+              ...params.inputProps,
               'data-testid': 'custom-demo-dialog-data-field-type-input',
             }}
           />
