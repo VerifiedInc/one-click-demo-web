@@ -18,10 +18,18 @@ type SectionAccordionProps = {
   description?: string;
   tip?: ReactNode;
   sx?: SxProps;
+  'data-testid'?: string;
 };
 
 export function SectionAccordion(props: SectionAccordionProps) {
-  const { children, defaultExpanded, title, description, tip } = props;
+  const {
+    children,
+    defaultExpanded,
+    title,
+    description,
+    tip,
+    'data-testid': dataTestId,
+  } = props;
   const [expanded, setOpen] = useState(defaultExpanded || false);
 
   return (
@@ -37,6 +45,7 @@ export function SectionAccordion(props: SectionAccordionProps) {
         my: '0px !important',
         mt: 2,
       }}
+      data-testid={dataTestId}
     >
       <AccordionSummary
         onClick={() => setOpen((prev) => !prev)}

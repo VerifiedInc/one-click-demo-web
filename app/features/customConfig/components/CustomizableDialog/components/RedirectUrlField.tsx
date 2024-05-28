@@ -23,6 +23,7 @@ export function RedirectUrlField() {
       sx={{
         opacity: isHosted.field.value ? 1 : 0.5,
       }}
+      data-testid='custom-demo-dialog-redirect-url-accordion'
     >
       <TextField
         {...field.field}

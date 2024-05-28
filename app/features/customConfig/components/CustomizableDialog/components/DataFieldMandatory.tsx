@@ -48,18 +48,33 @@ export function DataFieldMandatory() {
           title='Optional'
           description='Optional for the user to share'
           tip={MandatoryEnum.NO}
+          inputProps={
+            {
+              'data-testid': 'custom-demo-dialog-mandatory-no-radio',
+            } as any
+          }
         />
         <RadioOption
           value={MandatoryEnum.IF_AVAILABLE}
           title='Required if available'
           description='Required to share, if the user has it'
           tip={MandatoryEnum.IF_AVAILABLE}
+          inputProps={
+            {
+              'data-testid': 'custom-demo-dialog-mandatory-if_available-radio',
+            } as any
+          }
         />
         <RadioOption
           value={MandatoryEnum.YES}
           title='Required'
           description="Required — flow fails if user doesn't have it"
           tip={MandatoryEnum.YES}
+          inputProps={
+            {
+              'data-testid': 'custom-demo-dialog-mandatory-yes-radio',
+            } as any
+          }
         />
       </RadioGroup>
     </DataFieldSection>

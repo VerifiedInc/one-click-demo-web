@@ -45,12 +45,22 @@ export function DataFieldUserInput() {
           title='Yes'
           description='The user can add or edit data for the user to share'
           tip='true'
+          inputProps={
+            {
+              'data-testid': 'custom-demo-dialog-user-input-yes-radio',
+            } as any
+          }
         />
         <RadioOption
           value={false}
           title='No'
           description="The user can't add or edit data"
           tip='false'
+          inputProps={
+            {
+              'data-testid': 'custom-demo-dialog-user-input-no-radio',
+            } as any
+          }
         />
       </RadioGroup>
     </DataFieldSection>

@@ -26,6 +26,7 @@ export function VerificationOptionsField() {
           py: 0.5,
         },
       }}
+      data-testid='custom-demo-dialog-verification-options-accordion'
     >
       <RadioGroup {...verificationOptions.field}>
         <RadioOption

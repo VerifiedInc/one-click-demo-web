@@ -109,6 +109,7 @@ function OTPInputComponent(
   const inputProps: TextFieldProps = useMemo(
     () => ({
       inputProps: {
+        'data-testid': 'otp-input' as any,
         inputMode: 'numeric',
         maxLength: 1,
       },
@@ -217,7 +218,7 @@ function OTPInputComponent(
   );
 
   return (
-    <Box width='100%'>
+    <Box width='100%' data-testid='otp-input-container'>
       {/* Use input facade to update the value and listen to changes */}
       <TextField
         inputRef={inputRef}

@@ -30,6 +30,7 @@ export function HostedField() {
           py: 0.5,
         },
       }}
+      data-testid='custom-demo-dialog-hosted-accordion'
     >
       <RadioGroup
         value={isHosted.field.value}
@@ -53,12 +54,18 @@ export function HostedField() {
           title='Verified UI'
           description='Verified Inc. hosts the page'
           tip='true'
+          inputProps={
+            { 'data-testid': 'custom-demo-dialog-hosted-radio' } as any
+          }
         />
         <RadioOption
           value={false}
           title={`${brand.name} UI`}
           description={`${brand.name} hosts the page`}
           tip='false'
+          inputProps={
+            { 'data-testid': 'custom-demo-dialog-non-hosted-radio' } as any
+          }
         />
       </RadioGroup>
     </SectionAccordion>
