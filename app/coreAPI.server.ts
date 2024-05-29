@@ -67,7 +67,7 @@ interface SharedCredentials {
 }
 
 /**
- * Function to make POST request to Verified Inc.'s Core Service API /hasMatchingCredentials endpoint. The intent is to check if
+ * Function to make POST request to Verified's Core Service API /hasMatchingCredentials endpoint. The intent is to check if
  * a user already has the necessary email and phone credential to enable 1-click sign up.
  * Please note: This functionality is NOT and should NOT be called in the browser due to the sensitive nature
  * of the API key (verifiedApiKey).
@@ -75,7 +75,7 @@ interface SharedCredentials {
  * Documentation: https://docs.verified.inc/api-overview#check-user-credentials
  * @param email
  * @param phone
- * @returns {Promise<string | null>} if a match for the request is found, returns the Verified Inc. Web Wallet url for redirect, if no match is found returns null
+ * @returns {Promise<string | null>} if a match for the request is found, returns the Verified  Web Wallet url for redirect, if no match is found returns null
  */
 export const hasMatchingCredentials = async (
   email?: string,
@@ -195,7 +195,7 @@ export const hasMatchingCredentials = async (
 };
 
 /**
- * Function to make GET request to Verified Inc.'s Core Service API /sharedCredentials/{uuid} endpoint. The intent is to retrieve
+ * Function to make GET request to Verified's Core Service API /sharedCredentials/{uuid} endpoint. The intent is to retrieve
  * the credentials shared by the user after they've completed a credentials request.
  * Please note: This functionality is NOT and should NOT be called in the browser due to the sensitive nature
  * of the API key (verifiedApiKey).
@@ -243,7 +243,7 @@ export const sharedCredentials = async (uuid: string) => {
 };
 
 /**
- * Function to make GET request to Verified Inc.'s Core Service API /1-click/{uuid} endpoint. The intent is to retrieve
+ * Function to make GET request to Verified's Core Service API /1-click/{uuid} endpoint. The intent is to retrieve
  * the credentials shared by the user after they've completed a credentials request.
  * Please note: This functionality is NOT and should NOT be called in the browser due to the sensitive nature
  * of the API key (verifiedApiKey).
@@ -291,7 +291,7 @@ export const getSharedCredentialsOneClick = async (
 };
 
 /**
- * Function to make POST request to Verified Inc.'s Core Service API /1-click endpoint. The call
+ * Function to make POST request to Verified's Core Service API /1-click endpoint. The call
  * sends an SMS containing a link to allow user to do 1-click sign up.
  * Please note: This functionality is NOT and should NOT be called in the browser due to the sensitive nature
  * of the API key (verifiedApiKey).

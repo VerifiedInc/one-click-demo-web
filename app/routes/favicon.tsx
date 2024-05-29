@@ -47,7 +47,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       `failed to fetch favicon for brand ${brand.name}, using verified inc one.`
     );
 
-    // Use Verified Inc.'s logo as favicon in case it failed to fetch the brand's logo.
+    // Use Verified's logo as favicon in case it failed to fetch the brand's logo.
     const response = await axios.get(`${url.origin}/verifiedinc.webp`, {
       responseType: 'arraybuffer',
     });
