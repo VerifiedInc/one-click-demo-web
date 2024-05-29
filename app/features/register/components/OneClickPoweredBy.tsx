@@ -6,7 +6,7 @@ export function OneClickPoweredBy() {
       <Box
         component='img'
         src='/1-click-powered-by.svg'
-        alt='1-Click Signup powered by Verified Inc.'
+        alt='1-Click Signup powered by Verified'
         px={4}
         mt={2}
         width='100%'

@@ -52,7 +52,7 @@ export function HostedField() {
           isDefault
           value
           title='Verified UI'
-          description='Verified Inc. hosts the page'
+          description='Verified hosts the page'
           tip='true'
           inputProps={
             { 'data-testid': 'custom-demo-dialog-hosted-radio' } as any
