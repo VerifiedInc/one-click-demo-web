@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { useController } from 'react-hook-form';
 import { Autocomplete, TextField } from '@mui/material';
 import { CredentialRequestDto } from '@verifiedinc/core-types';
@@ -13,11 +13,9 @@ import { buildDataFieldValue } from '~/features/customConfig/components/Customiz
 
 export function DataFieldOptionType() {
   const credentialRequestField = useCredentialRequestField();
-  const isNew: boolean = (credentialRequestField?.field as any).isNew;
   const field = useController<CustomDemoForm>({
     name: `${credentialRequestField?.path as any}` as any,
   });
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { schemas } = useCustomConfig();
   const schemaValues = useMemo(() => {
@@ -38,11 +36,6 @@ export function DataFieldOptionType() {
     return schemaValues?.find((value) => value.id === type);
   }, [field, schemaValues]);
 
-  useEffect(() => {
-    if (!isNew) return;
-    inputRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isNew]);
-
   return (
     <DataFieldSection
       key={JSON.stringify(selectedValue)}
@@ -56,7 +49,6 @@ export function DataFieldOptionType() {
       }
     >
       <Autocomplete
-        ref={inputRef}
         value={selectedValue}
         onChange={(_, value) => {
           if (!value) return;
@@ -80,6 +72,7 @@ export function DataFieldOptionType() {
               ...params.inputProps,
               'data-testid': 'custom-demo-dialog-data-field-type-input',
             }}
+            placeholder='Choose a type...'
           />
         )}
         disabled={(credentialRequestField?.level || 0) > 0 || schemas === null}

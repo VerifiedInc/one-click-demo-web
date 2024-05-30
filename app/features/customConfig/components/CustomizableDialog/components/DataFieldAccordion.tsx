@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -38,6 +38,8 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
   const [expanded, setOpen] = useState(defaultExpanded || isNew || false);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const accordionRef = useRef<HTMLDivElement | null>(null);
+
   const theme = useTheme();
   const chevronClassName = 'chevron';
 
@@ -48,17 +50,19 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
   };
 
   const renderTitle = () => {
-    const type = prettyField(credentialRequestField?.field.type || '');
+    const fieldType = credentialRequestField?.field.type;
+    const type = prettyField(fieldType || 'Choose a type...');
+
+    const typographyStyle = {
+      fontStyle: fieldType ? 'normal' : 'italic',
+      fontSize: '16px',
+      fontWeight: '800',
+      textAlign: 'left !important',
+      alignSelf: 'flex-start',
+    };
+
     return (
-      <Typography
-        variant='body1'
-        sx={{
-          fontSize: '16px',
-          fontWeight: '800',
-          textAlign: 'left !important',
-          alignSelf: 'flex-start',
-        }}
-      >
+      <Typography variant='body1' sx={typographyStyle}>
         {credentialRequestField?.field.mandatory !== MandatoryEnum.NO ? (
           <RequiredLabel>{type}</RequiredLabel>
         ) : (
@@ -98,8 +102,15 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
     );
   };
 
+  useEffect(() => {
+    if (!isNew) return;
+    accordionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isNew]);
+
   return (
     <Accordion
+      ref={accordionRef}
+      defaultExpanded={isNew}
       expanded={expanded}
       sx={{
         boxShadow: 'none',
