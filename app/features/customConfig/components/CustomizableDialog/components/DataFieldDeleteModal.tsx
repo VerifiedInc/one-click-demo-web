@@ -62,7 +62,7 @@ export function DataFieldDeleteModal({
       </Typography>
       <DialogActions sx={{ justifyContent: 'space-between' }}>
         <OriginalButton
-          color='error'
+          variant='text'
           size='small'
           onClick={onClose}
           sx={buttonStyle}
@@ -71,7 +71,7 @@ export function DataFieldDeleteModal({
           Don't Delete
         </OriginalButton>
         <OriginalButton
-          variant='text'
+          color='error'
           size='small'
           onClick={onConfirm}
           sx={buttonStyle}
