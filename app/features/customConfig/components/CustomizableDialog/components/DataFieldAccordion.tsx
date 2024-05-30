@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -37,6 +37,8 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
 
   const [expanded, setOpen] = useState(defaultExpanded || isNew || false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const accordionRef = useRef<HTMLDivElement | null>(null);
 
   const theme = useTheme();
   const chevronClassName = 'chevron';
@@ -100,8 +102,15 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
     );
   };
 
+  useEffect(() => {
+    if (!isNew) return;
+    accordionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isNew]);
+
   return (
     <Accordion
+      ref={accordionRef}
+      defaultExpanded={isNew}
       expanded={expanded}
       sx={{
         boxShadow: 'none',
