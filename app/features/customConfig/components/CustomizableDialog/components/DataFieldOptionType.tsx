@@ -80,6 +80,7 @@ export function DataFieldOptionType() {
               ...params.inputProps,
               'data-testid': 'custom-demo-dialog-data-field-type-input',
             }}
+            placeholder='Choose a type...'
           />
         )}
         disabled={(credentialRequestField?.level || 0) > 0 || schemas === null}
