@@ -1,5 +1,5 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Paper, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { Add } from '@mui/icons-material';
 
 import { OriginalButton } from '~/components/OriginalButton';
@@ -7,8 +7,9 @@ import { CustomDemoForm } from '~/features/customConfig/validators/form';
 import { buildDataFieldValue } from '~/features/customConfig/components/CustomizableDialog/utils/buildDataFieldValue';
 import { useCustomConfig } from '~/features/customConfig/contexts/CustomConfig';
 import { CredentialRequestFieldProvider } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
+import { CredentialRequestItemProvider } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestItemContext';
+import { CredentialRequestItem } from '~/features/customConfig/components/CustomizableDialog/components/CredentialRequestItem';
 import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
-import { DataFieldAccordion } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldAccordion';
 
 function CredentialRequestField({
   path = 'credentialRequests',
@@ -34,15 +35,9 @@ function CredentialRequestField({
             index={index}
             level={level}
           >
-            <Paper
-              sx={{
-                p: '0!important',
-                width: `calc(100% - ${level * 30}px)!important`,
-                alignSelf: 'flex-end',
-              }}
-            >
-              <DataFieldAccordion />
-            </Paper>
+            <CredentialRequestItemProvider>
+              <CredentialRequestItem />
+            </CredentialRequestItemProvider>
             {Array.isArray(field.children) && (
               <CredentialRequestField
                 key={`${_path}.children`}
@@ -78,6 +73,7 @@ function CredentialRequestField({
 export function CredentialRequestsField() {
   return (
     <SectionAccordion
+      defaultExpanded
       title='Data Fields'
       description='What data your brand will ask the user to share'
       tip={

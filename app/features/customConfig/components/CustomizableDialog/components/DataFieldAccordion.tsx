@@ -18,6 +18,7 @@ import {
 } from '@mui/icons-material';
 import { MandatoryEnum } from '@verifiedinc/core-types';
 
+import { prettyField } from '~/utils/credential';
 import { RequiredLabel } from '~/components/RequiredLabel';
 import { useCredentialRequestField } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
 import { DataFieldOptionType } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldOptionType';
@@ -25,7 +26,7 @@ import { DataFieldDescription } from '~/features/customConfig/components/Customi
 import { DataFieldMandatory } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldMandatory';
 import { DataFieldUserInput } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldUserInput';
 import { DataFieldDeleteModal } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldDeleteModal';
-import { prettyField } from '~/utils/credential';
+import { useCredentialRequestItem } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestItemContext';
 
 type DataFieldAccordionProps = {
   defaultExpanded?: boolean;
@@ -34,6 +35,7 @@ type DataFieldAccordionProps = {
 export function DataFieldAccordion(props: DataFieldAccordionProps) {
   const { defaultExpanded } = props;
   const credentialRequestField = useCredentialRequestField();
+  const credentialRequestItem = useCredentialRequestItem();
   const isNew: boolean = (credentialRequestField?.field as any).isNew;
 
   const [expanded, setOpen] = useState(defaultExpanded || isNew || false);
@@ -103,8 +105,13 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
     );
   };
 
-  const renderAccordion = () => {
-    return (
+  useEffect(() => {
+    if (!isNew) return;
+    accordionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [isNew]);
+
+  return (
+    <Box>
       <Accordion
         ref={accordionRef}
         defaultExpanded={isNew}
@@ -177,7 +184,7 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
             <Stack direction='column' alignItems='flex-start' spacing={0}>
               <Stack direction='row' alignItems='center' spacing={1}>
                 <IconButton
-                  ref={credentialRequestField?.dragRef}
+                  ref={credentialRequestItem?.dragRef}
                   size='small'
                   color='success'
                 >
@@ -203,13 +210,6 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
           onConfirm={handleRemove}
         />
       </Accordion>
-    );
-  };
-
-  useEffect(() => {
-    if (!isNew) return;
-    accordionRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [isNew]);
-
-  return <Box>{renderAccordion()}</Box>;
+    </Box>
+  );
 }
