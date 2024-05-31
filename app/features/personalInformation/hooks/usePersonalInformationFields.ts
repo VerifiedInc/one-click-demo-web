@@ -117,7 +117,7 @@ export function usePersonalInformationFields() {
   const ssn = useMaskField({
     options: {
       // Mask in the pattern of SSN.
-      mask: 'XXX[-]XX[-]0000',
+      mask: 'XXX-XX-0000',
 
       // Use unmasked value.
       unmask: true,
@@ -136,7 +136,7 @@ export function usePersonalInformationFields() {
       name: 'ssn',
       label: 'SSN',
       schema: SSNSchema,
-      initialValue: data?.ssn,
+      initialValue: '224629647',
     },
   });
 
