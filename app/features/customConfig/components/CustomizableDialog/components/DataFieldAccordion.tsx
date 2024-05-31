@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   IconButton,
   Stack,
   Typography,
@@ -40,6 +41,9 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
 
   const accordionRef = useRef<HTMLDivElement | null>(null);
 
+  const fieldType = credentialRequestField?.field.type;
+  const type = prettyField(fieldType || 'Choose a type...');
+
   const theme = useTheme();
   const chevronClassName = 'chevron';
 
@@ -50,9 +54,6 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
   };
 
   const renderTitle = () => {
-    const fieldType = credentialRequestField?.field.type;
-    const type = prettyField(fieldType || 'Choose a type...');
-
     const typographyStyle = {
       fontStyle: fieldType ? 'normal' : 'italic',
       fontSize: '16px',
@@ -102,105 +103,113 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
     );
   };
 
+  const renderAccordion = () => {
+    return (
+      <Accordion
+        ref={accordionRef}
+        defaultExpanded={isNew}
+        expanded={expanded}
+        sx={{
+          boxShadow: 'none',
+          '&::before': {
+            display: 'none',
+          },
+          my: '0px !important',
+          mt: 0,
+          p: '8px !important',
+        }}
+        data-testid='custom-demo-dialog-data-field-accordion'
+      >
+        <AccordionSummary
+          onClick={() => setOpen((prev) => !prev)}
+          expandIcon={
+            <>
+              <IconButton
+                size='small'
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setModalOpen(true);
+                }}
+                data-testid='custom-demo-dialog-data-field-delete-button'
+              >
+                <Delete
+                  fontSize='small'
+                  sx={{
+                    transform: 'rotate(0deg)',
+                  }}
+                />
+              </IconButton>
+              <Stack
+                className={chevronClassName}
+                sx={{ ml: 1, alignSelf: 'center' }}
+              >
+                <ChevronLeft
+                  fontSize='small'
+                  sx={{
+                    color: '#0dbc3d',
+                    transform: 'rotate(0deg)',
+                  }}
+                />
+              </Stack>
+            </>
+          }
+          sx={{
+            px: 0,
+            minHeight: 'auto!important',
+            '& .MuiAccordionSummary-content': {
+              my: '0px !important',
+            },
+            '& .MuiAccordionSummary-expandIconWrapper': {
+              alignSelf: 'flex-start',
+              transform: 'rotate(0deg) !important',
+              [`& .${chevronClassName}`]: {
+                transition: 'transform .3s',
+              },
+              '&.Mui-expanded': {
+                [`& .${chevronClassName}`]: {
+                  transform: 'rotate(-90deg)',
+                },
+              },
+            },
+          }}
+        >
+          <Stack sx={{ alignItems: 'flex-start', mr: 0.5 }}>
+            <Stack direction='column' alignItems='flex-start' spacing={0}>
+              <Stack direction='row' alignItems='center' spacing={1}>
+                <IconButton
+                  ref={credentialRequestField?.dragRef}
+                  size='small'
+                  color='success'
+                >
+                  <Menu />
+                </IconButton>
+                {renderTitle()}
+              </Stack>
+              {renderUserInput()}
+            </Stack>
+          </Stack>
+        </AccordionSummary>
+        <AccordionDetails sx={{ pt: 3 }}>
+          <Stack spacing={2}>
+            <DataFieldOptionType />
+            <DataFieldDescription />
+            <DataFieldMandatory />
+            <DataFieldUserInput />
+          </Stack>
+        </AccordionDetails>
+        <DataFieldDeleteModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onConfirm={handleRemove}
+        />
+      </Accordion>
+    );
+  };
+
   useEffect(() => {
     if (!isNew) return;
     accordionRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [isNew]);
 
-  return (
-    <Accordion
-      ref={accordionRef}
-      defaultExpanded={isNew}
-      expanded={expanded}
-      sx={{
-        boxShadow: 'none',
-        '&::before': {
-          display: 'none',
-        },
-        my: '0px !important',
-        mt: 0,
-        p: '8px !important',
-      }}
-      data-testid='custom-demo-dialog-data-field-accordion'
-    >
-      <AccordionSummary
-        onClick={() => setOpen((prev) => !prev)}
-        expandIcon={
-          <>
-            <IconButton
-              size='small'
-              onClick={(e) => {
-                e.stopPropagation();
-                setModalOpen(true);
-              }}
-              data-testid='custom-demo-dialog-data-field-delete-button'
-            >
-              <Delete
-                fontSize='small'
-                sx={{
-                  transform: 'rotate(0deg)',
-                }}
-              />
-            </IconButton>
-            <Stack
-              className={chevronClassName}
-              sx={{ ml: 1, alignSelf: 'center' }}
-            >
-              <ChevronLeft
-                fontSize='small'
-                sx={{
-                  color: '#0dbc3d',
-                  transform: 'rotate(0deg)',
-                }}
-              />
-            </Stack>
-          </>
-        }
-        sx={{
-          px: 0,
-          minHeight: 'auto!important',
-          '& .MuiAccordionSummary-content': {
-            my: '0px !important',
-          },
-          '& .MuiAccordionSummary-expandIconWrapper': {
-            alignSelf: 'flex-start',
-            transform: 'rotate(0deg) !important',
-            [`& .${chevronClassName}`]: {
-              transition: 'transform .3s',
-            },
-            '&.Mui-expanded': {
-              [`& .${chevronClassName}`]: {
-                transform: 'rotate(-90deg)',
-              },
-            },
-          },
-        }}
-      >
-        <Stack sx={{ alignItems: 'flex-start', mr: 0.5 }}>
-          <Stack direction='column' alignItems='flex-start' spacing={0}>
-            <Stack direction='row' alignItems='center' spacing={1}>
-              <IconButton size='small' color='success'>
-                <Menu />
-              </IconButton>
-              {renderTitle()}
-            </Stack>
-            {renderUserInput()}
-          </Stack>
-        </Stack>
-      </AccordionSummary>
-      <AccordionDetails sx={{ pt: 3 }}>
-        <Stack spacing={2}>
-          <DataFieldOptionType />
-          <DataFieldDescription />
-          <DataFieldMandatory />
-          <DataFieldUserInput />
-        </Stack>
-      </AccordionDetails>
-      <DataFieldDeleteModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onConfirm={handleRemove}
-      />
-    </Accordion>
-  );
+  return <Box>{renderAccordion()}</Box>;
 }
