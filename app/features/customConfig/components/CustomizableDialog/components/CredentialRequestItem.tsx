@@ -5,7 +5,6 @@ import invariant from 'tiny-invariant';
 import {
   draggable,
   dropTargetForElements,
-  monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
@@ -54,7 +53,6 @@ export function CredentialRequestItem() {
         element: dragElement,
         getInitialData: () => credentialRequestField,
         onGenerateDragPreview({ nativeSetDragImage }) {
-          console.log(123);
           setCustomNativeDragPreview({
             nativeSetDragImage,
             getOffset: pointerOutsideOfPreview({
@@ -71,8 +69,23 @@ export function CredentialRequestItem() {
         onDragStart() {
           setDraggableState(draggingState);
         },
-        onDrop() {
+        onDrop({ source, location }) {
           setDraggableState(idleState);
+
+          const target = location.current.dropTargets[0];
+
+          // It happens that there are no target the drop
+          if (!target) return;
+
+          const fromLevel = source.data.level as number;
+          const fromIndex = source.data.index as number;
+          const toLevel = target.data.level as number;
+          const toIndex = target.data.index as number;
+
+          // Allow to drop only on the same level and different index
+          if (fromLevel !== toLevel || fromIndex === toIndex) return;
+
+          credentialRequestField.fieldArray.swap(fromIndex, toIndex);
         },
       }),
       dropTargetForElements({
@@ -84,7 +97,7 @@ export function CredentialRequestItem() {
           return attachClosestEdge(credentialRequestField, {
             element: containerElement,
             input,
-            allowedEdges: ['top', 'bottom'],
+            allowedEdges: ['top'],
           });
         },
         onDrag({ self, source }) {
@@ -125,33 +138,6 @@ export function CredentialRequestItem() {
       })
     );
   }, [credentialRequestField, credentialRequestItem]);
-
-  useEffect(() => {
-    return monitorForElements({
-      canMonitor({ source }) {
-        return source.data.level === credentialRequestField.level;
-      },
-      onDrop({ location, source }) {
-        const target = location.current.dropTargets[0];
-        if (!target) {
-          return;
-        }
-
-        const sourceData = source.data;
-        const targetData = target.data;
-        if (
-          typeof sourceData.level === 'undefined' ||
-          typeof targetData.level === 'undefined'
-        ) {
-          return;
-        }
-
-        const closestEdgeOfTarget = extractClosestEdge(targetData);
-
-        console.log(sourceData, targetData, closestEdgeOfTarget);
-      },
-    });
-  }, [credentialRequestField]);
 
   const renderView = () => {
     return (
