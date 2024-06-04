@@ -1,15 +1,17 @@
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import React from 'react';
 import { Stack } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { OriginalButton } from '~/components/OriginalButton';
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
 import { buildDataFieldValue } from '~/features/customConfig/components/CustomizableDialog/utils/buildDataFieldValue';
 import { useCustomConfig } from '~/features/customConfig/contexts/CustomConfig';
 import { CredentialRequestFieldProvider } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
-import { CredentialRequestItemProvider } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestItemContext';
-import { CredentialRequestItem } from '~/features/customConfig/components/CustomizableDialog/components/CredentialRequestItem';
 import { SectionAccordion } from '~/features/customConfig/components/CustomizableDialog/components/SectionAccordion';
+import { DataFieldAccordion } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldAccordion';
 
 function CredentialRequestField({
   path = 'credentialRequests',
@@ -35,9 +37,7 @@ function CredentialRequestField({
             index={index}
             level={level}
           >
-            <CredentialRequestItemProvider>
-              <CredentialRequestItem />
-            </CredentialRequestItemProvider>
+            <DataFieldAccordion />
             {Array.isArray(field.children) && (
               <CredentialRequestField
                 key={`${_path}.children`}
@@ -83,9 +83,11 @@ export function CredentialRequestsField() {
         </>
       }
     >
-      <Stack spacing={2}>
-        <CredentialRequestField />
-      </Stack>
+      <DndProvider backend={HTML5Backend}>
+        <Stack spacing={2}>
+          <CredentialRequestField />
+        </Stack>
+      </DndProvider>
     </SectionAccordion>
   );
 }
