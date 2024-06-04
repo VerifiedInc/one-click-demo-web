@@ -43,7 +43,6 @@
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.1.9",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.0.3",
-    "@atlaskit/pragmatic-drag-and-drop-react-drop-indicator": "^1.1.1",
     "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",

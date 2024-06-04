@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Paper, Stack } from '@mui/material';
 import invariant from 'tiny-invariant';
@@ -14,7 +14,8 @@ import {
   type Edge,
   extractClosestEdge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
-import DropIndicator from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box';
+
+import { DragIndicator } from '~/components/DragIndicator';
 
 import { DataFieldAccordion } from '~/features/customConfig/components/CustomizableDialog/components/DataFieldAccordion';
 import { useCredentialRequestField } from '~/features/customConfig/components/CustomizableDialog/contexts/CredentialRequestFieldContext';
@@ -37,16 +38,18 @@ export function CredentialRequestItem() {
   );
   invariant(credentialRequestItem, 'CredentialRequestItemContext is required');
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
+  const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const [draggableState, setDraggableState] =
     useState<DraggableState>(idleState);
   const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
 
   useEffect(() => {
-    const containerElement = containerRef.current;
+    const containerElement = container;
     const dragElement = credentialRequestItem?.dragRef.current;
     if (!dragElement || !containerElement) return;
+
+    const getParentPath = (path: string) =>
+      path.split('.').slice(0, -2).join('.');
 
     return combine(
       draggable({
@@ -77,15 +80,25 @@ export function CredentialRequestItem() {
           // It happens that there are no target the drop
           if (!target) return;
 
+          const sourcePath = getParentPath(
+            (source?.data?.path as string) || ''
+          );
+          const targetPath = getParentPath(
+            (target?.data?.path as string) || ''
+          );
+          const isSameGroup = sourcePath === targetPath;
+
           const fromLevel = source.data.level as number;
           const fromIndex = source.data.index as number;
           const toLevel = target.data.level as number;
           const toIndex = target.data.index as number;
 
           // Allow to drop only on the same level and different index
-          if (fromLevel !== toLevel || fromIndex === toIndex) return;
+          if (fromLevel !== toLevel || fromIndex === toIndex || !isSameGroup) {
+            return;
+          }
 
-          credentialRequestField.fieldArray.swap(fromIndex, toIndex);
+          credentialRequestField.fieldArray.move(fromIndex, toIndex);
         },
       }),
       dropTargetForElements({
@@ -97,7 +110,7 @@ export function CredentialRequestItem() {
           return attachClosestEdge(credentialRequestField, {
             element: containerElement,
             input,
-            allowedEdges: ['top'],
+            allowedEdges: ['top', 'bottom'],
           });
         },
         onDrag({ self, source }) {
@@ -114,15 +127,18 @@ export function CredentialRequestItem() {
 
           const isItemBeforeSource =
             credentialRequestField.index === sourceIndex - 1;
-          const isItemAfterSource =
-            credentialRequestField.index === sourceIndex + 1;
 
           const isDropIndicatorHidden =
             (isItemBeforeSource && closestEdge === 'bottom') ||
-            (isItemAfterSource && closestEdge === 'top') ||
             source.data.level !== credentialRequestField.level;
 
-          if (isDropIndicatorHidden) {
+          const sourcePath = getParentPath(
+            (source?.data?.path as string) || ''
+          );
+          const targetPath = getParentPath((self?.data?.path as string) || '');
+          const isSameGroup = sourcePath === targetPath;
+
+          if (isDropIndicatorHidden || !isSameGroup) {
             setClosestEdge(null);
             return;
           }
@@ -137,7 +153,7 @@ export function CredentialRequestItem() {
         },
       })
     );
-  }, [credentialRequestField, credentialRequestItem]);
+  }, [container, credentialRequestField, credentialRequestItem]);
 
   const renderView = () => {
     return (
@@ -156,16 +172,18 @@ export function CredentialRequestItem() {
   };
 
   return (
-    <>
-      <Stack ref={containerRef} sx={{ position: 'relative', width: '100%' }}>
+    <div ref={(element) => setContainer(element)}>
+      <Stack sx={{ position: 'relative', width: '100%' }}>
         {renderView()}
-        {closestEdge ? <DropIndicator edge={closestEdge} gap='1px' /> : null}
+        {closestEdge ? (
+          <DragIndicator offset={credentialRequestField.level * 30} />
+        ) : null}
       </Stack>
       {draggableState.type === 'preview' &&
         ReactDOM.createPortal(
           <Stack sx={{ maxWidth: '344px' }}>{renderView()}</Stack>,
           draggableState.container
         )}
-    </>
+    </div>
   );
 }

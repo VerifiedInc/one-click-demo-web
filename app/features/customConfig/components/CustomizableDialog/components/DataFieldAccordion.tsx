@@ -187,6 +187,11 @@ export function DataFieldAccordion(props: DataFieldAccordionProps) {
                   ref={credentialRequestItem?.dragRef}
                   size='small'
                   color='success'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  sx={{ cursor: 'grab' }}
                 >
                   <Menu />
                 </IconButton>
