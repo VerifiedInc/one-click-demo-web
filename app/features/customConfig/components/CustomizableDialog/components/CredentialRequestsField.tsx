@@ -73,7 +73,6 @@ function CredentialRequestField({
 export function CredentialRequestsField() {
   return (
     <SectionAccordion
-      defaultExpanded
       title='Data Fields'
       description='What data your brand will ask the user to share'
       tip={
