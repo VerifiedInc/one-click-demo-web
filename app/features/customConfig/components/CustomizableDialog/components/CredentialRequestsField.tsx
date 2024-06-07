@@ -1,6 +1,9 @@
-import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Paper, Stack } from '@mui/material';
+import React from 'react';
+import { Stack } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { OriginalButton } from '~/components/OriginalButton';
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
@@ -34,15 +37,7 @@ function CredentialRequestField({
             index={index}
             level={level}
           >
-            <Paper
-              sx={{
-                p: '0!important',
-                width: `calc(100% - ${level * 30}px)!important`,
-                alignSelf: 'flex-end',
-              }}
-            >
-              <DataFieldAccordion />
-            </Paper>
+            <DataFieldAccordion />
             {Array.isArray(field.children) && (
               <CredentialRequestField
                 key={`${_path}.children`}
@@ -78,6 +73,7 @@ function CredentialRequestField({
 export function CredentialRequestsField() {
   return (
     <SectionAccordion
+      defaultExpanded
       title='Data Fields'
       description='What data your brand will ask the user to share'
       tip={
@@ -87,9 +83,11 @@ export function CredentialRequestsField() {
         </>
       }
     >
-      <Stack spacing={2}>
-        <CredentialRequestField />
-      </Stack>
+      <DndProvider backend={HTML5Backend}>
+        <Stack spacing={2}>
+          <CredentialRequestField />
+        </Stack>
+      </DndProvider>
     </SectionAccordion>
   );
 }

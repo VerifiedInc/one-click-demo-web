@@ -48,7 +48,7 @@ export function CustomizableDialog() {
   );
 
   const [dialogOpen, setDialogOpen] = useState(true);
-  const [showDetailStep, setShowDetailStep] = useState(false);
+  const [showDetailStep, setShowDetailStep] = useState(true);
 
   const url =
     typeof window !== 'undefined' ? new URL(window.location.href) : '';

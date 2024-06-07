@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext } from 'react';
+import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { FieldArrayWithId, UseFieldArrayReturn } from 'react-hook-form';
 
 import { CustomDemoForm } from '~/features/customConfig/validators/form';
@@ -21,5 +21,5 @@ export function CredentialRequestFieldProvider({
   children,
   ...props
 }: CredentialRequestFieldContext) {
-  return <Context.Provider value={{ ...props }}>{children}</Context.Provider>;
+  return <Context.Provider value={props}>{children}</Context.Provider>;
 }
