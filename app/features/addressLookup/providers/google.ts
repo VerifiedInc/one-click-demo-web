@@ -1,13 +1,14 @@
 import { logger } from '~/logger.server';
 
-import { config } from '~/config.server';
+import { config } from '~/config';
 import { fetchEnhanced } from '~/utils/fetch';
 
 import { AddressLookup } from '../types/addressLookup';
 
 export function googleProvider(): AddressLookup {
   const baseUrl = new URL('https://maps.googleapis.com/maps/api/geocode/json');
-  const apiKey = config.googleGeocodingApiKey;
+  // TODO - add api key
+  const apiKey = 'apikey';
 
   baseUrl.searchParams.set('key', apiKey);
 
