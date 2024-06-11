@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { LoaderFunction, json, redirect } from '@remix-run/node';
-import { useNavigate, useSearchParams } from '@remix-run/react';
+import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
 import {
   Box,
   Button,
@@ -10,10 +10,14 @@ import {
   Typography,
 } from '@mui/material';
 
+import { mapSimplifiedToCredentialDto } from '~/utils/credentials';
+
 import { useBrand } from '~/hooks/useBrand';
 import { usePersonalInformationFields } from '~/features/personalInformation/hooks/usePersonalInformationFields';
 import { getOneClickUseCase } from '~/features/oneClick/useCases/getOneClickUseCase';
 import { InputMask } from '~/components/InputMask';
+import { getSchemas } from '~/coreAPI.server';
+import { RequestBody } from '~/features/request/request/RequestBody';
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   const url = new URL(request.url);
@@ -21,7 +25,19 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
   const oneClick = await getOneClickUseCase({ context, request });
 
-  if (oneClick?.success) return json(oneClick.success);
+  if (oneClick?.success) {
+    const credentials = mapSimplifiedToCredentialDto(
+      oneClick.success.oneClick.credentials
+    );
+    const schemas = await getSchemas();
+    return json({
+      ...oneClick.success,
+      credentials,
+      schemas,
+      credentialRequests:
+        oneClick.success.oneClickDB.presentationRequest.credentialRequests,
+    });
+  }
 
   // No credentials found, so user should be redirected to the register page.
   return redirect('/register' + searchParams.toString());
@@ -30,8 +46,10 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 export default function PersonalInformation() {
   const brand = useBrand();
   const { fields, isValid, requiredFields } = usePersonalInformationFields();
+  const { credentials, credentialRequests, schemas, ...rest } = useLoaderData();
   const navigate = useNavigate();
 
+  console.log(credentials);
   const [searchParams] = useSearchParams();
 
   const dashboardPageLink = useMemo(() => {
@@ -83,6 +101,11 @@ export default function PersonalInformation() {
       >
         Please fill the information below to get started
       </Typography>
+      <RequestBody
+        credentialRequests={credentialRequests}
+        credentials={credentials}
+        schema={schemas}
+      />
       <Stack
         direction='column'
         spacing={2}

@@ -33,6 +33,7 @@ function PhoneInputComponent(
     autoFocus = false,
     disabled = false,
     inputProps: _inputProps,
+    ...rest
   }: Readonly<PhoneInputProps>,
   ref: ForwardedRef<HTMLInputElement>
 ) {
@@ -85,6 +86,7 @@ function PhoneInputComponent(
       inputComponent: InputMask as any,
     },
     fullWidth: true,
+    ...rest,
   };
 
   return (

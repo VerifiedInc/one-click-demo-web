@@ -8,5 +8,12 @@ type DataFieldStackProps = StackProps;
  * @constructor
  */
 export function DataFieldStack(props: DataFieldStackProps) {
-  return <Stack direction='column' spacing={1.25} {...props} />;
+  return (
+    <Stack
+      direction='column'
+      spacing={1.25}
+      sx={{ width: '100%' }}
+      {...props}
+    />
+  );
 }

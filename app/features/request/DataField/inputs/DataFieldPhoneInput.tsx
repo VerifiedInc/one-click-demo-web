@@ -6,6 +6,7 @@ import { useCredentialsDisplayItemValid } from '~/features/request/CredentialsDi
 import { useCredentialsDisplayItem } from '~/features/request/CredentialsDisplay/CredentialsDisplayItemContext';
 import { DataFieldClearAdornment } from '~/features/request/DataField/DataFieldClearAdornment';
 import PhoneInput from '~/components/PhoneInput';
+import { inputStyle } from '~/styles/input';
 
 /**
  * This component manages the input of type Phone.
@@ -42,6 +43,8 @@ export function DataFieldPhoneInput() {
   return (
     <Box width='100%'>
       <PhoneInput
+        {...inputStyle}
+        label='Phone'
         onChange={handleChange}
         helperText={helperText}
         error={!isValid}

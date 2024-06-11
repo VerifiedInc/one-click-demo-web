@@ -46,7 +46,7 @@ export function DataFieldAtomic() {
 
   // HACK alert:
   // This calculation subtracts left side component and right side component to fit in.
-  const stackStyle: SxProps = { width: 'calc(100% - 50px - 40px)' };
+  const stackStyle: SxProps = { width: 'calc(100%)' };
 
   // Render data field as input mode.
   const renderInputField = () => {

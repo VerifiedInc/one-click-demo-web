@@ -6,3 +6,4 @@ export * from './isCompositeBySchema';
 export * from './compareCredentialData';
 export * from './extractTypesFromCredentialRequests';
 export * from './extractTypesFromCredentials';
+export * from './mapSimplifiedToCredentialDto';

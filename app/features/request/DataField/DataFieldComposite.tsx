@@ -79,7 +79,7 @@ export function DataFieldComposite(props: DataFieldCompositeProps) {
       data-testid='data-field-composite'
       data-credentialid={credentialDisplayInfo.id}
     >
-      <Box>
+      <Box width='100%'>
         <Accordion
           expanded={expanded || isEditMode}
           TransitionProps={{ unmountOnExit: false }}

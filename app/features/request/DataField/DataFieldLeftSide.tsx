@@ -1,7 +1,7 @@
 import { Box, SxProps } from '@mui/material';
 
-import { DataFieldCheckbox } from '~/features/request/DataField/DataFieldCheckbox';
-import { useCredentialsDisplayItem } from '~/features/request/CredentialsDisplay/CredentialsDisplayItemContext';
+// import { DataFieldCheckbox } from '~/features/request/DataField/DataFieldCheckbox';
+// import { useCredentialsDisplayItem } from '~/features/request/CredentialsDisplay/CredentialsDisplayItemContext';
 
 /**
  * This component will render the left side of a data field,
@@ -9,12 +9,12 @@ import { useCredentialsDisplayItem } from '~/features/request/CredentialsDisplay
  * @constructor
  */
 export function DataFieldLeftSide() {
-  const { isSelectable } = useCredentialsDisplayItem();
+  // const { isSelectable } = useCredentialsDisplayItem();
   const safeAreaStyle: SxProps = { pl: 1 };
 
-  if (!isSelectable) {
-    return <Box sx={safeAreaStyle} />;
-  }
+  // if (!isSelectable) {
+  // }
 
-  return <DataFieldCheckbox />;
+  return <Box sx={safeAreaStyle} />;
+  // return <DataFieldCheckbox />;
 }
