@@ -1,21 +1,12 @@
 import { useMemo } from 'react';
 import { LoaderFunction, json, redirect } from '@remix-run/node';
 import { useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
-import {
-  Box,
-  Button,
-  Stack,
-  SxProps,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Stack, SxProps, Typography } from '@mui/material';
 
 import { mapSimplifiedToCredentialDto } from '~/utils/credentials';
 
 import { useBrand } from '~/hooks/useBrand';
-import { usePersonalInformationFields } from '~/features/personalInformation/hooks/usePersonalInformationFields';
 import { getOneClickUseCase } from '~/features/oneClick/useCases/getOneClickUseCase';
-import { InputMask } from '~/components/InputMask';
 import { getSchemas } from '~/coreAPI.server';
 import { RequestBody } from '~/features/request/request/RequestBody';
 
@@ -34,8 +25,6 @@ export const loader: LoaderFunction = async ({ request, context }) => {
       ...oneClick.success,
       credentials,
       schemas,
-      credentialRequests:
-        oneClick.success.oneClickDB.presentationRequest.credentialRequests,
     });
   }
 
@@ -45,11 +34,9 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
 export default function PersonalInformation() {
   const brand = useBrand();
-  const { fields, isValid, requiredFields } = usePersonalInformationFields();
   const { credentials, credentialRequests, schemas, ...rest } = useLoaderData();
   const navigate = useNavigate();
 
-  console.log(credentials);
   const [searchParams] = useSearchParams();
 
   const dashboardPageLink = useMemo(() => {
@@ -62,7 +49,6 @@ export default function PersonalInformation() {
     return `/verified${searchParamsString ? `?${searchParamsString}` : ''}`;
   }, [searchParams]);
 
-  const fieldSx: SxProps = { width: '100%' };
   const buttonContainerSx: SxProps = {
     position: 'sticky',
     bottom: 0,
@@ -71,8 +57,6 @@ export default function PersonalInformation() {
     background:
       'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 1) 35%)',
   };
-
-  const isRequired = (fieldName: string) => requiredFields.includes(fieldName);
 
   const handleGetStarted = () => {
     if (typeof window === 'undefined') {
@@ -101,11 +85,6 @@ export default function PersonalInformation() {
       >
         Please fill the information below to get started
       </Typography>
-      <RequestBody
-        credentialRequests={credentialRequests}
-        credentials={credentials}
-        schema={schemas}
-      />
       <Stack
         direction='column'
         spacing={2}
@@ -114,27 +93,13 @@ export default function PersonalInformation() {
         width='100%'
         position='relative'
       >
-        {Object.values(fields).map((field) => {
-          const maskOptions = (field as any)?.maskOptions;
-          return (
-            <TextField
-              key={field.name}
-              name={field.name}
-              label={field.label + (isRequired(field.name) ? ' *' : '')}
-              value={field.value}
-              onChange={field.change}
-              error={!!field.error}
-              helperText={field.error}
-              sx={fieldSx}
-              InputProps={{
-                inputComponent: maskOptions ? (InputMask as any) : undefined,
-              }}
-              inputProps={{ ...maskOptions }}
-            />
-          );
-        })}
+        <RequestBody
+          credentialRequests={credentialRequests}
+          credentials={credentials}
+          schema={schemas}
+        />
         <Box sx={buttonContainerSx}>
-          <Button onClick={handleGetStarted} fullWidth disabled={!isValid}>
+          <Button onClick={handleGetStarted} fullWidth>
             Get Started
           </Button>
         </Box>
