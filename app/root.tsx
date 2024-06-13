@@ -93,6 +93,7 @@ export const loader: LoaderFunction = async ({ context, request }) => {
     noticeEnabled,
     noticeText,
     bookACallUrl,
+    googlePlacesApiKey,
   } = config;
 
   return json({
@@ -109,6 +110,7 @@ export const loader: LoaderFunction = async ({ context, request }) => {
       noticeEnabled,
       noticeText,
       bookACallUrl,
+      googlePlacesApiKey,
     },
     ...brandSet,
     queryString: searchParams.toString(),

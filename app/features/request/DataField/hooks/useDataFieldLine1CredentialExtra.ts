@@ -98,8 +98,7 @@ export function useDataFieldLine1CredentialExtra(
     if (!shouldHandle) return;
 
     const loader = new Loader({
-      // TODO - add google places api key env
-      apiKey: '',
+      apiKey: appContext.config.googlePlacesApiKey,
       version: 'weekly',
     });
     loader.importLibrary('places').then((library) => {

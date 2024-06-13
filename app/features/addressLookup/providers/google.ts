@@ -7,8 +7,7 @@ import { AddressLookup } from '../types/addressLookup';
 
 export function googleProvider(): AddressLookup {
   const baseUrl = new URL('https://maps.googleapis.com/maps/api/geocode/json');
-  // TODO - add api key
-  const apiKey = 'apikey';
+  const apiKey = config.googleGeocodingApiKey;
 
   baseUrl.searchParams.set('key', apiKey);
 
