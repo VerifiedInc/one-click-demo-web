@@ -3,10 +3,7 @@ import * as Sentry from '@sentry/remix';
 import { getErrorMessage } from '~/errors';
 
 // This is a helper function to set the response to the current parent span, can be loader or action.
-function setResponseToSpan(
-  input: RequestInfo | URL,
-  responseJSON = ''
-) {
+function setResponseToSpan(input: RequestInfo | URL, responseJSON = '') {
   // Run server side only.
   if (typeof window !== 'undefined') return;
 
