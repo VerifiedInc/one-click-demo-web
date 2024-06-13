@@ -1,7 +1,7 @@
 import { PropsWithChildren, useState } from 'react';
 import { Stack, SxProps } from '@mui/material';
 import { Box } from '@mui/system';
-import { CodeOff } from '@mui/icons-material';
+import { Code, CodeOff } from '@mui/icons-material';
 
 import { OriginalButton } from '~/components/OriginalButton';
 
@@ -21,10 +21,11 @@ export function Body({ children }: PropsWithChildren) {
       <OriginalButton
         variant='text'
         size='small'
-        startIcon={<CodeOff />}
+        startIcon={showCode ? <CodeOff /> : <Code />}
         sx={buttonStyle}
+        onClick={() => setShowCode((prev) => !prev)}
       >
-        Hide Code
+        {showCode ? 'Hide' : 'Show'} Code
       </OriginalButton>
     );
   };
@@ -32,6 +33,7 @@ export function Body({ children }: PropsWithChildren) {
   return (
     <Stack
       sx={{
+        width: { xs: '100%', md: showCode ? '832px' : '100%' },
         flexDirection: { xs: 'column', md: 'row' },
         '& .MuiPaper-root': {
           width: 'auto',
@@ -41,6 +43,7 @@ export function Body({ children }: PropsWithChildren) {
     >
       <Box
         sx={{
+          flexShrink: 0,
           maxWidth: '391px',
           width: '100%',
           pt: 4,
@@ -51,6 +54,7 @@ export function Body({ children }: PropsWithChildren) {
       </Box>
       <Stack
         sx={{
+          flexShrink: 0,
           width: { xs: 'auto', md: '50px' },
           alignSelf: 'stretch',
           backgroundColor: 'rgba(0, 0, 0, 0.04)',
@@ -59,6 +63,19 @@ export function Body({ children }: PropsWithChildren) {
       >
         {renderCodeButton()}
       </Stack>
+      {showCode && (
+        <Stack
+          sx={{
+            flexShrink: 0,
+            maxWidth: '391px',
+            width: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.87)',
+            alignSelf: 'stretch',
+          }}
+        >
+          {/*  */}
+        </Stack>
+      )}
     </Stack>
   );
 }
