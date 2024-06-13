@@ -9,6 +9,7 @@ export interface BrowserConfig {
   bookACallUrl: string;
   dummyDataUrl: string;
   realDataUrl: string;
+  googlePlacesApiKey: string;
 }
 
 export const browserConfig: BrowserConfig =
