@@ -35,9 +35,9 @@ export default function Account() {
   const { credentials, credentialRequests, schemas, ...rest } = useLoaderData();
 
   const [searchParams] = useSearchParams();
-  const dashboardPageLink = useMemo(() => {
+  const verifieddPageLink = useMemo(() => {
     const searchParamsString = searchParams.toString();
-    return `/${searchParamsString ? `?${searchParamsString}` : ''}`;
+    return `/verified${searchParamsString ? `?${searchParamsString}` : ''}`;
   }, [searchParams]);
 
   return (
@@ -63,7 +63,7 @@ export default function Account() {
           credentials={credentials}
           schema={schemas}
         />
-        <Link to={dashboardPageLink}>
+        <Link to={verifieddPageLink}>
           <Button fullWidth>Go Back</Button>
         </Link>
       </Stack>

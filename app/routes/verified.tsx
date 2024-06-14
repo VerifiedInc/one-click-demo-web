@@ -1,5 +1,5 @@
-import { Button, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, Button, Typography } from '@mui/material';
+import { Refresh, Share } from '@mui/icons-material';
 import {
   ActionFunction,
   json,
@@ -14,6 +14,8 @@ import { VerifiedImage } from '~/components/VerifiedImage';
 import { useBrand } from '~/hooks/useBrand';
 import { logoutUseCase } from '~/features/logout/usecases/logoutUseCase';
 import { useFullName } from '~/hooks/useFullName';
+import { OriginalButton } from '~/components/OriginalButton';
+import { useShareDemo } from '~/features/share/hooks/useShareDemo';
 
 // The exported `action` function will be called when the route makes a POST request, i.e. when the form is submitted.
 export const action: ActionFunction = async ({ request }) => {
@@ -49,6 +51,7 @@ export default function Verified() {
   const brand = useBrand();
   const { session } = useLoaderData<typeof loader>();
   const name = useFullName(session);
+  const { handleShareDemo } = useShareDemo();
 
   const solidButtonProps = {
     sx: {
@@ -57,27 +60,6 @@ export default function Verified() {
       px: 3.5,
       fontSize: '1.4rem',
     },
-  };
-
-  const renderGoHomeButton = () => {
-    const buttonProps = {
-      ...solidButtonProps,
-      children: 'Go to Home',
-    };
-
-    if (brand.homepageUrl) {
-      return (
-        <Button href={brand.homepageUrl} {...buttonProps}>
-          Go to Home
-        </Button>
-      );
-    }
-
-    return (
-      <Form method='post'>
-        <Button {...buttonProps}>Go to Home</Button>
-      </Form>
-    );
   };
 
   return (
@@ -94,10 +76,9 @@ export default function Verified() {
       >
         You're verified and signed up.
       </Typography>
-      {renderGoHomeButton()}
       <Form method='post'>
         <input name='action' value='account' readOnly hidden />
-        <Button {...solidButtonProps}>See Account</Button>
+        <Button {...solidButtonProps}>My Account</Button>
       </Form>
       <Form method='post'>
         <input name='action' value='logout' readOnly hidden />
@@ -118,6 +99,39 @@ export default function Verified() {
       <Box mt={6}>
         <VerifiedImage theme={brand.theme} sx={{ maxWidth: 267 }} />
       </Box>
+      <Form method='post'>
+        <input name='action' value='logout' readOnly hidden />
+        <OriginalButton
+          newVariant='gray'
+          size='small'
+          startIcon={<Refresh />}
+          sx={{
+            alignSelf: 'center',
+            py: 1,
+            px: 2,
+            fontSize: '1rem',
+            mt: 2,
+          }}
+        >
+          Restart Demo
+        </OriginalButton>
+      </Form>
+      <OriginalButton
+        onClick={handleShareDemo}
+        type='button'
+        variant='contained'
+        size='small'
+        startIcon={<Share />}
+        sx={{
+          alignSelf: 'center',
+          py: 1,
+          px: 2,
+          fontSize: '1rem',
+          mt: 2,
+        }}
+      >
+        Share Demo
+      </OriginalButton>
     </Box>
   );
 }
