@@ -93,6 +93,8 @@ export const loader: LoaderFunction = async ({ context, request }) => {
     noticeEnabled,
     noticeText,
     bookACallUrl,
+    dummyEnvCoreServiceUrl,
+    realEnvCoreServiceUrl,
   } = config;
 
   return json({
@@ -109,6 +111,8 @@ export const loader: LoaderFunction = async ({ context, request }) => {
       noticeEnabled,
       noticeText,
       bookACallUrl,
+      dummyEnvCoreServiceUrl,
+      realEnvCoreServiceUrl,
     },
     ...brandSet,
     queryString: searchParams.toString(),

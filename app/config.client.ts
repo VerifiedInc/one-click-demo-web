@@ -9,6 +9,8 @@ export interface BrowserConfig {
   bookACallUrl: string;
   dummyDataUrl: string;
   realDataUrl: string;
+  dummyEnvCoreServiceUrl: string;
+  realEnvCoreServiceUrl: string;
 }
 
 export const browserConfig: BrowserConfig =

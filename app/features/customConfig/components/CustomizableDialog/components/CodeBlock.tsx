@@ -10,6 +10,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { omitProperties } from '~/utils/object';
 import { useCopyToClipboard } from '~/hooks/useCopyToClipboard';
+import { useAppContext } from '~/context/AppContext';
 
 const styles = [
   {
@@ -121,10 +122,12 @@ const theme = EditorView.theme(
 const highlightStyle = HighlightStyle.define(styles);
 
 export function CodeBlock() {
+  const appContext = useAppContext();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const codeBlockRef = useRef<EditorView | null>(null);
   const formContext = useFormContext();
   const data = formContext.watch();
+  const isDummy = data.environment === 'dummy';
   const values = useMemo(() => {
     return JSON.stringify(
       omitProperties(data, ['environment', 'isNew', 'id']),
@@ -133,6 +136,53 @@ export function CodeBlock() {
     );
   }, [data]);
   const copyToClipboard = useCopyToClipboard({ type: 'text/plain' });
+
+  const renderDomain = () => {
+    if (!data.environment) return null;
+
+    let domain;
+    if (isDummy) {
+      domain = appContext.config.dummyEnvCoreServiceUrl;
+    } else {
+      domain = appContext.config.realEnvCoreServiceUrl;
+    }
+
+    return (
+      <Typography
+        className='special'
+        sx={{
+          px: 2,
+          textAlign: 'left!important',
+          fontSize: '11px',
+          fontWeight: 'bold',
+          color: 'rgba(255, 255, 255, 0.50)',
+        }}
+      >
+        <Typography
+          component='span'
+          color='white'
+          sx={{
+            fontSize: '11px',
+            fontWeight: 'bold',
+            color: 'rgba(255, 255, 255, 1)',
+          }}
+        >
+          POST
+        </Typography>{' '}
+        {domain}
+        <Typography
+          component='span'
+          sx={{
+            fontSize: '11px',
+            fontWeight: 'bold',
+            color: 'rgba(255, 255, 255, 1)',
+          }}
+        >
+          /1-click
+        </Typography>
+      </Typography>
+    );
+  };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -187,39 +237,7 @@ export function CodeBlock() {
           },
         }}
       >
-        <Typography
-          className='special'
-          sx={{
-            px: 2,
-            textAlign: 'left!important',
-            fontSize: '11px',
-            fontWeight: 'bold',
-            color: 'rgba(255, 255, 255, 0.50)',
-          }}
-        >
-          <Typography
-            component='span'
-            color='white'
-            sx={{
-              fontSize: '11px',
-              fontWeight: 'bold',
-              color: 'rgba(255, 255, 255, 1)',
-            }}
-          >
-            POST
-          </Typography>{' '}
-          https://core-api.sandbox-verifiedinc.com/
-          <Typography
-            component='span'
-            sx={{
-              fontSize: '11px',
-              fontWeight: 'bold',
-              color: 'rgba(255, 255, 255, 1)',
-            }}
-          >
-            1-click
-          </Typography>
-        </Typography>
+        {renderDomain()}
         <Box
           sx={{
             position: 'relative',
