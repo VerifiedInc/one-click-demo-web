@@ -206,71 +206,80 @@ export function CodeBlock() {
 
   return (
     <Stack
-      direction='column'
       sx={{
-        pt: 4,
-        pb: 2.5,
         flexShrink: 0,
         maxWidth: '391px',
         width: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.87)',
+        zIndex: 1,
+        backgroundColor: 'white',
         alignSelf: 'stretch',
       }}
     >
-      <Box sx={{ px: 2 }}>
-        <Typography variant='h2' sx={{ color: 'white' }}>
-          Live Code
-        </Typography>
-        <Typography
-          sx={{ mt: 2, fontSize: '16px', color: 'rgba(255, 255, 255, 0.50)' }}
-        >
-          1-Click Signup takes just 1 API call.
-          <br />
-          See the Verified docs for details.
-        </Typography>
-      </Box>
-      <Box
+      <Stack
+        direction='column'
         sx={{
-          mt: 4,
-          '& p, & span': {
-            fontFamily: 'Menlo',
-          },
+          pt: 4,
+          pb: 2.5,
+          width: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.87)',
+          alignSelf: 'stretch',
         }}
       >
-        {renderDomain()}
+        <Box sx={{ px: 2 }}>
+          <Typography variant='h2' sx={{ color: 'white' }}>
+            Live Code
+          </Typography>
+          <Typography
+            sx={{ mt: 2, fontSize: '16px', color: 'rgba(255, 255, 255, 0.50)' }}
+          >
+            1-Click Signup takes just 1 API call.
+            <br />
+            See the Verified docs for details.
+          </Typography>
+        </Box>
         <Box
           sx={{
-            position: 'relative',
-            mt: 2,
+            mt: 4,
+            '& p, & span': {
+              fontFamily: 'Menlo',
+            },
           }}
         >
+          {renderDomain()}
           <Box
-            ref={containerRef}
             sx={{
-              fontSize: '14px',
-              '& .cm-editor': {
-                height: 'auto!important',
-              },
-            }}
-          />
-          <IconButton
-            onClick={() => copyToClipboard.copy(values)}
-            sx={{
-              position: 'absolute',
-              right: 0,
-              top: 0,
-              bottom: 0,
-              width: '43px',
-              height: '43px',
-              flexShrink: 0,
-              aspectRatio: '1',
-              color: 'white',
+              position: 'relative',
+              mt: 2,
             }}
           >
-            <ContentCopy fontSize='small' />
-          </IconButton>
+            <Box
+              ref={containerRef}
+              sx={{
+                fontSize: '14px',
+                '& .cm-editor': {
+                  height: 'auto!important',
+                },
+              }}
+            />
+            <IconButton
+              onClick={() => copyToClipboard.copy(values)}
+              sx={{
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: '43px',
+                height: '43px',
+                flexShrink: 0,
+                aspectRatio: '1',
+                color: 'white',
+              }}
+            >
+              <ContentCopy fontSize='small' />
+            </IconButton>
+          </Box>
         </Box>
-      </Box>
+      </Stack>
     </Stack>
   );
 }

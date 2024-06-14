@@ -41,6 +41,7 @@ export function Body({ children }: PropsWithChildren) {
   return (
     <Stack
       sx={{
+        position: 'relative',
         width: { xs: '100%', md: showCode ? '832px' : '100%' },
         flexDirection: { xs: 'column', md: 'row' },
         '& .MuiPaper-root': {
@@ -51,6 +52,9 @@ export function Body({ children }: PropsWithChildren) {
     >
       <Box
         sx={{
+          position: 'sticky',
+          top: 0,
+          alignSelf: 'flex-start',
           flexShrink: 0,
           maxWidth: '391px',
           width: '100%',
@@ -78,14 +82,31 @@ export function Body({ children }: PropsWithChildren) {
       </Box>
       <Stack
         sx={{
-          flexShrink: 0,
-          width: { xs: 'auto', md: '50px' },
+          position: 'relative',
           alignSelf: 'stretch',
-          backgroundColor: 'rgba(0, 0, 0, 0.04)',
-          overflow: 'hidden',
+          backgroundColor: 'white',
         }}
       >
-        {renderCodeButton()}
+        <Box
+          sx={{
+            flex: 1,
+            position: 'relative',
+            alignSelf: 'stretch',
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+          }}
+        >
+          <Stack
+            sx={{
+              position: 'sticky',
+              top: 0,
+              flexShrink: 0,
+              width: { xs: 'auto', md: '50px' },
+              alignSelf: 'stretch',
+            }}
+          >
+            {renderCodeButton()}
+          </Stack>
+        </Box>
       </Stack>
       {showCode && mount && <CodeBlock />}
     </Stack>
