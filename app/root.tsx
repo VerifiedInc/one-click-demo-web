@@ -93,6 +93,8 @@ export const loader: LoaderFunction = async ({ context, request }) => {
     noticeEnabled,
     noticeText,
     bookACallUrl,
+    dummyEnvCoreServiceUrl,
+    realEnvCoreServiceUrl,
     googlePlacesApiKey,
   } = config;
 
@@ -110,6 +112,8 @@ export const loader: LoaderFunction = async ({ context, request }) => {
       noticeEnabled,
       noticeText,
       bookACallUrl,
+      dummyEnvCoreServiceUrl,
+      realEnvCoreServiceUrl,
       googlePlacesApiKey,
     },
     ...brandSet,

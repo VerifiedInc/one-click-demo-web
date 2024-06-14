@@ -8,6 +8,7 @@ import { theme } from '~/styles/verified-theme';
 
 import { path } from '~/routes/custom-demo-state';
 
+import { MappedState } from '~/features/state/types';
 import { EnvironmentStep } from '~/features/customConfig/components/CustomizableDialog/components/EnvironmentStep';
 import {
   CustomDemoForm,
@@ -17,18 +18,15 @@ import { defaultCredentialRequests } from '~/features/customConfig/components/Cu
 import { mapFormState } from '~/features/customConfig/mappers/mapFormState';
 import { CustomizeStep } from '~/features/customConfig/components/CustomizableDialog/components/CustomizeStep';
 import { CustomConfigProvider } from '~/features/customConfig/contexts/CustomConfig';
-import { MappedState } from '~/features/state/types';
+import { Body } from '~/features/customConfig/components/CustomizableDialog/components/Body';
 
 const dialogStyle: SxProps = {
   '& .MuiPaper-root': {
-    maxWidth: '391px',
-    width: '100%',
+    maxWidth: 'fit-content',
+    width: 'auto',
     borderRadius: '6px!important',
-    pt: 4,
-    pb: 2.5,
   },
   '& .MuiTypography-root': {
-    fontFamily: 'Lato !important',
     textAlign: 'center',
   },
   '& .MuiTypography-h1': {
@@ -145,16 +143,18 @@ export function CustomizableDialog() {
       <ThemeProvider theme={theme}>
         <CustomConfigProvider>
           <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(handleFormSubmission)}>
-              {!showDetailStep && (
-                <EnvironmentStep
-                  onCustomizePress={() => setShowDetailStep(true)}
-                />
-              )}
-              {showDetailStep && (
-                <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
-              )}
-            </form>
+            <Body>
+              <form onSubmit={form.handleSubmit(handleFormSubmission)}>
+                {!showDetailStep && (
+                  <EnvironmentStep
+                    onCustomizePress={() => setShowDetailStep(true)}
+                  />
+                )}
+                {showDetailStep && (
+                  <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
+                )}
+              </form>
+            </Body>
           </FormProvider>
         </CustomConfigProvider>
       </ThemeProvider>
