@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import { Button, ButtonProps, SxProps, useTheme } from '@mui/material';
 
-export function OriginalButton({ children, ...props }: ButtonProps) {
+export function OriginalButton({
+  children,
+  ...props
+}: ButtonProps & { newVariant?: string }) {
   const theme = useTheme() as unknown as any;
   const defaultProps = theme.components.MuiButton.defaultProps;
   const sx: SxProps = useMemo(() => {
@@ -38,6 +41,15 @@ export function OriginalButton({ children, ...props }: ButtonProps) {
       }
     }
 
+    if (props.newVariant === 'gray') {
+      style = {
+        ...style,
+        backgroundColor: '#E0E0E0!important',
+        color: 'black !important',
+        borderColor: 'transparent',
+      };
+    }
+
     if (props.variant === 'text') {
       style = {
         ...style,
@@ -69,10 +81,12 @@ export function OriginalButton({ children, ...props }: ButtonProps) {
     return style;
   }, [
     defaultProps.sx,
+    props.color,
     props.disabled,
     props.size,
     props.sx,
     props.variant,
+    theme.palette.error.main,
     theme.palette.text.disabled,
   ]);
 
