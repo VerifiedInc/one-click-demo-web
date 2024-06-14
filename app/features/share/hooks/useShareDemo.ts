@@ -20,6 +20,10 @@ export function useShareDemo() {
 
     if ('share' in window.navigator) {
       window.navigator.share({ url: url.toString() });
+    } else {
+      // Fallback for browsers that don't support Web Share API.
+      // Copy the URL to clipboard.
+      navigator.clipboard.writeText(url.toString());
     }
   };
 
