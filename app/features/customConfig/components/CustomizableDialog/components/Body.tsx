@@ -52,7 +52,7 @@ export function Body({ children }: PropsWithChildren) {
     >
       <Box
         sx={{
-          position: 'sticky',
+          position: { xs: 'static', md: 'sticky' },
           top: 0,
           alignSelf: 'flex-start',
           flexShrink: 0,
@@ -97,7 +97,7 @@ export function Body({ children }: PropsWithChildren) {
         >
           <Stack
             sx={{
-              position: 'sticky',
+              position: { xs: 'static', md: 'sticky' },
               top: 0,
               flexShrink: 0,
               width: { xs: 'auto', md: '50px' },
