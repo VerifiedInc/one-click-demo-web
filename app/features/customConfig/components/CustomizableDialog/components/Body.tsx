@@ -16,9 +16,9 @@ export function Body({ children }: PropsWithChildren) {
     const buttonStyle: SxProps = {
       position: 'relative',
       top: { xs: '0', md: '22px' },
-      transform: { xs: 'rotate(0deg)', md: 'rotate(90deg)' },
+      transform: { xs: 'rotate(0deg)', md: 'rotate(90deg) translateX(32px)' },
       whiteSpace: 'nowrap',
-      mt: { xs: 0, md: 4 },
+      mt: { xs: 0, md: 0 },
       width: { xs: '100%', md: 'auto' },
     };
     return (
