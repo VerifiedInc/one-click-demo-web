@@ -33,6 +33,8 @@ interface Config {
   realEnvCoreServiceAdminKey: string;
   realEnvWalletUrl: string;
   schemaResolverServiceUrl: string;
+  googlePlacesApiKey: string;
+  googleGeocodingApiKey: string;
 }
 
 export const config: Config = {
@@ -70,4 +72,6 @@ export const config: Config = {
   realEnvCoreServiceUrl: process.env.REAL_ENV_CORE_SERVICE_URL || '',
   realEnvCoreServiceAdminKey: process.env.REAL_ENV_CORE_SERVICE_ADMIN_KEY || '',
   realEnvWalletUrl: process.env.REAL_ENV_WALLET_URL || '',
+  googlePlacesApiKey: process.env.GOOGLE_PLACES_API_KEY || '',
+  googleGeocodingApiKey: process.env.GOOGLE_GEOCODING_API_KEY || '',
 };

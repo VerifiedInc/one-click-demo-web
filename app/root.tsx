@@ -95,6 +95,7 @@ export const loader: LoaderFunction = async ({ context, request }) => {
     bookACallUrl,
     dummyEnvCoreServiceUrl,
     realEnvCoreServiceUrl,
+    googlePlacesApiKey,
   } = config;
 
   return json({
@@ -113,6 +114,7 @@ export const loader: LoaderFunction = async ({ context, request }) => {
       bookACallUrl,
       dummyEnvCoreServiceUrl,
       realEnvCoreServiceUrl,
+      googlePlacesApiKey,
     },
     ...brandSet,
     queryString: searchParams.toString(),

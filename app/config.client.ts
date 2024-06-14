@@ -11,6 +11,7 @@ export interface BrowserConfig {
   realDataUrl: string;
   dummyEnvCoreServiceUrl: string;
   realEnvCoreServiceUrl: string;
+  googlePlacesApiKey: string;
 }
 
 export const browserConfig: BrowserConfig =
