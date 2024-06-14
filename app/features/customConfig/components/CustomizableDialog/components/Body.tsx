@@ -1,14 +1,16 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { Stack, SxProps } from '@mui/material';
+import { IconButton, Stack, SxProps } from '@mui/material';
 import { Box } from '@mui/system';
-import { Code, CodeOff } from '@mui/icons-material';
+import { Code, CodeOff, Share } from '@mui/icons-material';
 
 import { OriginalButton } from '~/components/OriginalButton';
 import { CodeBlock } from '~/features/customConfig/components/CustomizableDialog/components/CodeBlock';
+import { useShareDemo } from '~/features/share/hooks/useShareDemo';
 
 export function Body({ children }: PropsWithChildren) {
-  const [showCode, setShowCode] = useState(true);
+  const [showCode, setShowCode] = useState(false);
   const [mount, setMount] = useState(false);
+  const { handleShareDemo } = useShareDemo();
 
   const renderCodeButton = () => {
     const buttonStyle: SxProps = {
@@ -52,10 +54,26 @@ export function Body({ children }: PropsWithChildren) {
           flexShrink: 0,
           maxWidth: '391px',
           width: '100%',
-          pt: 4,
           pb: 2.5,
         }}
       >
+        <Stack sx={{ justifyContent: 'flex-end' }}>
+          <IconButton
+            onClick={handleShareDemo}
+            sx={{
+              width: '43px',
+              height: '43px',
+              flexShrink: 0,
+              aspectRatio: '1',
+              ml: 'auto',
+              mr: 0.5,
+              mt: 0.5,
+              color: 'text.disabled',
+            }}
+          >
+            <Share fontSize='small' />
+          </IconButton>
+        </Stack>
         {children}
       </Box>
       <Stack
