@@ -27,7 +27,6 @@ const dialogStyle: SxProps = {
     borderRadius: '6px!important',
   },
   '& .MuiTypography-root': {
-    fontFamily: 'Lato !important',
     textAlign: 'center',
   },
   '& .MuiTypography-h1': {
@@ -143,8 +142,8 @@ export function CustomizableDialog() {
     <Dialog open={dialogOpen} sx={dialogStyle}>
       <ThemeProvider theme={theme}>
         <CustomConfigProvider>
-          <Body>
-            <FormProvider {...form}>
+          <FormProvider {...form}>
+            <Body>
               <form onSubmit={form.handleSubmit(handleFormSubmission)}>
                 {!showDetailStep && (
                   <EnvironmentStep
@@ -155,8 +154,8 @@ export function CustomizableDialog() {
                   <CustomizeStep onBackPress={() => setShowDetailStep(false)} />
                 )}
               </form>
-            </FormProvider>
-          </Body>
+            </Body>
+          </FormProvider>
         </CustomConfigProvider>
       </ThemeProvider>
     </Dialog>

@@ -41,11 +41,13 @@
     }
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.2",
     "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.5",
     "@hookform/resolvers": "^3.3.4",
+    "@lezer/highlight": "^1.2.0",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.5",
     "@newrelic/winston-enricher": "^4.0.1",
@@ -58,6 +60,7 @@
     "@verifiedinc/core-types": "github:VerifiedInc/core-types#0.44.0",
     "axios": "^1.6.5",
     "bcryptjs": "^2.4.3",
+    "codemirror": "^6.0.1",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
     "driver.js": "^1.3.1",

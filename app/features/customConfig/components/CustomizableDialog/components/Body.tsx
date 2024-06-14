@@ -1,12 +1,14 @@
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { Stack, SxProps } from '@mui/material';
 import { Box } from '@mui/system';
 import { Code, CodeOff } from '@mui/icons-material';
 
 import { OriginalButton } from '~/components/OriginalButton';
+import { CodeBlock } from '~/features/customConfig/components/CustomizableDialog/components/CodeBlock';
 
 export function Body({ children }: PropsWithChildren) {
-  const [showCode, setShowCode] = useState(false);
+  const [showCode, setShowCode] = useState(true);
+  const [mount, setMount] = useState(false);
 
   const renderCodeButton = () => {
     const buttonStyle: SxProps = {
@@ -29,6 +31,10 @@ export function Body({ children }: PropsWithChildren) {
       </OriginalButton>
     );
   };
+
+  useEffect(() => {
+    setMount(true);
+  }, []);
 
   return (
     <Stack
@@ -63,19 +69,7 @@ export function Body({ children }: PropsWithChildren) {
       >
         {renderCodeButton()}
       </Stack>
-      {showCode && (
-        <Stack
-          sx={{
-            flexShrink: 0,
-            maxWidth: '391px',
-            width: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.87)',
-            alignSelf: 'stretch',
-          }}
-        >
-          {/*  */}
-        </Stack>
-      )}
+      {showCode && mount && <CodeBlock />}
     </Stack>
   );
 }
