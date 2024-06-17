@@ -20,10 +20,13 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     const credentials = mapSimplifiedToCredentialDto(
       oneClick.success.oneClick.credentials
     );
+    const credentialRequests =
+      oneClick.success.oneClickDB.presentationRequest.credentialRequests;
     const schemas = await getSchemas();
     return json({
       ...oneClick.success,
       credentials,
+      credentialRequests,
       schemas,
     });
   }
@@ -34,7 +37,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
 export default function PersonalInformation() {
   const brand = useBrand();
-  const { credentials, credentialRequests, schemas, ...rest } = useLoaderData();
+  const { credentials, credentialRequests, schemas } = useLoaderData();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
