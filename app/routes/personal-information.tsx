@@ -59,6 +59,7 @@ export default function PersonalInformation() {
     zIndex: 2,
     background:
       'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 1) 35%)',
+    width: '100%',
   };
 
   const handleGetStarted = () => {
@@ -100,12 +101,14 @@ export default function PersonalInformation() {
           credentialRequests={credentialRequests}
           credentials={credentials}
           schema={schemas}
+          renderExtra={({ isValid }) => (
+            <Box sx={buttonContainerSx}>
+              <Button onClick={handleGetStarted} fullWidth disabled={!isValid}>
+                Get Started
+              </Button>
+            </Box>
+          )}
         />
-        <Box sx={buttonContainerSx}>
-          <Button onClick={handleGetStarted} fullWidth>
-            Get Started
-          </Button>
-        </Box>
       </Stack>
     </Box>
   );

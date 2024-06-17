@@ -24,7 +24,7 @@ import {
 } from '~/features/request/CredentialsDisplay/utils';
 import { isRequiredCredentialDisplayInfo } from '~/features/request/CredentialsDisplay/utils/isRequiredCredentialDisplayInfo';
 
-type CredentialsDisplayContext = {
+export type CredentialsDisplayContext = {
   credentialRequests?: CredentialRequestDto[];
   credentials: CredentialDto[];
   displayInfoList: CredentialDisplayInfo[];
