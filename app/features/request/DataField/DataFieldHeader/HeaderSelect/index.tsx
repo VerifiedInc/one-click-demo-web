@@ -129,6 +129,7 @@ export function HeaderSelect() {
               px: 2,
               py: 1,
               borderRadius: 0,
+              color: 'inherit',
             }}
           >
             Add New

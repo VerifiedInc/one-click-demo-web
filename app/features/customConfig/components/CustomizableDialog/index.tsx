@@ -21,7 +21,7 @@ import { CustomConfigProvider } from '~/features/customConfig/contexts/CustomCon
 import { Body } from '~/features/customConfig/components/CustomizableDialog/components/Body';
 
 const dialogStyle: SxProps = {
-  '& .MuiPaper-root': {
+  '& .MuiDialog-container > .MuiPaper-root': {
     maxWidth: 'fit-content',
     width: 'auto',
     borderRadius: '6px!important',

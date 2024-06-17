@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Box } from '@mui/material';
 import {
   CredentialDto,
@@ -7,17 +7,31 @@ import {
 } from '@verifiedinc/core-types';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import CredentialsDisplayProvider from '~/features/request/CredentialsDisplay/CredentialsDisplayContext';
+import CredentialsDisplayProvider, {
+  CredentialsDisplayContext,
+  useCredentialsDisplay,
+} from '~/features/request/CredentialsDisplay/CredentialsDisplayContext';
 import CredentialsDisplay from '~/features/request/CredentialsDisplay/CredentialsDisplay';
+
+type RequestExtraProps = {
+  children: (credentialsDisplay: CredentialsDisplayContext) => ReactNode;
+};
+
+function RequestExtra(props: RequestExtraProps) {
+  const credentialsDisplay = useCredentialsDisplay();
+  return <>{props.children(credentialsDisplay)}</>;
+}
 
 export function RequestBody({
   credentialRequests,
   credentials,
   schema,
+  renderExtra,
 }: {
   credentialRequests: CredentialRequestDto[];
   credentials: CredentialDto[];
   schema: CredentialSchemaDto['schemas'];
+  renderExtra: RequestExtraProps['children'];
 }) {
   // Configure a React Query client to handle requests client side only,
   // it supports SSR as well but is not the focus.
@@ -53,6 +67,7 @@ export function RequestBody({
         }}
       >
         <CredentialsDisplay />
+        <RequestExtra>{renderExtra}</RequestExtra>
       </CredentialsDisplayProvider>
     </Box>
   );

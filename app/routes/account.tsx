@@ -32,7 +32,7 @@ export const loader: LoaderFunction = async ({ context, request }) => {
 };
 
 export default function Account() {
-  const { credentials, credentialRequests, schemas, ...rest } = useLoaderData();
+  const { credentials, credentialRequests, schemas } = useLoaderData();
 
   const [searchParams] = useSearchParams();
   const verifieddPageLink = useMemo(() => {

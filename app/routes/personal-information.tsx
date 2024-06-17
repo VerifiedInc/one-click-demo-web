@@ -20,10 +20,13 @@ export const loader: LoaderFunction = async ({ request, context }) => {
     const credentials = mapSimplifiedToCredentialDto(
       oneClick.success.oneClick.credentials
     );
+    const credentialRequests =
+      oneClick.success.oneClickDB.presentationRequest.credentialRequests;
     const schemas = await getSchemas();
     return json({
       ...oneClick.success,
       credentials,
+      credentialRequests,
       schemas,
     });
   }
@@ -34,7 +37,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
 
 export default function PersonalInformation() {
   const brand = useBrand();
-  const { credentials, credentialRequests, schemas, ...rest } = useLoaderData();
+  const { credentials, credentialRequests, schemas } = useLoaderData();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -56,6 +59,7 @@ export default function PersonalInformation() {
     zIndex: 2,
     background:
       'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 1) 35%)',
+    width: '100%',
   };
 
   const handleGetStarted = () => {
@@ -97,12 +101,14 @@ export default function PersonalInformation() {
           credentialRequests={credentialRequests}
           credentials={credentials}
           schema={schemas}
+          renderExtra={({ isValid }) => (
+            <Box sx={buttonContainerSx}>
+              <Button onClick={handleGetStarted} fullWidth disabled={!isValid}>
+                Get Started
+              </Button>
+            </Box>
+          )}
         />
-        <Box sx={buttonContainerSx}>
-          <Button onClick={handleGetStarted} fullWidth>
-            Get Started
-          </Button>
-        </Box>
       </Stack>
     </Box>
   );
