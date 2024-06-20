@@ -67,7 +67,7 @@ export function RequestBody({
         }}
       >
         <CredentialsDisplay />
-        <RequestExtra>{renderExtra}</RequestExtra>
+        {renderExtra && <RequestExtra>{renderExtra}</RequestExtra>}
       </CredentialsDisplayProvider>
     </Box>
   );
