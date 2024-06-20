@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  unumid: unumid/unumid-app-orb@2.0.0
+  unumid: unumid/unumid-app-orb@2.2.3
 
 workflows:
   lint-and-test:
