@@ -47,7 +47,7 @@ workflows:
           script_name: sentry:upload_sourcemaps
           compile_script_name: build:sourcemap
           cache_version: v6
-          sentry_org: verified-inc
+          sentry_org: verified-network
           sentry_project: 1click-demo-web
           filters:
             branches:
@@ -110,7 +110,7 @@ workflows:
           script_name: sentry:upload_sourcemaps
           compile_script_name: build:sourcemap
           cache_version: v6
-          sentry_org: verified-inc
+          sentry_org: verified-network
           sentry_project: 1click-demo-web
           filters:
             tags:
@@ -161,7 +161,7 @@ workflows:
           script_name: sentry:upload_sourcemaps
           compile_script_name: build:sourcemap
           cache_version: v6
-          sentry_org: verified-inc
+          sentry_org: verified-network
           sentry_project: 1click-demo-web
           filters:
             branches:
