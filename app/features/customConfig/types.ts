@@ -5,9 +5,10 @@ export enum OneClickEnvironment {
 
 export enum OneClickContentTitle {
   Signup = 'Signup',
-  Signin = 'Signin',
+  Login = 'Login',
   Verify = 'Verify',
   Apply = 'Apply',
+  Access = 'Access',
 }
 
 export enum OneClickContentVerificationOptions {

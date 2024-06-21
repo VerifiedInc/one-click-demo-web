@@ -42,10 +42,10 @@ export function TitleField() {
           disabled={!isHosted.field.value}
         />
         <RadioOption
-          value={OneClickContentTitle.Signin}
-          title={OneClickContentTitle.Signin}
-          description='"1-Click Signin"'
-          tip='Signin'
+          value={OneClickContentTitle.Login}
+          title={OneClickContentTitle.Login}
+          description='"1-Click Login"'
+          tip='Login'
           disabled={!isHosted.field.value}
         />
         <RadioOption
@@ -60,6 +60,13 @@ export function TitleField() {
           title={OneClickContentTitle.Apply}
           description='"1-Click Apply"'
           tip='Apply'
+          disabled={!isHosted.field.value}
+        />
+        <RadioOption
+          value={OneClickContentTitle.Access}
+          title={OneClickContentTitle.Access}
+          description='"1-Click Access"'
+          tip='Access'
           disabled={!isHosted.field.value}
         />
       </RadioGroup>
